@@ -1,0 +1,20 @@
+{% extends  'base.html' %}
+
+
+{% block content %}
+
+    <form   method="post" enctype='multipart/form-data' multiple="multiple">
+        {% csrf_token %}
+	    	{{ form.as_table }} 
+    
+    	<input type="submit" class="btn btn-info" value="Guardar">
+    </form>	
+
+<!-- 
+<div class="ejemplo-linea">
+    <input type="file" id="boton-file" accept="image/*" multiple="multiple" />
+    <input type="button" value="listar" onclick="actualizarLista()" />
+    <pre id="lista-archivos"></pre>
+</div> -->
+
+{% endblock %}

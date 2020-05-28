@@ -1,0 +1,203 @@
+{% extends  'base.html' %}
+
+{% block header %}
+<!-- 	<h3>{{ form.cliente|upper }}</h3>
+ 	<div class="card">
+    	<div class="card-body">     
+    		<h3>{{ form.proyecto | title }} </h3>
+    		<p>{{ form.descripcion }}</p>
+    	</div>
+  	</div> -->
+{% endblock %}
+
+{% block content %}
+<div class="container">
+		<h1>{{ partida.nomb }}</h1>
+		 
+		<div id="table_clon">
+		    <table id="TablaClon" class="table">
+		      	<tr class="hide">
+		      		<td><span class="table-remove glyphicon glyphicon-remove"></span></td>
+		    		<td contenteditable="true" class="col-sm-1">ITEM</td>
+					<td contenteditable="true" class="col-sm-5">DESCRIPCIÓN</td>
+					<td contenteditable="true" class="col-sm-1">UNIDAD</td>
+					<td contenteditable="true" class="col-sm-1">CANTIDAD</td>
+					<td contenteditable="true" class="col-sm-2">PRECIO UNITARIO</td>
+					<td contenteditable="true" class="col-sm-2">PRECIO TOTAL</td>
+		      	</tr>
+		    </table>
+	  	</div>
+  
+	  	<div id="table_materiales" class="table-editable">		  
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+		    				<button type="button" class="btn btn-link" data-toggle="collapse" data-target="#__Materiales" style="font-size: 18px; font-weight: bold; font-style: Arial">MATERIALES</button>
+		    			</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body"><p style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">999.999.999.999,99</p></div>
+		  			</div>	
+				</div>
+		   </div>
+
+		   <div id="__Materiales" class="collapse">
+		   	 <table id="Materiales" class="table">
+				<thead >
+		    		<tr>
+		        		<th class=""><span id="_Materiales" class="table-add glyphicon glyphicon-plus"></span></th>    			
+		    		    <th class="col-sm-1">ITEM</th>
+					    <th class="col-sm-5">DESCRIPCIÓN</th>
+					    <th class="col-sm-1">UNIDAD</th>
+					    <th class="col-sm-1">CANTIDAD</th>
+					   	<th class="col-sm-2">PRECIO UNITARIO</th>
+					   	<th class="col-sm-2">PRECIO TOTAL</th>
+		      		</tr>
+		    	</thead>
+		    	<tbody >
+		    	</tbody>
+		    </table>
+
+		   </div>	   
+	  	</div>
+
+	    <div id="table_personal" class="table-editable">
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+						    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#__PERSONAL"  style="font-size: 18px; font-weight: bold; font-style: Arial">PERSONAL</button>
+						</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+						<div class="card-body"><p style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">999.999.999.999,99</p></div>
+		  			</div>
+				</div>
+		   </div>
+		   <div id="__PERSONAL" class="collapse">
+			    <table id="Personal" class="table">
+					<thead>
+			    		<tr>
+			    			<th><span id="_Personal" class="table-add glyphicon glyphicon-plus"></span></th>
+			    		    <th class="col-sm-1">ITEM</th>
+						    <th class="col-sm-5">DESCRIPCIÓN</th>
+						    <th class="col-sm-1">UNIDAD</th>
+						    <th class="col-sm-1">CANTIDAD</th>
+						   	<th class="col-sm-2">PRECIO UNITARIO</th>
+						   	<th class="col-sm-2">PRECIO TOTAL</th>
+			      		</tr>
+			    	</thead>
+			    	<tbody>
+			    	</tbody>
+			    </table>
+			</div>
+	  	</div>
+	     
+	    <div id="table_maqherr" class="table-editable">
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+						    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#__MAQHERR"  style="font-size: 18px; font-weight: bold; font-style: Arial">MAQUINARIAS Y HERRAMIENTAS</button>
+						</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body"><p style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">999.999.999.999,99</p></div>
+		  			</div>
+				</div>
+		   </div>
+		   <div id="__MAQHERR" class="collapse">
+			    <table id="MaqHerr" class="table">
+					<thead>
+			    		<tr>
+			    			<th><span id="_MaqHerr" class="table-add glyphicon glyphicon-plus"></span></th>
+			    		    <th class="col-sm-1">ITEM</th>
+						    <th class="col-sm-5">DESCRIPCIÓN</th>
+						    <th class="col-sm-1">UNIDAD</th>
+						    <th class="col-sm-1">CANTIDAD</th>
+						   	<th class="col-sm-2">PRECIO UNITARIO</th>
+						   	<th class="col-sm-2">PRECIO TOTAL</th>
+			      		</tr>
+			    	</thead>
+			    	<tbody>
+			    	</tbody>
+			    </table>
+			</div>
+	  	</div>
+	    
+	    <div id="table_servicios" class="table-editable">
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+						    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#__SERVICIOS"  style="font-size: 18px; font-weight: bold; font-style: Arial">SERVICIOS</button>
+						</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body"><p style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">999.999.999.999,99</p></div>
+		  			</div>
+				</div>
+		   </div>
+		   <div id="__SERVICIOS" class="collapse">	    	
+		    <table id="Servicios" class="table">
+				<thead>
+		    		<tr>
+		    			<th><span id="_Servicios" class="table-add glyphicon glyphicon-plus"></span></th>
+		    		    <th class="col-sm-1">ITEM</th>
+					    <th class="col-sm-5">DESCRIPCIÓN</th>
+					    <th class="col-sm-1">UNIDAD</th>
+					    <th class="col-sm-1">CANTIDAD</th>
+					   	<th class="col-sm-2">PRECIO UNITARIO</th>
+					   	<th class="col-sm-2">PRECIO TOTAL</th>
+		      		</tr>
+		    	</thead>
+		    	<tbody>
+
+		    	</tbody>
+		    </table>
+	  	</div> 
+
+	  	<button id="export-btn" class="btn btn-primary">Export Data</button>
+
+</div>
+	  	
+
+<button type="button" class="btn btn-primary" id="myBtn3" style="display:none" >Guardar Datos</button>
+<!-- Modal -->
+<div class="modal fade " id="myModal3" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document" id="dialogo">
+		<!-- Modal content-->
+		<div class="modal-content" id="dialogo">      
+		    <div class="modal-header">
+		          <h4 class="modal-title">Continuar o Guardar</h4>
+		          <button type="button" class="close" data-dismiss="modal"> &times;</button>
+		    </div>
+
+		    <div class="modal-body">
+		        <p>Desea guardar llos datos modificados?. O prefiere continuar con la modificación.</p>	
+		    </div>
+
+		    <div class="modal-footer">
+		        <button type="button" class="btn btn-danger" data-dismiss="modal">No Guardar</button>
+		    	<form method="post">
+					{% csrf_token %}
+					<input id="datos" type="text" name="datos">
+					<button id="benviar" type="submit" class="btn btn-primary" >Guardar y Continuar</button>
+					  
+    			</form>
+		    </div>
+		</div>
+    </div>
+</div>
+
+
+{% endblock %}

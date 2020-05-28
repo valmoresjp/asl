@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+
+    	<div class="row">
+            <div class="col-md-12">   
+                <a href="{% url 'nuevo' %}"><button type="button" class="btn btn-outline-primary">Agregar Proyecto</button></a>
+                <form action="#" method="get">
+                    <div class="input-group">
+                        <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+
+    	</div>
+        <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-list-search">
+                        {% for reg in Cliente %}
+                            {% if forloop.first %}
+                                <thead>
+                                    <tr>
+                                        <td><a  title="Add" ><i class="material-icons"></i></a></td>
+                                        {% for campo in reg.keys %}
+                                            <th>{{ campo|upper}}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                            {% endif %}
+                            <tbody>
+                                <tr>
+                                    {% for valor in reg.values %}
+                                        {% if forloop.first %}
+                                            <td>{{ valor }}</td>
+                                            <td>
+                                                <a class="edit" href="{% url 'editar' valor %}" title="Edit" data-toggle="tooltip" ><i class="material-icons">&#xE254;</i></a>
+                                                <a class="delete" href="{% url 'eliminar' valor %}" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                            </td>
+                                            
+                                        {% else %}
+                                            <td>{{ valor }}</td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>   
+            </div> 
+        </div>
+    </div>
+{% endblock %}

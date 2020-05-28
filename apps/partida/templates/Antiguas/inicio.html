@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <table> 
+        {% for reg in Cliente %}
+            {% if forloop.first %}
+                <thead>
+                    <th>
+                        {% for campo in reg.keys %}<td>{{ campo }}</td>{% endfor %}
+                    </th>
+                </thead>
+            {% endif %}
+            <tbody>
+                <tr>
+                    {% for valor in reg.values %}<td>{{ valor }}</td>{% endfor %}
+                </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+{% endblock %}
+

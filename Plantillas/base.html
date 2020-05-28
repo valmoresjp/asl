@@ -1,0 +1,49 @@
+<!-- {% load static %} -->
+<!DOCTYPE html>
+<html lang="es">
+<head> 
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!--
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.min.css' %}">	
+	<link rel="stylesheet" type="text/css" href="{% static 'css/all.min.css' %}">	 
+
+	<title>
+		{% block title %} Documento {% endblock %}
+	</title>
+</head>
+<body>
+
+	{% block header %}
+		<h3  class="display-3" >Cabecera</h3>
+	{% endblock %}
+
+	{% block content %}
+		<p>bloque de contenido</p>
+	{% endblock %}
+
+	{% block footer %}
+	<br>
+	<br>
+	<a  href="{% url 'inicio_principal' %}" >
+		<div class="card bg-secondary text-white">
+			<div class="card-body" style="font-size: 18px; font-weight: bold; font-style: Arial">Pagina de Inicio</div>
+		</div>
+	</a>
+	{% endblock %}
+
+	<script type="text/javascript" src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+<!--
+	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="{% static 'js/Herramientas-v6.js' %}"></script>
+</body>
+</html> 

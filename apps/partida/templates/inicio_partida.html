@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block header %}
+	<br>
+	<h1 class="display-5">Partidas</h1>
+{% endblock %}
+
+{% block content %}
+    <div class=".container">
+
+<!--
+		 <button type="button" class="btn btn-info" href="{% url 'inicio_principal' %}">INICIO</button>
+-->
+    	<div class="row">
+            <div class="col-md-12">   
+                <a href="{% url 'nuevo_partida' %}"><button type="button" class="btn btn-primary">Crear Nueva Partida</button></a>
+<!--
+                <form action="#" method="get">
+                    <div class="input-group">
+                        <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+-->
+            </div>
+
+    	</div>
+        <div class="row">
+			<div 	class="col-md-12">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th style=" width: 5%;"></th>
+                                <th style=" width: 5%;">ID</th>
+                                <th style=" width: 10%;">CÓDIGO</th>
+                                <th style=" width: 25%;">PARTIDA</th> 
+                                <th style=" width: 45%;">DESCRIPCIÓN</th> 
+                                <th style=" width: 10%;">COSTO</th>   
+                             </tr>
+                        </thead>
+                        {% for reg in obj %}   
+                            <tbody>
+                                <tr>
+                                    <td >
+                                      <a class="edit" href="{% url 'editar_partida' idpart=reg.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-edit fa-1x" style="color:green"></i></a>
+                                      <a class="delete" href="{% url 'eliminar_partida' idpart=reg.id %}" title="Eliminar" data-toggle="tooltip"><i class="fa fa-trash fa-1x" style="color:red"></i></a>
+                                    </td>
+									 <td >{{ reg.id }}</td>
+                                     <td >{{ reg.codp }}</td>
+                                     <td ><a class="edit" href="{% url 'detallar_partida' idpart=reg.id %}" title="Detallar Producto" data-toggle="tooltip" >{{ reg.nomb | upper }}</a></td> 
+                                     <td >{{ reg.desc }}</td> 
+                                     <td >{{ reg.cost }}</td> 
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>	   
+            </div> 
+        </div>
+    </div>
+{%endblock %}

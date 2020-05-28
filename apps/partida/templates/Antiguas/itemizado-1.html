@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block header %}
+	<h3><b>PARTIDA:  </b>{{ partida.nomb|title }}</h3>
+ 	<div class="card">
+    	<div class="card-body">     
+    		<p>{{ partida.desc }}</p>
+    	</div>
+  	</div>
+{% endblock %}
+
+{% block content %}
+
+  	<div class="container">
+  		<button type="button" class="btn btn-link" data-toggle="collapse" data-target="#cargarPartida">Agregar Materiales</button>
+		<div id="cargarPartida" class="col	lapse">
+				<input type="text" id="myInput" onkeyup="FiltrarInsumos()" placeholder="Search for names..">
+				<table id="TablaInsumos" class="table">
+					<thead>
+					    <tr>
+					    	<th class="col-sm-1">ID</th>
+					    	<th class="col-sm-1">CODIGO</th>
+					    	<th class="col-sm-5">DESCRIPCION</th>
+					    	<th class="col-sm-1">CANTIDAD</th>
+				            <th class="col-sm-1">U. MEDIDA</th>
+				    		<th class="col-sm-1">C. MIN</th>
+				    		<th class="col-sm-1">C. PROM</th>
+				    		<th class="col-sm-1">C. MAX</th>
+					    </tr>
+				    </thead>
+				     <tbody> 
+					 {% for i in insumos %}
+							<tr>
+								<td>{{ i.id }}</td>
+							    <td>{{ i.codigo }}</td>
+							    <td><a href="" title="Presione para agregar a la partida" data-toggle="tooltip" onclick=>{{ i.descrip }}</td>
+							    <td>{{ i.umedida }}</td>
+							    <td>{{ i.umedida }}</td>
+							    <td>{{ i.min }}</td>
+							    <td>{{ i.prom }}</td>
+							    <td>{{ i.max }}</td> 
+							</tr>
+					{% endfor %}
+						</tbody>
+				</table>
+<!--
+				<form method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<span style="font-weight: bold">ID: </span>{{ form.id }}
+					<span style="font-weight: bold">ITEM: </span>{{ form.nomb }}
+					<span style="font-weight: bold"><br> NOMBRE DE LA PARTIDA: </span>{{ form.part }}
+					<span style="font-weight: bold"><br>DESCRIPCIÓN:</span>{{ form.desc }}
+					<span style="font-weight: bold"><br>UNIDAD DE MEDIDA: </span>{{ form.unid }}
+					<span style="font-weight: bold"><br>CANTIDAD</span>{{ form.cant }}
+					<br>
+					{ form.as_p }} 
+					<button id="benviar" type="submit" class="btn btn-primary" >Guardar Partida</button><button type="button" class="btn btn-link" data-toggle="collapse" data-target="#cargarPartida">Cancelar</button>
+				</form>
+-->
+	
+		</div>
+    	<table class="table">
+					<thead>
+					    <tr>
+					    	<th class="col-sm-1">ID</th>
+									<th class="col-sm-2">CODIGO</th>
+									<th class="col-sm-4">DESCRIPCIÓN</th>
+									<th class="col-sm-1">CANTIDAD</th>
+									<th class="col-sm-1">U. MEDIDA</th>
+									<th class="col-sm-1">COSTO/MEDIDA</th>
+									<th class="col-sm-1">C. TOTAL</th>
+				            
+				    		
+					    </tr>
+				    </thead> 
+				    <tbody> 
+					    {% for i in partidas %}
+							<tr>
+								<!-- <td>{{ i.idproy }}</td> -->
+							    <td>{{ i.item }}</td>
+							    <td><a class="" href="{% url 'cuantificar' i.id %}" title="Cuantificar partida" data-toggle="tooltip" > {{ i.part }}</a></td>
+							    <td>{{ i.desc }}</td>
+							    <td>{{ i.unid }}</td>
+							    <td>{{ i.cant }}</td>
+							    <td> 
+							    	<a class="edit" href="{% url 'editarI' i.id %}" title="Editar" data-toggle="tooltip" ><i class="material-icons">&#xE254;</i></a>
+							    	<a class="delete" href="{% url 'eliminarI' i.id %}" title="Eliminar" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+							    </td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+      
+	</div>
+
+    
+{% endblock %}

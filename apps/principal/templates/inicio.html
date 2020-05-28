@@ -1,0 +1,45 @@
+{% extends  'base.html' %}
+
+{% block header %}
+	<br>
+ 	<h1 class="display-4">ANTOJOS SIN LÍMITES</h1>
+ 	<p class="text-right font-weight-bold font-italic" style="font-size: 28px;">El placer de disfrutar lo inimaginable.... </p>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+	<br>
+	<br>
+	<a  href="{% url 'inicio_producto' %}" >
+		<div class="card bg-primary text-white">
+			<div class="card-body  text-center" style="font-size: 28px; font-weight: bold; font-style: Arial">PRODUCTOS</div>
+		</div>
+	</a>
+	<br>
+	
+	<a  href="{% url 'inicio_partida' %}" >
+		<div class="card bg-primary text-white">
+			<div class="card-body text-center" style="font-size: 28px; font-weight: bold; font-style: Arial">PARTIDAS</div>
+		</div>
+	</a>
+	<br>
+	
+	<a  href="{% url 'inicio_mate' %}" >
+		<div class="card bg-primary text-white">
+			<div class="card-body text-center" style="font-size: 28px; font-weight: bold; font-style: Arial">INSUMOS</div>
+		</div>
+	</a>
+	<br>
+	
+	<a  href="{% url 'inicio_conf' %}" >
+		<div class="card bg-primary text-white">
+			<div class="card-body text-center" style="font-size: 28px; font-weight: bold; font-style: Arial">COSTOS ADICIONALES</div>
+		</div>
+	</a>
+	<br>
+	
+</div>                                
+
+{% endblock %}

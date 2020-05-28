@@ -1,0 +1,13 @@
+{% extends  'base.html' %}
+
+{% block content %}
+    <form   method="post" enctype='multipart/form-data' multiple="multiple">
+        {% csrf_token %}
+        <h3> Desea eliminar: {{ reg.nombre|upper }} ?</h3>
+        <button class="btn btn-danger" type="submit"> Si, Eliminar</button>
+        <a class="btn btn-default" href="{% url 'inicio_conf' %}"> Cancelar</a>
+<!--
+        <button type="submit"> Guardar</button>
+-->
+    </form>
+{% endblock %}

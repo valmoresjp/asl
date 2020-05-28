@@ -1,0 +1,173 @@
+{% extends  'base.html' %}
+
+{% block header %}
+ 	<h1>Partida: {{ partida.nomb|upper }}</h1>
+ 	<h3 >ID: <span id="codp">{{ partida.id }}</span></h3>
+ 	<div class="card">
+    	<div class="card-body">     
+    		<p>{{ partida.desc }}</p>
+    	</div>
+  	</div> 
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+		
+		<div id="table_clon">
+		    <table id="TablaClon" class="table">
+		      	<tr class="hide" name="regn" >
+
+		    		<td ></td>
+<!--
+		    		<td class="col-sm-1" ></td>
+-->
+					<td title="Escriba la descripcion del producto..." data-toggle="tooltip"></td>
+					<td ></td>
+					<td ></td>
+					<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)"	></td>
+					<td ></td>
+		      	</tr>
+		    </table>
+	  	</div>
+  	
+  		<div class="card bg-primary text-white" >
+			  <div class="row">
+				  <div class="col-md-9">
+					<div class="card-body" style="font-size: 28px; font-weight: bold; font-style: Arial">COSTO TOTAL</div>
+				  </div>
+				  <div class="col-md-3">
+	    			<div class="card-body"><p id="costo_partida" style="font-size: 28px; text-align: right;font-weight: bold; font-style: Arial">{{ total }}</p></div>
+				</div>
+			  </div>
+		  </div>
+		  <br>
+  	
+  	  	<div id="table_materiales" class="table-editable">		  
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+							<button id="Ingrt" name="Ingrediente_partida" onclick="SeleccionarTabla(this)" type="button" class="btn btn-link"  data-target="#__Ingrediente_partida" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">INGREDIENTES</button>
+		    			</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body"><p id="total_ingrediente_partida" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ total }}</p></div>
+		  			</div>	
+				</div>
+		   </div>
+
+		   <div id="__Ingrediente_partida" class="collapse">
+		   	 <table id="Ingrediente_partida" class="table ">
+				<thead >
+		    		<tr>
+		    		    <th style=" width: 5%;">ID</th>
+<!--
+		    		    <th class="col-sm-1">CODIGO</th>
+-->
+					    <th style=" width: 45%;">DESCRIPCIÓN</th>
+					    <th style=" width: 5%;">UNIDAD</th>
+					   	<th style=" width: 15%;">PRECIO UNITARIO</th>
+					   	<th style=" width: 15%;">CANTIDAD</th>
+					   	<th style=" width: 15%;">PRECIO TOTAL</th>
+		      		</tr>
+		    	</thead>
+		    	<tbody >
+					
+					{% for i in datos %}
+						<tr id="reg-{{forloop.counter0}}" name="regn" >
+							<td >{{ i.ism_id }} </td>
+<!--
+							<td class="col-sm-1" >{{ i.ism_codigo }}</td>
+-->
+							<td title="Escriba la descripcion del producto..." data-toggle="tooltip">{{ i.ism_descrip }}</td>
+							<td >{{ i.ism_umedida }}</td>
+							<td >{{ i.ism_costo}}</td>
+							<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.pdm_cant }}</td>
+							<td >{{ i.ism_total }}</td>
+						</tr>
+					{% endfor %}
+		    	</tbody>
+		    </table>
+
+       		<i id="btnAgregar" onclick="AgregarRegistro(this)" name="_prd" class="fa fa-plus-square fa-2x" aria-hidden="true" style="color:green"></i>
+			<i id="btnEliminar" onclick="EliminarRegistro(this)" name="Ingrediente_partida" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 		   
+               			
+		   </div>	   
+	  	</div>
+	    
+	  	<button id="export-btn" class="btn btn-primary">Guardar Registros</button>
+	  	
+	  	<div id="linsumos"  style="width:70%; background-color:lightgray; display:none">
+			<i id="btnAgregar" onclick="CerrarLista(this)" name="_prd" class="fa fa-window-close fa-2x" aria-hidden="true" style="color:green"></i>
+
+			<table id="TablaInsumos" class="table">
+				<thead>
+					    <tr>
+					    	<th class="col-sm-1" >ID</th>
+<!--
+					    	<th class="col-sm-1" >CODIGO</th>
+-->
+					    	<th class="col-sm-3">DESCRIPCION</th>
+				            <th class="col-sm-1">U. MEDIDA</th>
+				            <th class="col-sm-1">C. UMEDIDA</th>
+				    		<th class="col-sm-1">C. MAX</th>
+					    </tr>
+					    
+				 </thead>
+				<tbody>
+					{% for i in insumos %}
+							<tr id="insumo_{{ i.id }}" title="Presione para agregar material" data-toggle="tooltip" onclick="SelTblListar(this)" >
+								<td >{{ i.id }}</td>
+<!--
+							    <td >{{ i.codigo }}</td>
+-->
+							    <td >{{ i.descrip }}</td>
+							    <td>{{ i.umedida }}</td>
+							    <td>{{ i.cumedida }}</td>
+							    <td>{{ i.max }}</td> 
+							</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<div id="ModificarCantidad"  style="width:25%; background-color:blue; display:none position: relative;">
+			<input id="MCantidad" type="text" name="MCantidad"  style="width:100%; display:none" placeholder="Ingrese la cantidad..">
+		</div>
+</div>
+	  	
+
+<!--
+<button type="button" class="btn btn-primary" id="EnviarDatos" >Guardar Datos</button>
+-->
+<!-- Modal -->
+<div class="modal fade " id="myModal3" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document" id="dialogo">
+		<!-- Modal content-->
+		<div class="modal-content" id="dialogo">      
+		    <div class="modal-header">
+		          <h4 class="modal-title">Continuar o Guardar</h4>
+		          <button type="button" class="close" data-dismiss="modal"> &times;</button>
+		    </div>
+
+		    <div class="modal-body">
+		        <p>Desea guardar los cambios realizados?.</p>	
+		    </div>
+
+		    <div class="modal-footer">
+		        <button type="button" class="btn btn-danger" data-dismiss="modal">No Guardar</button>
+		    	<form method="post">
+					{% csrf_token %}
+						<input id="ObjDatos" style="display:none" type="text" name="ObjDatos">	
+					<button id="benviar" type="submit" class="btn btn-primary" >Guardar y Continuar</button>  
+    			</form>
+		    </div>
+		</div>
+    </div>
+</div>
+
+
+
+{% endblock %}

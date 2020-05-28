@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block header %}
+	<h3>{{reg.cliente|upper }}</h3>
+ 	<div class="card">
+    	<div class="card-body">     
+    		<h3>{{ reg.proyecto | title }} </h3>
+    		<p>{{ reg.descripcion }}</p>
+    	</div>
+  	</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+	<h3>Planos</h3>
+	<div class="col-md-11 col-md-offset-0">
+			<form method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+			<table id="principal" class="table">
+			    <tbody id="cuerpo">
+			      		<tr id="1" > 
+			      			<td>{{ form.idproy }}</td> <!-- debe estar oculto -->
+			      			<td>{{ form.tipo }}</td>  <!-- debe estar oculto -->
+				      		<td>{{ form.descrip1 }}</td>
+				      		<td>{{ form.archivo1 }}</td>
+			      		</tr>
+			      		<tr id="2" > 
+			      			<td>{{ form.idproy }}</td> <!-- debe estar oculto -->
+			      			<td>{{ form.tipo }}</td>  <!-- debe estar oculto -->
+				      		<td>{{ form.descrip2 }}</td>
+				      		<td>{{ form.archivo2 }}</td>
+			      		</tr>
+			      		<tr id="3" > 
+			      			<td>{{ form.idproy }}</td> <!-- debe estar oculto -->
+			      			<td>{{ form.tipo }}</td>  <!-- debe estar oculto -->
+				      		<td>{{ form.descrip3 }}</td>
+				      		<td>{{ form.archivo3 }}</td>
+			      		</tr>
+			      		<tr id="4" > 
+			      			<td>{{ form.idproy }}</td> <!-- debe estar oculto -->
+			      			<td>{{ form.tipo }}</td>  <!-- debe estar oculto -->
+				      		<td>{{ form.descrip4 }}</td>
+				      		<td>{{ form.archivo4 }}</td>
+			      		</tr> 
+			      		<tr id="5" > 
+			      			<td>{{ form.idproy }}</td> <!-- debe estar oculto -->
+			      			<td>{{ form.tipo }}</td>  <!-- debe estar oculto -->
+				      		<td>{{ form.descrip5 }}</td>
+				      		<td>{{ form.archivo5 }}</td>
+			      		</tr> 
+ 			    </tbody>
+			</table>
+			<button id="bagregar" type="button" class="btn btn-primary" onclick="agregar_archivos()">Agregar Archivos</button>
+			<button id="benviar" type="submit" class="btn btn-primary" >Cargar Archivos</button>
+			</form>
+			 
+
+	</div>
+</div>
+
+{% endblock %}

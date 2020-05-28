@@ -1,0 +1,51 @@
+{% extends  'base.html' %}
+
+{% block header %}
+
+	<br>
+	<h1 class="display-5">Costos Adicionales</h1>
+
+<!--    <h3>{{ form.cliente|upper }}</h3>
+    <div class="card">
+        <div class="card-body">     
+            <h3>{{ form.proyecto | title }} </h3>
+            <p>{{ form.descripcion }}</p>
+        </div>
+    </div> -->
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+<!--
+    <button type="submit" class="btn btn-default">Listar Insumos</button>
+-->
+    <a href="{% url 'agregar_conf' %}" class="btn btn-primary" role="button">Agregar Costos Adicionales</a>
+    <table id="Listado" class="table table-hover table-bordered small">
+        <thead class="thead-dark">
+            <tr>
+                <th></th>
+                <th>NOMBRE</th>
+                <th>UNIDAD DE MEDIDA</th>
+                <th>COSTO POR UNIDAD DE MEDIDA</th>
+            </tr>    
+        </thead>
+        <tbody >
+                {% for reg in registro %}
+					<tr>
+						<td>
+                            <a class="edit" href="{% url 'editar_conf' idconf=reg.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-pen-square fa-2x" aria-hidden="true" style="color:green"></i></a>
+                            <a class="delete" href="{% url 'eliminar_conf' idconf=reg.id %}" title="Eliminar" data-toggle="tooltip"><i class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> </a>
+                        </td>
+						<td >{{ reg.nombre }}</td>
+						<td >{{ reg.umedida }}</td>
+						<td >{{ reg.cumedida }}</td>
+					</tr>
+                {% endfor %}
+        </tbody>
+                
+    </table>  
+   
+</div>
+
+
+{% endblock %}

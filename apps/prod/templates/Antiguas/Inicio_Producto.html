@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+
+    	<div class="row">
+            <div class="col-md-12">   
+                <a href="{% url 'nuevo_producto' %}"><button type="button" clasCs="btn btn-outline-primary">Agregar Producto</button></a>
+                <form action="#" method="get">
+                    <div class="input-group">
+                        <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+
+    	</div>
+        <div class="row">
+                <div class="col-md-12">
+                    <table class="table users table-hover">
+                        <thead>
+                            <tr>
+                                <th class="col-sm-1">ACCION</th>
+                                <th class="col-sm-1">ID</th>
+                                <th class="col-sm-2">NOMBRE</th>
+                                <th class="col-sm-1">CÓDIGO</th>
+                                <th class="col-sm-5">DESCRIPCIÓN</th> 
+                                <th class="col-sm-2">COSTO</th>   
+                             </tr>
+                        </thead>
+                        {% for reg in obj %}   
+                            <tbody>
+                                <tr>
+                                    <td>
+                                      <a class="edit" href="{% url 'editar_producto' idprod=reg.id %}" title="Editar" data-toggle="tooltip" ><i class="material-icons">&#xE254;</i></a>
+                                      <a class="delete" href="{% url 'eliminar_producto' idprod=reg.id %}" title="Eliminar" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                    </td>
+									 <td>{{ reg.id }}</td>
+									  <td><a class="edit" href="{% url 'detallar_producto' idprod=reg.id %}" title="Detallar Partida" data-toggle="tooltip" >{{ reg.nomb | upper }}</a></td> 
+                                     <td>{{ reg.codp }}</td>
+                                     <td>{{ reg.desc }}</td> 
+                                     <td>{{ reg.cost }}</td> 
+<!--
+                                    <td>{{ reg.fecha|date:"d-m-Y h:m" }}</td>
+                                    <td>{{ reg.cliente }}</td>
+-->
+<!--
+                                    <td><a href="" title="Detallar Proyecto" data-toggle="tooltip">{{ reg.nomb }}</a></td>
+-->
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>   
+            </div> 
+        </div>
+    </div>
+{%endblock %}

@@ -1,0 +1,77 @@
+{% extends  'base.html' %}
+
+{% block header %}
+<h3>Listado de Precio de Insumos y Servicios</h3>
+<!--    <h3>{{ form.cliente|upper }}</h3>
+    <div class="card">
+        <div class="card-body">     
+            <h3>{{ form.proyecto | title }} </h3>
+            <p>{{ form.descripcion }}</p>
+        </div>
+    </div> -->
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <button type="submit" class="btn btn-default">Listar Insumos</button>
+    <a href="{% url 'agregar_inmo' %}" class="btn btn-info" role="button">Agregar Insumo</a>
+    <table id="Listado" class="table table-hover table-bordered small">
+        <thead class="thead-dark">
+            <tr>
+                <th  >CODIGO</th>
+                <th> Fecha Ingreso</th>
+                <th  >DESCRIPCIÓN</th>
+                <th  >UNIDAD</th>
+                <th  >DISTRIBUIDORES</th>
+                <th  >COSTO POR UNIDAD</th>
+                <th  >CANTIDAD MINIMA</th>
+                <th  >FECHA DE ACTUALIZACIÓN</th>
+            </tr>    
+        </thead>
+        <tbody >
+                {% for valor in registro %}
+                <tr>
+                    <td rowspan="6" >{{ valor.codigo }}</td>
+                    <td rowspan="6" >{{ valor.fingso | date:" d-m-Y H:i" }}</td>
+                    <td rowspan="6" >{{ valor.descrip }}</td>
+                    <td rowspan="6" >{{ valor.umedida }}</td>
+                </tr>
+                <tr>
+                    <td>{{ valor.distb1 }}</td>                    
+                    <td>{{ valor.costo1 }}</td>
+                    <td>{{ valor.cantm1 }}</td>
+                    <td>{{ valor.factu1 | date:" d-m-Y H:i" }}</td>
+                </tr>
+                <tr>
+                    <td>{{ valor.distb2 }}</td>
+                    <td>{{ valor.costo2 }}</td>
+                    <td>{{ valor.cantm2 }}</td>
+                    <td>{{ valor.factu2 | date:" d-m-Y H:i"}}</td>
+                </tr>
+                <tr>
+                    <td>{{ valor.distb3 }}</td>
+                    <td>{{ valor.costo3 }}</td>
+                    <td>{{ valor.cantm3 }}</td>
+                    <td>{{ valor.factu3 | date:" d-m-Y H:i"}}</td>
+                </tr>
+                <tr>
+                    <td>{{ valor.distb4 }}</td>
+                    <td>{{ valor.costo4 }}</td>
+                    <td>{{ valor.cantm4 }}</td>
+                    <td>{{ valor.factu4 | date:" d-m-Y H:i"}}</td>
+                </tr>
+                <tr>
+                    <td>{{ valor.distb5 }}</td>
+                    <td>{{ valor.costo5 }}</td>
+                    <td>{{ valor.cantm5 }}</td>
+                    <td>{{ valor.factu5 | date:" d-m-Y H:i"}}</td>
+                </tr> 
+                {% endfor %}
+        </tbody>
+                
+    </table>  
+   
+</div>
+
+
+{% endblock %}

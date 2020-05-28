@@ -1,0 +1,53 @@
+{% extends  'base.html' %}
+
+{% block header %}
+<h3>Listado de Precio de Insumos y Servicios</h3>
+<!--    <h3>{{ form.cliente|upper }}</h3>
+    <div class="card">
+        <div class="card-body">     
+            <h3>{{ form.proyecto | title }} </h3>
+            <p>{{ form.descripcion }}</p>
+        </div>
+    </div> -->
+{% endblock %}
+
+{% block content %}
+    <form   method="post" enctype='multipart/form-data' multiple="multiple">
+        {% csrf_token %}
+        <!-- {{ form.as_table }} -->
+            <table id="Listado" class="table table-hover table-bordered small">
+                <tbody >
+                    <tr><td  >CODIGO DEL PRODUCTO:</td><td  >{{ form.codigo }}</td></tr>
+                    <tr><td  >FECHA:</td>              <td  >{{ form.fingso }}</td></tr>
+                    <tr><td  >DESCRIPCIÓN:</td>        <td  >{{ form.descrip }}</td></tr>
+                    <tr><td  >UNIDAD DE MEDIDA: </td>  <td  >{{ form.umedida }}</td></tr> 
+                    <tr><td  >CANTIDAD: </td>  <td  >{{ form.cantd }}</td></tr> 
+                    <tr><td  >TIPO: </td>  <td  >{{ form.tipo }}   </td></tr> 
+                </tbody>
+            </table> 
+            <table id="Listado" class="table table-hover table-bordered small">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>NOMBRE DEL DISTRIBUIDOR</th>
+                        <th>COSTO</th>
+<!--
+                        <th>CANTIDAD </th>
+-->
+                        <!-- <th>FECHA DE ACTUALIZACIÓN</th> -->
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr><td>1</td><td>{{ form.distb1 }}</td><td>{{ form.costo1 }}</td><!--<td>{{ form.cantm1 }}</td>  <td>{{ form.factu1 }}</td> --></tr>
+                    <tr><td>2</td><td>{{ form.distb2 }}</td><td>{{ form.costo2 }}</td><!--<td>{{ form.cantm2 }}</td> <td>{{ form.factu2 }}</td> --></tr>
+                    <tr><td>3</td><td>{{ form.distb3 }}</td><td>{{ form.costo3 }}</td><!-- <td>{{ form.cantm3 }}</td><td>{{ form.factu3 }}</td> --></tr>
+                    <tr><td>4</td><td>{{ form.distb4 }}</td><td>{{ form.costo4 }}</td><!-- <td>{{ form.cantm4 }}</td><td>{{ form.factu4 }}</td> --></tr>
+                    <tr><td>5</td><td>{{ form.distb5 }}</td><td>{{ form.costo5 }}</td><!--<td>{{ form.cantm5 }}</td> <td>{{ form.factu5 }}</td> --></tr> 
+                </tbody>
+            </table> 
+        <button type="submit"> Guardar</button>
+        <a href="{% url 'inicio_mate' %}" class="btn btn-info" role="button">Atras</a>
+    </form>
+
+
+{% endblock %}
