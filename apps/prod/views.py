@@ -87,9 +87,9 @@ def detallar(request, idprod):
 		for i in json.loads(request.POST["ObjDatos"]):
 			print(i['accion'], "  ",i['destino'])
 			if i['destino'] == "INSUMOS":
-				print("INSUMOS")
 				if i['accion'] == 'actualizar':
 					res = ProductosDetallesM.objects.filter(idprd=idprod).filter(idpart=i["id"]).exists()
+					print(i)
 					if res == True :
 						# ~ El registro existe y se actualiza
 						ProductosDetallesM.objects.filter(idpart=i["id"]).update(cant=i["datos"])
@@ -128,53 +128,62 @@ def detallar(request, idprod):
 					
 				if i['accion'] == 'eliminar':
 						CstsAdnlsM.objects.filter(id=i["id"]).delete()		
-		
+
+			if i['destino'] == "TOTALIZAR":
+				ProductosM.objects.filter(id=idprod).update(costo=float(i["datos"]))
+	
 		return redirect(url)
 		
 	if request.method == 'GET':
 		for i in ProductosDetallesM.objects.filter(idprd=idprod):
-			part = PartidasM.objects.get(id = i.idpart)
-			idatos.append(	
-				{'id':       i.id,  
-				 'nombre':   part.nomb,
-				 'umedida':  i.unid,
-				 'cumedida': part.cost,
-				 'cantidad': i.cant,
-				 'costo':    i.cant*part.cost
-				})
-			total = total + i.cant*part.cost
+			print(i.idprd,"  ",i.idpart)
+			if PartidasM.objects.filter(id = i.idpart).exists() == True:
+				part = PartidasM.objects.get(id = i.idpart)			
+				
+				print(part)
+				idatos.append(	
+					{'id':       i.id,  
+					 'nombre':   part.nomb,
+					 'umedida':  i.unid,
+					 'cumedida': part.cost,
+					 'cantidad': i.cant,
+					 'costo':    i.cant*part.cost
+					})
+				total = total + i.cant*part.cost
 		totales["prddetlls"] = total
 		totprd = totprd + total
 		total = 0.0
 		
 		for i in MaquiyHerraM.objects.all():
-			ism = InsumosM.objects.get(id = i.idism) #se debe filtrar con el idsim y que sea tipo MATERIAL
-			mdatos.append(	
-				{'id':       i.id,  
-				 'nombre':   ism.descrip,
-				 'umedida':  ism.umedida,
-				 'cumedida': ism.cumedida,
-				 'cantidad': i.cant,
-				 'costo':    ism.cumedida()*i.cant
-			})
-			total = total + ism.cumedida()*i.cant
+			if InsumosM.objects.filter(id = i.idism).exists() == True:
+				ism = InsumosM.objects.get(id = i.idism) #se debe filtrar con el idsim y que sea tipo MATERIAL
+				mdatos.append(	
+					{'id':       i.id,  
+					 'nombre':   ism.descrip,
+					 'umedida':  ism.umedida,
+					 'cumedida': ism.cumedida,
+					 'cantidad': i.cant,
+					 'costo':    ism.cumedida()*i.cant
+				})
+				total = total + ism.cumedida()*i.cant
 		totales["maqyherr"] = total
 		totprd = totprd + total
 		total = 0.0
 					
 		for i in CstsAdnlsM.objects.filter(idprd = idprod):
-			print(i.idcstanls)
-			cstsadnls = CostosDescripcionM.objects.get(id = i.idcstanls) 
-			cdatos.append(	
-				{'id':       i.id,  
-				 'nombre':   cstsadnls.nombre,
-				 'umedida':  cstsadnls.umedida,
-				 'cumedida': cstsadnls.cumedida,
-				 'cantidad': i.cant,
-				 'costo':    cstsadnls.cumedida*i.cant
-			})
-			total = total + cstsadnls.cumedida*i.cant
-		
+
+			if CostosDescripcionM.objects.filter(id = i.idcstanls).exists() == True:
+				cstsadnls = CostosDescripcionM.objects.get(id = i.idcstanls) 
+				cdatos.append(	
+					{'id':       i.id,  
+					 'nombre':   cstsadnls.nombre,
+					 'umedida':  cstsadnls.umedida,
+					 'cumedida': cstsadnls.cumedida,
+					 'cantidad': i.cant,
+					 'costo':    cstsadnls.cumedida*i.cant
+				})
+				total = total + cstsadnls.cumedida*i.cant
+			
 		totales["cstsadnls"] = total
 		totprd = totprd + total
 		totales['totprd'] = round(totprd,2)

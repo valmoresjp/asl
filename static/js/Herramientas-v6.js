@@ -16,7 +16,23 @@ var DATOS = {'cant':-1, 'cumedida':-1, 'total':-1}
 var TOTAL = null; // almacena el id de la celda que muestra el total
 var SUBTOTAL = null //almacena el id de la celda que mantiene el subtotal
 var SBTOTALS = [];
+var count_esc = 0;
 
+
+document.body.addEventListener("keydown", function(event) {
+  console.log(event.code, event.keyCode);
+  if (event.code === 'Escape' || event.keyCode === 27) {
+    // Aqui la lógica para el caso de Escape ...
+    if ( count_esc == 0 ){
+		$(DIV_LISTA).css("display","none");		
+		$("#Blistar").removeClass("modificando_lista");
+		$("#Blistar").remove();
+		EliminarRegistro($('.seleccionado').attr("id"));
+		cotn_esc = 0;
+	}
+
+  }
+});
 
 function Cambios(datos){
 	var enc =-1;
@@ -64,9 +80,8 @@ function Existentes(id_reg){
 
 function FiltrarInsumos(patron="") {
 	//~ Filtra la tabla activa 
-  var input, filter, table, tr, td, i, txtValue;
-
-	//~ console.log(patron);
+	var input, filter, table, tr, td, i, txtValue;
+	
   filter = patron.toUpperCase(); //input.value.toUpperCase();
   table = document.getElementById(TBL_LISTA);
   tr = table.getElementsByTagName("tr");
@@ -242,7 +257,9 @@ function CalculoTotal(){
 		total = total + parseFloat($( SBTOTALS[i] ).html().replace(",","."));
 		//~ console.log(parseFloat($( SBTOTALS[i] ).html()) + "  " + total );
 	}
-	$( TOTAL ).html(total.toFixed(2).replace(".",","));
+	total_prod = total.toFixed(2).replace(".",",");
+	//~ datos ={ "total_prod":total_prod, "accion":"actualizar", "id":parseInt($(id).parent().find("td").eq(0).text()), "datos":cant};
+	$( TOTAL ).html(total_prod);
 	
 }
 
@@ -254,46 +271,6 @@ $("#Materiales").change( function(){
 function CerrarLista(id){
 	$(DIV_LISTA).css("display","none");
 }
-//~ function RecalcularFormularios(ACCION, DIR){
-	//~ //*******   Recalcula el numero de formularios	
-	
-	//~ console.log(ACCION + ": RECALCULANDO FORMULARIOS: " + DIR);
-	//~ total = $(DIR + " tbody tr").length;
-	//~ console.log("TOTAL DE FILAS: " + total);
-	//~ if (ACCION == "ELIMINAR"){
-		//~ var i = 0;
-		//~ var expreg = /\d{1,2}/g;
-
-		//~ $(DIR + " tbody").find("tr").each(function(){
-			//~ $(this).find(":input").each(function(){
-				//~ var name = $(this).attr("name").replace(expreg, i);
-				//~ var id = $(this).attr("id").replace(expreg, i);
-				//~ console.log("NAME: "+ $(this).attr("name")+ " -->" + name + "  ID :" + $(this).attr("id") + " --> " + id ) ;
-				//~ $(this).attr("name",name);
-				//~ $(this).attr("id",id);
-			//~ });
-			//~ i++;
-		//~ });
-	//~ }
-	//~ if (ACCION == "AGREGAR") {
-		//~ var expreg = /NUM/g;
-		//~ var i = $("#id_form-TOTAL_FORMS").val();
-		//~ var i = $(DIR + " tbody tr").length-1;
-		//~ console.log(i)
-		//~ $(DIR + " tbody tr:last").find(":input").each(function(){
-			//~ var name = $(this).attr("name").replace(expreg, i);
-			//~ var id = $(this).attr("id").replace(expreg, i);
-			//~ console.log("NAME: "+ $(this).attr("name")+ " -->" + name + "  ID :" + $(this).attr("id") + " --> " + id ) ;
-			//~ $(this).attr("name",name);
-			//~ $(this).attr("id",id);	
-		//~ });
-	//~ }
-	//~ $("#id_form-TOTAL_FORMS").val($(DIR + " tbody tr").length);
-	
-	//~ console.log("Total: " + $("#id_form-TOTAL_FORMS").val());
-	//~ //*******************************************
-	
-//~ }
 
 function AgregarRegistro(id){
 	console.log("Agregando registro");
@@ -427,7 +404,6 @@ function SeleccionarTabla(id){
 	}
 }
 
-
 $("tr[name=regn]").click(function (e) {
 	SeleccionarRegistro(this);
 });
@@ -460,6 +436,7 @@ $GUARDAR.click(function () {
 			alert("No hay Datos para almacenar");
 	}else{
 		
+		ObjDatos.push({ "destino":"TOTALIZAR","accion":"actualizar", "id":-1, "datos":$( TOTAL ).html().replace(",",".")});
 		$("#ObjDatos").val(JSON.stringify(ObjDatos));
 			
 		var winSize = {
@@ -617,36 +594,6 @@ $(function() {
   // enviar_archivos();
 });
 
-// codigo usado por plano-1.html
-/*
-var form = document.getElementById("fenviar");
-form.addEventListener('submit', function(ev) {
-  var xhrObject = new XMLHttpRequest(); 
-  var data = new FormData();
-  var url = window.location.pathname;
-  console.log("Ingreso al submit");
-  //prevenimos la acción por defecto del navegador
-  ev.preventDefault();
-  //creamos un objeto FormData de HTML5 y le pasamos el formulario
-  archivos = document.getElementsByClassName("input-ghost");
-  console.log(archivos.length);
-  narch = archivos.length;
-
-  for (var i = 0; i < narch-1; i++){
-    console.log(archivos[i].files[0].name);
-    nombre = archivos[i].files[0].name; //"lastModified", "size","type",
-    if ( nombre != ""){
-      data.append(nombre, archivos[i].files[0]);  
-    }
-  } 
-
-    xhrObject.open("POST",url,true); 
-    xhrObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhrObject.setRequestHeader("X-CSRFToken",document.getElementById('csrf_token').value);
-    xhrObject.send(data); 
-  });
-  */
-//*********************************
 function enviar(){
 
   var lista = document.getElementByTagName("input");
