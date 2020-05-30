@@ -1,0 +1,31 @@
+{% extends  'base.html' %}
+
+{% block header %}
+	<br>
+ 	<h1 class="display-4">Ingresar al sistema</h1>
+ 	<br><br>
+
+{% endblock %}
+
+{% block content %}
+	
+	<form id="nuevo_usuario" method="post" action="">
+		{% csrf_token%}
+		<table  style="font-size: 20px; font-weight: bold; font-style: Arial"> 
+			{{ form }}
+			
+		</table>
+			<br>
+	<br>
+		<div class="card bg-primary text-white">
+			<div class="text-center" style="font-size: 28px; font-weight: bold; font-style: Arial"><input type='submit' value='ingresar'></div>
+		</div>
+			
+	</form>
+
+{% endblock %}
+{% block footer %}
+	<br>
+	<br>
+
+{% endblock %}

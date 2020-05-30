@@ -3,12 +3,14 @@ from django.http import HttpResponse
 from datetime import datetime
 from apps.mate.forms import InsumosF
 from apps.mate.models import InsumosM
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def inicio(request):
 	regs = InsumosM.objects.all()
 	return render (request,'inicio_mate.html',{'regs': regs})
-	
+
+@login_required(login_url='/inicio/ingreso')	
 def agregar(request):
 	# print("dentor de agregar insumos")
 	# print(request.POST['fingso'])

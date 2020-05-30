@@ -6,6 +6,7 @@ from apps.prod.models import ProductosM, ProductosDetallesM, MaquiyHerraM, CstsA
 from apps.conf.models import CostosDescripcionM
 from apps.prod.forms import ProductosF
 
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def inicio(request):
@@ -18,6 +19,7 @@ def inicio(request):
 	
 	return render (request,'inicio_producto.html', contexto)
 
+@login_required(login_url='/inicio/ingreso')
 def nuevo(request):
 	print("Nuevo")
 	if request.method == 'POST':
@@ -33,6 +35,7 @@ def nuevo(request):
 		form = ProductosF()
 	return render(request,'nuevo_producto.html', {'form': form})
 
+@login_required(login_url='/inicio/ingreso')
 def editar(request, idprod ):
 	producto = ProductosM.objects.get(id=idprod)
 	if request.method == 'GET':
@@ -43,7 +46,8 @@ def editar(request, idprod ):
 			form.save()
 		return redirect('inicio_producto') 
 	return render(request,'nuevo_producto.html', {'form':form})
-	
+
+@login_required(login_url='/inicio/ingreso')
 def eliminar(request, idprod):
 
 	if request.method == 'POST':
