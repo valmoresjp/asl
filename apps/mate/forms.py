@@ -3,13 +3,14 @@ from django.conf import settings
 from apps.mate.models import InsumosM
 
 
-TIPO_ELEMENTO = [
-	('1','MATERIAL'),
-	('2','PERSONAL'),
-	('3','MAQyHERR'),
-	('4','SERVICIO'),
-	('5','INGREDIENTE'),
-	]
+TIPO_ELEMENTO = (
+		('..','Selecccionar...'),
+		('MAT','MATERIAL-'),
+		('PER','PERSONAL'),
+		('MYH','MAQyHERR'),
+		('SER','SERVICIO'),
+		('ING','INGREDIENTE'),
+	)	
 
 class InsumosF(forms.ModelForm):
 	class Meta:
@@ -20,6 +21,7 @@ class InsumosF(forms.ModelForm):
 			'descrip',
 			'umedida',
 			'cantd',
+			'inven',
 			'tipo',			
 			'distb1',
 			'costo1',
@@ -48,6 +50,7 @@ class InsumosF(forms.ModelForm):
 			'descrip':'DESCRIPCIÓN DEL PRODUCTO',
 			'umedida':'UNIDAD DE MEDIDA',			
 			'cantd':'CANTIDAD',
+			'inven':'INVENTARIO',
 			'tipo': 'TIPO',		
 			'distb1':'DISTRIBUIDOR 1',
 			'costo1':'COSTO 1',
@@ -76,8 +79,9 @@ class InsumosF(forms.ModelForm):
 			'descrip':forms.TextInput(attrs={'class':'form-control'}),
 			'umedida':forms.TextInput(attrs={'class':'form-control'}),			
 			'cantd'  :forms.TextInput(attrs={'class':'form-control'}),			
-			'tipo'  : forms.TextInput(attrs={'class':'form-control'}), #CharField(label='Seleccione...', widget=forms.Select(choices=TIPO_ELEMENTO)),			
-			
+			'inven'  :forms.TextInput(attrs={'class':'form-control'}),			
+			'tipo'  : forms.Select(attrs={'class':'form-control'}, choices=TIPO_ELEMENTO ),
+						
 			'distb1' :forms.TextInput(attrs={'class':'form-control'}),
 			'costo1' :forms.TextInput(attrs={'class':'form-control'}),
 			# ~ 'cantm1' :forms.TextInput(attrs={'class':'form-control'}),

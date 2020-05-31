@@ -1,7 +1,7 @@
 {% extends  'base.html' %}
 
 {% block header %}
-<h3>Listado de Precio de Insumos y Servicios</h3>
+<h2>Listado de Precio de Insumos y Servicios</h2>
 <!--    <h3>{{ form.cliente|upper }}</h3>
     <div class="card">
         <div class="card-body">     
@@ -16,17 +16,18 @@
         {% csrf_token %}
         <!-- {{ form.as_table }} -->
             <table id="Listado" class="table table-hover table-bordered small">
-                <tbody >
+                <tbody style="font-size: 20px; font-weight: bold; font-style: Arial" >
                     <tr><td  >CODIGO DEL PRODUCTO:</td><td  >{{ form.codigo }}</td></tr>
                     <tr><td  >FECHA:</td>              <td  >{{ form.fingso }}</td></tr>
                     <tr><td  >DESCRIPCIÓN:</td>        <td  >{{ form.descrip }}</td></tr>
                     <tr><td  >UNIDAD DE MEDIDA: </td>  <td  >{{ form.umedida }}</td></tr> 
                     <tr><td  >CANTIDAD: </td>  <td  >{{ form.cantd }}</td></tr> 
+                    <tr><td  >INVENTARIO: </td>  <td  >{{ form.inven }}</td></tr> 
                     <tr><td  >TIPO: </td>  <td  >{{ form.tipo }}   </td></tr> 
                 </tbody>
             </table> 
             <table id="Listado" class="table table-hover table-bordered small">
-                <thead>
+                <thead style="font-size: 20px; font-weight: bold; font-style: Arial">
                     <tr>
                         <th>#</th>
                         <th>NOMBRE DEL DISTRIBUIDOR</th>

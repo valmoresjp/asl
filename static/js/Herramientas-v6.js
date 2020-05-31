@@ -207,7 +207,7 @@ function SelTblListar(idreg){
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(1).text(campo[1]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(2).text(campo[2]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(3).text(campo[3]);
-			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(4).text(campo[4]);
+			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(4).text(1);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(5).text(1);
 			id = $( $(ID_TABLA_ACTIVA + ' tbody tr:last-child')).find("td").eq(5);
 		}
