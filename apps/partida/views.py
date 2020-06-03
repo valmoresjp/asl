@@ -9,6 +9,7 @@ from apps.mate.forms import InsumosF
 from apps.mate.models import InsumosM
 from apps.partida.models import PartidasM, PartidaDetallesM
 from apps.partida.forms import PartidasF, PartidaDetallesF
+from django.contrib.auth.decorators import login_required
 
 #from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
 
@@ -23,6 +24,7 @@ def inicio(request):
 	
 	return render (request,'inicio_partida.html', contexto)
 
+@login_required(login_url='/inicio/ingreso')
 def nuevo(request):
 	# ~ print("Nuevo")
 	if request.method == 'POST':
@@ -49,6 +51,7 @@ def nuevo(request):
 		form = PartidasF()
 	return render(request,'nuevo_partida.html', {'form': form})
 
+@login_required(login_url='/inicio/ingreso')
 def editar(request, idpart):
 	partidas = PartidasM.objects.get(id=idpart)
 	if request.method == 'GET':
@@ -60,10 +63,10 @@ def editar(request, idpart):
 		return redirect('inicio_partida') 
 	return render(request,'nuevo_partida.html', {'form':form})
 
+@login_required(login_url='/inicio/ingreso')
 def eliminar(request, idpart):
 
 	if request.method == 'POST':
-
 		url_ant = "inicio_partida"
 		reg = PartidasM.objects.get(id=idpart)
 		#se deben eliminar los registros de materiales pertenecientes a esta partida
@@ -78,39 +81,32 @@ def eliminar(request, idpart):
 	# ~ print(reg.nomb)
 	return render(request, 'eliminar_partida.html',{'reg':reg})
 
+@login_required(login_url='/inicio/ingreso')
 def detallar(request, idpart):
-	# ~ print("INGRESANDO A CUANTIFICAR")
 	contexto = {}
 	datos = []
-	# ~ partida      = PartidasM.objects.get(id=codp)
-	# ~ insumos   = InsumosM.objects.all()
-	# ~ ptda_deta = PartidaDetallesM.objects.filter(codp=codp)
-	
-	# ~ print("PARTIDA: ", codp )
+
 	if request.method =='POST':
 		
 		for i in json.loads(request.POST["ObjDatos"]):
-			
-			if i["accion"] == "eliminar":
-				PartidaDetallesM.objects.filter(idpart=idpart).filter(idism=i["id"]).delete()
-			else:
-				res = PartidaDetallesM.objects.filter(idpart=idpart).filter(idism=i["id"]).exists()
-				if res==True :
-					# ~ El registro existe y se actualiza
+			# ~ print(i)
+			if i['destino'] == "PARTDETLLS":
+				if i["accion"] == "actualizar":
 					instance = PartidaDetallesM.objects.filter(idism=i["id"]).update(cant=i["datos"])
-				else:
-					# ~ El registro no existe, se crea un nuevo registro
+				if i["accion"] == "nuevo":
 					g = PartidaDetallesM(idism=i["id"], idpart=idpart, cant=i["datos"])
-					g.save()
-		
+					g.save()					
+				if i["accion"] == "eliminar":
+					PartidaDetallesM.objects.filter(idpart=idpart).filter(id=i["id"]).delete()			
 		total = 0.0
-		for k in PartidasM.objects.all():
+		# ~ for k in PartidasM.objects.all():
 			# ~ print(k.id)
-			for i in PartidaDetallesM.objects.filter(idpart=k.id):
+		for i in PartidaDetallesM.objects.filter(idpart=idpart):
+			if InsumosM.objects.filter(id=i.idism).exists() == True:
 				ism   = InsumosM.objects.get(id=i.idism)
 				total = total +  ism.cumedida()*i.cant
-			ss = PartidasM.objects.filter(id=k.id).update(cost=round(total,2))
-			total=0.0
+		ss = PartidasM.objects.filter(id=idpart).update(cost=round(total,2))
+		total=0.0
 		
 		url = "/partidas/detallar/" + str(idpart) + "/"
 		# ~ print(url)
@@ -135,7 +131,6 @@ def detallar(request, idpart):
 					 })
 			total = total +  ism.cumedida()*i.cant
 			
-	
 	# ~ agregar el formset a la variable contexto
 	# ~ contexto['formset'] = formset)
 	# ~ print(datos)

@@ -16,44 +16,65 @@ var DATOS = {'cant':-1, 'cumedida':-1, 'total':-1}
 var TOTAL = null; // almacena el id de la celda que muestra el total
 var SUBTOTAL = null //almacena el id de la celda que mantiene el subtotal
 var SBTOTALS = [];
-
-
-function Cambios(datos){
-	var enc =-1;
-	
-	if ( datos.id != -1 ){
-		for (i=0; i<ObjDatos.length; i++){
-				if (datos.id == ObjDatos[i].id){
-					enc = i
-					break;				
+var count_esc = 0;
+var REF =[]; // almacena las celdas de referencia para calculo que sean expresados en porcentaje
+var REGS=[]; // almacena todos los objetos que se agregan
+var registros = {
+		idbd: -1,
+		$idreg :"",
+		$idtotal:"",
+		$idcant:"",
+		cantidad:"1",
+		tipo:"",
+		accion:"",
+		tabla:"",
+		idcumedida :[],
+		asignar_cantidad: function(){
+							this.$idcant.text(((parseFloat(this.cantidad)).toFixed(2)).toString().replace(".",",") );
+							this.total();
+							//~ console.log("Cantidad: " +  this.cantidad);
+						},
+		total : function(){
+					var total= 0.0;
+					var r = this.idcumedida.entries();
+					for ( i=0;i<this.idcumedida.length;i++){
+						total = total + parseFloat(this.cantidad)*parseFloat($(this.idcumedida[i]).text().replace(",","."));
+						//~ console.log("Total: " + total +  "   " + this.cantidad + "    " + parseFloat($(this.idcumedida[i]).text().replace(",",".")));
+					}
+					total = total + 0.5;
+					total = (this.tipo == 'UMED'? total : total/100);
+					this.$idtotal.text((total.toFixed(2)).toString().replace(".",","));
+				},
+		limpiar:function(){
+					this.$idreg ="";
+					this.$idtotal="";
+					this.$idcant="";
+					this.cantidad="1";
+					this.tipo="";
+					this.idcumedida=[];
 				}
-		}
-		if(enc!=-1){
-			ObjDatos[enc].datos = datos.datos;
-			ObjDatos[enc].accion = datos.accion;
-			console.log("Encontrado: ");
-			console.log(ObjDatos);
-		}else{
-			if ( datos.id != NaN ){
-				ObjDatos.push(datos);
-				console.log("No Encontrado: ");
-				console.log(ObjDatos);
-			}
-		}
-	}else{
-		console.log("ID es Nan");
+};
+
+document.body.addEventListener("keydown", function(event) {
+  if (event.code === 'Escape' || event.keyCode === 27) {
+    // Aqui la lógica para el caso de Escape ...
+    if ( count_esc == 0 ){
+		$(DIV_LISTA).css("display","none");		
+		$("#Blistar").removeClass("modificando_lista");
+		$("#Blistar").remove();
+		
+		//~ EliminarRegistro($('.seleccionado').attr("id"));
+		cotn_esc = 0;
 	}
 
-}
+  }
+});
 
 function Existentes(id_reg){
 	//~ Verifica la existencia del registro que se quiere agregar
 	var existe = -1;
 	//~ console.log("Registro: " + id_reg+ "  " + ID_TABLA_ACTIVA);
 	$(ID_TABLA_ACTIVA + " > tbody > tr").each(function(i, elemento){
-		
-		console.log( $(elemento).find("td").eq(1).text() + " === " + id_reg);
-		
 		if ( $(elemento).find("td").eq(1).text() === id_reg ){
 			existe = $(elemento).attr("id");
 			return false;
@@ -64,9 +85,8 @@ function Existentes(id_reg){
 
 function FiltrarInsumos(patron="") {
 	//~ Filtra la tabla activa 
-  var input, filter, table, tr, td, i, txtValue;
-
-	//~ console.log(patron);
+	var input, filter, table, tr, td, i, txtValue;
+	
   filter = patron.toUpperCase(); //input.value.toUpperCase();
   table = document.getElementById(TBL_LISTA);
   tr = table.getElementsByTagName("tr");
@@ -103,8 +123,6 @@ function Listar(id){
 
 function ModificarCantidad(id){
     
-    console.log("MODIFICAR CANTIDAD");
-    
     var pos = {};
 	var rect = $(id).position();
 	var input = "<input id='MCantidad' type='text' name='MCantidad'  style='width:100%;' text-align:right; placeholder='Ingrese la cantidad..'>";
@@ -120,14 +138,37 @@ function ModificarCantidad(id){
 		$("#MCantidad").keyup(function(e){
 			//~ var valor = 
 			if (e.which == 13){
-				$(".modificando_cant").text($(this).val());
-				
-				//~ console.log($(".modificando_cant").attr("i"));
-				CalculoTotalRegistro(".modificando_cant");
+				//~ $(".modificando_cant").text($(this).val());
+				var a = REGS.find(function(element){ return element.$idreg.attr("id") == $(".modificando_cant").parent().attr("id") });
+				if ( !a ){
+					//~  el registro no existe y es almacenado pa a calculos
+					// quiere decir que este ya existe en la BD
+					
+					registros.$idreg   = $($(".modificando_cant").parent())
+					registros.idbd     = parseInt(registros.$idreg.find("td").eq(0).html());
+					//~ registros.idbd     = registros.$idreg.find("td").eq(0);
+					registros.$idtotal = registros.$idreg.find("td").eq(5);
+					registros.$idcant  = registros.$idreg.find("td").eq(4);
+					registros.tipo     = registros.$idreg.find("td").eq(4) != "%" ? "UMED" : "%" ;
+					registros.idcumedida.push( registros.$idreg.find("td").eq(3) );
+					registros.cantidad = parseFloat($(this).val().replace(",","."));
+					registros.asignar_cantidad();
+					registros.accion   = registros.accion == "nuevo" ? 'nuevo' : 'actualizar'
+					registros.tabla=DESTINO;
+					
+					REGS.push($.extend( {}, registros ));// copia el objeto dentro de REGS
+					registros.limpiar();
+				}else{
+					// el registro no existe en la BD y se esta agregando nuevo
+					a.idbd  = parseInt(a.$idreg.find("td").eq(0).html());
+					a.cantidad      = parseFloat($(this).val().replace(",","."));
+					a.asignar_cantidad();
+				}
+		
+				CalculoTotal();
 				$(this).val("");
 				$(".modificando_cant").removeClass("modificando_cant");
 				$("#MCantidad").hide();
-				//~ Cambios({"accion": "actualizar", "id": parseInt(id), "datos":parseFloat($(this).val())})
 			}
 			if (e.which == 27){
 				$(".modificando_cant").text(VALOR_TMP);
@@ -152,22 +193,22 @@ function SelTblListar(idreg){
 		campo.push($(e).html());
 	});
 	
-	//~ console.log("DATOS:");
-	//~ console.log(campo[DATOS['cld_listar']]);		
-	
 	if (Existentes(campo[DATOS['cld_listar']-1]) == -1){
 		if ( ID_TABLA_ACTIVA == "#Insumos_prd" ){
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(0).text(campo[0]);
-			//~ $( $(ID_TABLA_ACTIVA + ' tbody tr:last-child')).find("td").eq(1).text(campo[2]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child')).find("td").eq(1).text(campo[1]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child')).find("td").eq(2).text(campo[2]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child')).find("td").eq(3).text(campo[3]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child')).find("td").eq(4).text(1);
 			id = $( $(ID_TABLA_ACTIVA + ' tbody tr:last-child')).find("td").eq(4);
+			registros.idbd = campo[0];
+			registros.$idreg   = $(ID_TABLA_ACTIVA + ' tbody tr:last')
+			registros.$idtotal = $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(5);
+			registros.$idcant  = $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(4);
+			registros.tipo = 'UMED';
+			registros.idcumedida.push( $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(3) );
 		}
 		if ( ID_TABLA_ACTIVA == "#Materiales_prd" ){
-			//~ console.log("----------");
-			//~ console.log(campo);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last') ).find("td").eq(0).text(campo[0]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(1).text(campo[1]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(2).text(campo[2]);
@@ -175,15 +216,39 @@ function SelTblListar(idreg){
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(4).text(1);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(5).text(campo[4]);
 			id = $( $(ID_TABLA_ACTIVA + ' tbody tr:last-child')).find("td").eq(4);
+			registros.idbd = campo[0];
+			registros.$idreg   = $(ID_TABLA_ACTIVA + ' tbody tr:last')
+			registros.$idtotal = $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(5);
+			registros.$idcant  = $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(4);
+			registros.tipo = 'UMED';
+			registros.idcumedida.push( $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(3) );
 		}
 		if ( ID_TABLA_ACTIVA == "#Otros-costos_prd" ){
-			//~ console.log("----------");
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last') ).find("td").eq(0).text(campo[0]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(1).text(campo[1]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(2).text(campo[2]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(3).text(campo[3]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(4).text(1);
-			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(5).text("2");
+			registros.idbd = campo[0];
+			registros.$idreg   = $(ID_TABLA_ACTIVA + ' tbody tr:last')
+			registros.$idtotal = $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(5);
+			registros.$idcant  = $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(4);
+			registros.tipo = campo[4];
+	
+				if ( registros.tipo  === 'UMED' ){
+					registros.idcumedida.push( $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(3) );
+				}
+				if ( registros.tipo === 'TINS' ){
+					registros.idcumedida.push('#total_insumo_prd');
+				}
+				if ( registros.tipo === 'TMAT' ){
+					registros.idcumedida.push('#total_materiales_prd');
+				}
+				if ( registros.tipo === 'TIMA' ){
+					registros.idcumedida.push('#total_insumo_prd');
+					registros.idcumedida.push('#total_materiales_prd');
+				}
+				
 			id = $( $(ID_TABLA_ACTIVA + ' tbody tr:last-child')).find("td").eq(4);
 		}
 		if ( ID_TABLA_ACTIVA == "#Ingrediente_partida" ){
@@ -192,15 +257,27 @@ function SelTblListar(idreg){
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(1).text(campo[1]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(2).text(campo[2]);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(3).text(campo[3]);
-			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(4).text(campo[4]);
+			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(4).text(1);
 			$( $(ID_TABLA_ACTIVA + ' tbody tr:last-child') ).find("td").eq(5).text(1);
 			id = $( $(ID_TABLA_ACTIVA + ' tbody tr:last-child')).find("td").eq(5);
+			registros.idbd = campo[0];
+			registros.$idreg   = $(ID_TABLA_ACTIVA + ' tbody tr:last')
+			registros.$idtotal = $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(5);
+			registros.$idcant  = $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(4);
+			registros.tipo = 'UMED';
+			registros.idcumedida.push( $(ID_TABLA_ACTIVA + ' tbody tr:last-child').find("td").eq(3) );
+			
 		}
 		$("#Blistar").removeClass("modificando_lista");
 		$("#Blistar").remove();
 		$( $(DIV_LISTA) ).hide();
+		registros.tabla=DESTINO;
+		registros.accion="nuevo";
+		registros.total();
+		REGS.push($.extend( {}, registros ));// copia el objeto dentro de REGS
+		registros.limpiar();
 		
-		CalculoTotalRegistro(id);
+		//~ CalculoTotalRegistro(id);
 		CalculoTotal();
 		SeleccionarRegistro($(".seleccionado"));
 		
@@ -212,25 +289,10 @@ function SelTblListar(idreg){
 	}
 }
 
-function CalculoTotalRegistro(id){	
-	
-	var cant, cmax, total_u; //, total;
-
-	cant = parseFloat( $(id).text().replace(",",".") );
-	
-	cumedida = parseFloat($(id).parent().find("td").eq(DATOS['cumedida']).text().replace(",",".")); //costo maximo por unidad de medida	
-	total_u = (cant*cumedida).toFixed(2);
-	//~ console.log(cant + "  "+ cumedida + "   "+ total_u);
-	$(id).parent().find("td").eq(DATOS['total']).text(total_u.replace(".",",") );
-	CalculoTotal()
-	datos ={ "destino":DESTINO, "accion":"actualizar", "id":parseInt($(id).parent().find("td").eq(0).text()), "datos":cant};
-	Cambios(datos);
-}
-
 function CalculoTotal(){
 	var total = 0.0;
 	var sbtotal = 0.0;
-	console.log("Calculo del Total");
+	//~ console.log("Calculo del Total");
 	if ( $(ID_TABLA_ACTIVA + " tbody" ).length > 0 ){
 		$(ID_TABLA_ACTIVA + " > tbody > tr" ).each(function(i, elemento){
 			sbtotal = sbtotal + parseFloat($(elemento).find("td").eq(DATOS['total']).text().replace(",",".")); 	
@@ -242,7 +304,9 @@ function CalculoTotal(){
 		total = total + parseFloat($( SBTOTALS[i] ).html().replace(",","."));
 		//~ console.log(parseFloat($( SBTOTALS[i] ).html()) + "  " + total );
 	}
-	$( TOTAL ).html(total.toFixed(2).replace(".",","));
+	total_prod = total.toFixed(2).replace(".",",");
+	//~ datos ={ "total_prod":total_prod, "accion":"actualizar", "id":parseInt($(id).parent().find("td").eq(0).text()), "datos":cant};
+	$( TOTAL ).html(total_prod);
 	
 }
 
@@ -254,57 +318,18 @@ $("#Materiales").change( function(){
 function CerrarLista(id){
 	$(DIV_LISTA).css("display","none");
 }
-//~ function RecalcularFormularios(ACCION, DIR){
-	//~ //*******   Recalcula el numero de formularios	
-	
-	//~ console.log(ACCION + ": RECALCULANDO FORMULARIOS: " + DIR);
-	//~ total = $(DIR + " tbody tr").length;
-	//~ console.log("TOTAL DE FILAS: " + total);
-	//~ if (ACCION == "ELIMINAR"){
-		//~ var i = 0;
-		//~ var expreg = /\d{1,2}/g;
-
-		//~ $(DIR + " tbody").find("tr").each(function(){
-			//~ $(this).find(":input").each(function(){
-				//~ var name = $(this).attr("name").replace(expreg, i);
-				//~ var id = $(this).attr("id").replace(expreg, i);
-				//~ console.log("NAME: "+ $(this).attr("name")+ " -->" + name + "  ID :" + $(this).attr("id") + " --> " + id ) ;
-				//~ $(this).attr("name",name);
-				//~ $(this).attr("id",id);
-			//~ });
-			//~ i++;
-		//~ });
-	//~ }
-	//~ if (ACCION == "AGREGAR") {
-		//~ var expreg = /NUM/g;
-		//~ var i = $("#id_form-TOTAL_FORMS").val();
-		//~ var i = $(DIR + " tbody tr").length-1;
-		//~ console.log(i)
-		//~ $(DIR + " tbody tr:last").find(":input").each(function(){
-			//~ var name = $(this).attr("name").replace(expreg, i);
-			//~ var id = $(this).attr("id").replace(expreg, i);
-			//~ console.log("NAME: "+ $(this).attr("name")+ " -->" + name + "  ID :" + $(this).attr("id") + " --> " + id ) ;
-			//~ $(this).attr("name",name);
-			//~ $(this).attr("id",id);	
-		//~ });
-	//~ }
-	//~ $("#id_form-TOTAL_FORMS").val($(DIR + " tbody tr").length);
-	
-	//~ console.log("Total: " + $("#id_form-TOTAL_FORMS").val());
-	//~ //*******************************************
-	
-//~ }
 
 function AgregarRegistro(id){
-	console.log("Agregando registro");
+	//~ console.log("Agregando registro");
 
 	var $clone = $CLON.find('tr.hide').clone(true).removeClass('hide table-line');
 	  
 	$TABLE = $(ID_TABLA_ACTIVA);
-	console.log(ID_TABLA_ACTIVA);
+	//~ console.log(ID_TABLA_ACTIVA);
 	//~ console.log("idTABLE: " + idTABLE + " TABLE: " + '#'+$(this).attr("name"));
 	
 	$clone.attr("class","table-remove");
+	$clone.attr("id","reg-"+$(ID_TABLA_ACTIVA + '> tbody > tr').length);
 	$TABLE.append($clone); 
 	//~ RecalcularFormularios("AGREGAR", '#' + $(this).attr("name") );
 	
@@ -366,8 +391,31 @@ function EliminarRegistro(id){
 	var DIR = $($idTABLE.parent()).attr("id");
 	
 	r = $(".seleccionado").find("td").eq(0).text() == "" ? -1 : parseInt($(".seleccionado").find("td").eq(0).text());
-	Cambios({"destino":DESTINO, "accion": "eliminar", "id": r, "datos":-1} );
-	
+	var a = REGS.find(function(element){ return element.$idreg.attr("id") == $(".seleccionado").attr("id") });
+	console.log(a);
+	if (a){
+		if (a.accion === "nuevo"){
+			a.accion="NOGUARDAR";
+		}else{
+			a.id = r;
+			a.accion="eliminar";
+		}
+	}else{
+		registros.$idreg   = $(".seleccionado");
+		registros.idbd     = parseInt(registros.$idreg.attr("id").substr(5,2) );
+		//~ registros.idbd     = registros.$idreg.find("td").eq(0);
+		registros.$idtotal = registros.$idreg.find("td").eq(5);
+		registros.$idcant  = registros.$idreg.find("td").eq(4);
+		registros.tipo     = registros.$idreg.find("td").eq(2) != "%" ? "UMED" : "%" ;
+		registros.idcumedida.push( registros.$idreg.find("td").eq(3) );
+		registros.cantidad = parseFloat(registros.$idcant.val().replace(",","."));
+		registros.asignar_cantidad();
+		registros.accion   = "eliminar";
+		registros.tabla=DESTINO;
+					
+		REGS.push($.extend( {}, registros ));// copia el objeto dentro de REGS
+		registros.limpiar();		
+	}
 	$(".seleccionado").remove();
 	CalculoTotal();
 	//~ $idTABLE.trigger("change");
@@ -409,7 +457,7 @@ function SeleccionarTabla(id){
 		DIV_LISTA       = '#CstsAdnls';
 		$CLD_LISTAR      = $("#Otros-costos_prd > tbody > tr > td:nth-child(2)");
 		DATOS = {'cant':4, 'cumedida':3, 'total':5, 'cld_listar': 2};
-		//~ TOTAL = '#costo_producto';
+		TOTAL = '#costo_producto';
 		SUBTOTAL = '#total_otros-costos_prd';
 		SBTOTALS = [ '#total_insumo_prd', '#total_materiales_prd', '#total_otros-costos_prd'];			
 	}
@@ -426,7 +474,6 @@ function SeleccionarTabla(id){
 		SBTOTALS = [ '#total_ingrediente_partida'];			
 	}
 }
-
 
 $("tr[name=regn]").click(function (e) {
 	SeleccionarRegistro(this);
@@ -456,9 +503,21 @@ function SeleccionarRegistro(id){
 
 $GUARDAR.click(function () {
 
-	if ( ObjDatos.length == 0 ){
+	if ( REGS.length == 0 ){
 			alert("No hay Datos para almacenar");
 	}else{
+		for (i=0; i<REGS.length; i++){
+			//~ console.log(REGS[i]);
+			//~ console.log(REGS[i].accion);
+			if (REGS[i].accion === "nuevo" || REGS[i].accion === "actualizar" || REGS[i].accion === "eliminar"){
+				ObjDatos.push({ "destino" :REGS[i].tabla,
+								 "accion" :REGS[i].accion,
+								  "id"    :REGS[i].idbd,
+								   "datos":REGS[i].cantidad
+ 							});
+			}
+		}
+		ObjDatos.push({ "destino":"TOTALIZAR","accion":"actualizar", "id":-1, "datos":$( TOTAL ).html().replace(",",".")});
 		
 		$("#ObjDatos").val(JSON.stringify(ObjDatos));
 			
@@ -617,36 +676,6 @@ $(function() {
   // enviar_archivos();
 });
 
-// codigo usado por plano-1.html
-/*
-var form = document.getElementById("fenviar");
-form.addEventListener('submit', function(ev) {
-  var xhrObject = new XMLHttpRequest(); 
-  var data = new FormData();
-  var url = window.location.pathname;
-  console.log("Ingreso al submit");
-  //prevenimos la acción por defecto del navegador
-  ev.preventDefault();
-  //creamos un objeto FormData de HTML5 y le pasamos el formulario
-  archivos = document.getElementsByClassName("input-ghost");
-  console.log(archivos.length);
-  narch = archivos.length;
-
-  for (var i = 0; i < narch-1; i++){
-    console.log(archivos[i].files[0].name);
-    nombre = archivos[i].files[0].name; //"lastModified", "size","type",
-    if ( nombre != ""){
-      data.append(nombre, archivos[i].files[0]);  
-    }
-  } 
-
-    xhrObject.open("POST",url,true); 
-    xhrObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhrObject.setRequestHeader("X-CSRFToken",document.getElementById('csrf_token').value);
-    xhrObject.send(data); 
-  });
-  */
-//*********************************
 function enviar(){
 
   var lista = document.getElementByTagName("input");

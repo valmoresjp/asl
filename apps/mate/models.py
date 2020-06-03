@@ -25,7 +25,8 @@ class InsumosM(models.Model):
 	fingso  = models.DateTimeField(null=True, blank=True)
 	descrip = models.CharField(max_length=60)
 	umedida = models.CharField(max_length=5)
-	cantd   = models.FloatField(default=1.00)
+	cantd   = models.FloatField(default = 1.00)
+	inven   = models.FloatField(default = 0.0)
 	tipo    = models.CharField(max_length=14, choices=TIPO_ELEMENTO, default='ING')
 	
 	distb1  = models.CharField(max_length=30) 

@@ -29,11 +29,32 @@
 	{% block footer %}
 	<br>
 	<br>
+<!--
 	<a  href="{% url 'inicio_principal' %}" >
 		<div class="card bg-secondary text-white">
 			<div class="card-body" style="font-size: 18px; font-weight: bold; font-style: Arial">Pagina de Inicio</div>
 		</div>
 	</a>
+-->
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="{% url 'inicio_principal' %}">Inicio</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'inicio_producto' %}">Productos</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'inicio_partida' %}">Partidas</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link " href="{% url 'inicio_mate' %}">Insumos</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link " href="{% url 'inicio_conf' %}">Costos Adicionales</a>
+    </li>
+  </ul>
+</nav>
 	{% endblock %}
 
 	<script type="text/javascript" src="{% static 'js/jquery-3.5.1.min.js' %}"></script>

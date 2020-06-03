@@ -19,21 +19,22 @@
 -->
     <a href="{% url 'agregar_mate' %}" class="btn btn-primary"  role="button">Agregar Insumo o Servicio</a>
     <table id="Listado" class="table table-hover table-bordered small">
-        <thead class="thead-dark">
+        <thead class="thead-dark" style="font-size: 20px; font-weight: bold; font-style: Arial">
             <tr>
-                <th  >CODIGO</th>
-                <th> Fecha Ingreso</th>
-                <th  >DESCRIPCIÓN</th>
-                <th  >UNIDAD</th>
-                <th  >CANTIDAD</th>
-                <th  >TIPO</th>
-                <th  >DISTRIBUIDOR</th> 
-                <th  >COSTO</th>            
-                <th  >COSTO POR U/medida</th>            
-                <th  >FECHA DE ACTUALIZACIÓN</th>
+                <th style=" width: 5%;" >CODIGO</th>
+                <th style=" width: 15%;" >FECHA INGRESO</th>
+                <th style=" width: 20%;" >DESCRIPCIÓN</th>
+                <th style=" width: 5%;" >UNIDAD</th>
+                <th style=" width: 5%;" >CANTIDAD</th>
+                <th style=" width: 5%;" >INVENTARIO</th>
+                <th style=" width: 5%;" >TIPO</th>
+                <th style=" width: 15%;" >DISTRIBUIDOR</th> 
+                <th style=" width: 10%;" >COSTO</th>            
+                <th style=" width: 5%;" >COSTO/MEDIDA</th>            
+                <th style=" width: 10%;" >FECHA DE ACTUALIZACIÓN</th>
             </tr>    
         </thead>
-        <tbody >
+        <tbody style="font-size: 18px; font-weight: bold; font-style: Arial" >
                 {% for valor in regs %}
                 <tr>
                     <td rowspan="6" >{{ valor.codigo }}</td>
@@ -41,6 +42,7 @@
                     <td rowspan="6" >{{ valor.descrip }}</td>
                     <td rowspan="6" >{{ valor.umedida }}</td>
                     <td rowspan="6" >{{ valor.cantd }}</td>
+                    <td rowspan="6" >{{ valor.inven }}</td>
                     <td rowspan="6" >{{ valor.tipo }}</td>
                 </tr>
                 <tr>
