@@ -24,7 +24,7 @@ from apps.principal import views
 
 urlpatterns = [
 #    path('admin/', admin.site.urls),
-    path('inicio/',  include("apps.principal.urls")),
+    path('',  include("apps.principal.urls")),
     path('insumos/', include("apps.mate.urls")),
     path('partidas/', include("apps.partida.urls")),
     path('productos/', include("apps.prod.urls")),

@@ -25,7 +25,7 @@ SECRET_KEY = '!-6f4)8nty+1wz+9t#n!zxcj=%p#u_8(i@jm89_p8(+ukpx7d%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['svjsp.pythonanywhere.com']
 
 
 # Application definition
@@ -129,3 +129,4 @@ DATE_FORMAT = ['%d-%m-%y']
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
