@@ -68,9 +68,9 @@
 		    	</thead>
 		    	<tbody >
 					{% for i in idatos %}
-						<tr id="reg-{{forloop.counter0}}" name="regn" >
-							<td >{{ i.id }} </td>
-							<td onclick="AgregarRegistro(this)">{{ i.nombre }}</td>
+						<tr id="insm-{{i.id}}" name="regn" >
+							<td >{{ i.idpart }} </td>
+							<td >{{ i.nombre }}</td>
 							<td >{{ i.umedida}}</td>
 							<td >{{ i.cumedida}}</td>
 							<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>
@@ -114,7 +114,7 @@
 		    	</thead>
 				<tbody>
 					{% for i in mdatos %}
-						<tr id="reg-{{forloop.counter0}}" name="regn" >
+						<tr id="mate-{{ i.id }}" name="regn" >
 							<td >{{ i.id }} </td>
 							<td title="Escriba la descripcion del producto..." data-toggle="tooltip">{{ i.nombre }}</td>
 							<td >{{ i.umedida }}</td>
@@ -163,7 +163,7 @@
 					<tbody >
 						
 						{% for i in cdatos %}
-							<tr id="reg-{{forloop.counter0}}" name="regn" >
+							<tr id="otrs-{{ i.id }}" name="regn" >
 								<td >{{ i.id }} </td>
 								<td >{{ i.nombre }}</td>
 								<td > {{ i.umedida}}</td>
@@ -207,7 +207,7 @@
 					</tbody>
 				</table>
 		</div>
-	  	<div id="linsumos"  style="width:70%; background-color:lightgray; display:none">
+	  	<div id="linsumos"   style="width:70%; background-color:lightgray; display:none">
 			<table id="TablaInsumos" class="table">
 				<thead>
 					    <tr>
@@ -244,6 +244,7 @@
 							<th style=" width: 45%;">DESCRIPCION</th>
 							<th style=" width: 10%;">U. MEDIDA</th>
 							<th style=" width: 15%;">COSTO/UNIDAD</th>
+							<th style=" width: 15%;">REFERENCIA</th>
 				    	
 					    </tr>
 				 </thead>
@@ -254,6 +255,7 @@
 							    <td >{{ i.nombre }}</td>
 							    <td>{{ i.umedida }}</td>
 							    <td>{{ i.cumedida }}</td>
+							    <td>{{ i.referencia }}</td>
 							</tr>
 					{% endfor %}
 				</tbody>

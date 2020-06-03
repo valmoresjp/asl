@@ -21,15 +21,16 @@
 -->
     <a href="{% url 'agregar_conf' %}" class="btn btn-primary" role="button">Agregar Costos Adicionales</a>
     <table id="Listado" class="table table-hover table-bordered small">
-        <thead class="thead-dark">
+        <thead class="thead-dark" style="font-size: 24px; font-weight: bold; font-style: Arial">
             <tr>
                 <th></th>
                 <th>NOMBRE</th>
                 <th>UNIDAD DE MEDIDA</th>
-                <th>COSTO POR UNIDAD DE MEDIDA</th>
+                <th>COSTO/MEDIDA</th>
+                <th>REFERENCIA</th>
             </tr>    
         </thead>
-        <tbody >
+        <tbody style="font-size: 18px; font-style: Arial">
                 {% for reg in registro %}
 					<tr>
 						<td>
@@ -39,6 +40,7 @@
 						<td >{{ reg.nombre }}</td>
 						<td >{{ reg.umedida }}</td>
 						<td >{{ reg.cumedida }}</td>
+						<td >{{ reg.referencia }}</td>
 					</tr>
                 {% endfor %}
         </tbody>

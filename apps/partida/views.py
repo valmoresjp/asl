@@ -83,30 +83,21 @@ def eliminar(request, idpart):
 
 @login_required(login_url='/inicio/ingreso')
 def detallar(request, idpart):
-	# ~ print("INGRESANDO A CUANTIFICAR")
 	contexto = {}
 	datos = []
-	# ~ partida      = PartidasM.objects.get(id=codp)
-	# ~ insumos   = InsumosM.objects.all()
-	# ~ ptda_deta = PartidaDetallesM.objects.filter(codp=codp)
-	
-	# ~ print("PARTIDA: ", codp )
+
 	if request.method =='POST':
+		
 		for i in json.loads(request.POST["ObjDatos"]):
-			
+			# ~ print(i)
 			if i['destino'] == "PARTDETLLS":
+				if i["accion"] == "actualizar":
+					instance = PartidaDetallesM.objects.filter(idism=i["id"]).update(cant=i["datos"])
+				if i["accion"] == "nuevo":
+					g = PartidaDetallesM(idism=i["id"], idpart=idpart, cant=i["datos"])
+					g.save()					
 				if i["accion"] == "eliminar":
-					PartidaDetallesM.objects.filter(idpart=idpart).filter(idism=i["id"]).delete()
-				else:
-					res = PartidaDetallesM.objects.filter(idpart=idpart).filter(idism=i["id"]).exists()
-					if res==True :
-						# ~ El registro existe y se actualiza
-						instance = PartidaDetallesM.objects.filter(idism=i["id"]).update(cant=i["datos"])
-					else:
-						# ~ El registro no existe, se crea un nuevo registro
-						g = PartidaDetallesM(idism=i["id"], idpart=idpart, cant=i["datos"])
-						g.save()
-			
+					PartidaDetallesM.objects.filter(idpart=idpart).filter(id=i["id"]).delete()			
 		total = 0.0
 		# ~ for k in PartidasM.objects.all():
 			# ~ print(k.id)

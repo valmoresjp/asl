@@ -76,7 +76,7 @@
 		    	<tbody >
 					
 					{% for i in datos %}
-						<tr id="reg-{{forloop.counter0}}" name="regn" >
+						<tr id="ingr-{{i.pdm_id}}" name="regn" >
 							<td >{{ i.ism_id }} </td>
 <!--
 							<td class="col-sm-1" >{{ i.ism_codigo }}</td>
@@ -105,19 +105,6 @@
 			<table id="TablaInsumos" class="table">
 				<thead>
 					    <tr>
-<!--
-					    	<th class="col-sm-1" >ID</th>
--->
-<!--
-					    	<th class="col-sm-1" >CODIGO</th>
--->
-<!--
-					    	<th class="col-sm-3">DESCRIPCION</th>
-				            <th class="col-sm-1">U. MEDIDA</th>
-				            <th class="col-sm-1">C. UMEDIDA</th>
-				    		<th class="col-sm-1">C. MAX</th>
--->
-				    		
 				    		<th style=" width: 5%;">ID</th>
 							<th style=" width: 45%;">DESCRIPCION</th>
 							<th style=" width: 10%;">U. MEDIDA</th>

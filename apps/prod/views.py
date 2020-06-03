@@ -31,7 +31,7 @@ def nuevo(request):
 
 		return redirect ('inicio_producto')
 	else:
-		print("ingresando a nuevo_producto")
+		# ~ print("ingresando a nuevo_producto")
 		form = ProductosF()
 	return render(request,'nuevo_producto.html', {'form': form})
 
@@ -54,8 +54,8 @@ def eliminar(request, idprod):
 
 		url_ant = "inicio_producto"
 		reg = ProductosM.objects.get(id=idprod)
-		print (" NOTA: se deben eliminar los registros de materiales pertenecientes a este producto")
-		print ("       estos están ubicados en la tabla ProductosDetallesM")
+		# ~ print (" NOTA: se deben eliminar los registros de materiales pertenecientes a este producto")
+		# ~ print ("       estos están ubicados en la tabla ProductosDetallesM")
 		reg.delete()
 		
 		return redirect(url_ant)
@@ -80,54 +80,48 @@ def detallar(request, idprod):
 	# ~ prd_deta   = ProductosDetallesM.objects.filter(idprd=idprod)
 
 	if request.method =='POST':
-		print("DETALLAR: metodo POST")
+		# ~ print("DETALLAR: metodo POST")
 		url = "/productos/detallar/" + str(idprod) + "/"
-		print(url)
-		print(request.POST['ObjDatos'])
+		# ~ print(url)
+		# ~ print(request.POST['ObjDatos'])
 		for i in json.loads(request.POST["ObjDatos"]):
-			print(i['accion'], "  ",i['destino'])
+			
 			if i['destino'] == "INSUMOS":
 				if i['accion'] == 'actualizar':
-					res = ProductosDetallesM.objects.filter(idprd=idprod).filter(idpart=i["id"]).exists()
-					print(i)
-					if res == True :
-						# ~ El registro existe y se actualiza
-						ProductosDetallesM.objects.filter(idpart=i["id"]).update(cant=i["datos"])
-					else:
-						# ~ El registro no existe, se crea un nuevo registro
-						g = ProductosDetallesM(idpart=i["id"], idprd=idprod, cant=i["datos"])
-						g.save()
-					
+					# ~ res = ProductosDetallesM.objects.filter(idprd=idprod).filter(idpart=i["id"]).exists()
+					# ~ print("El registro existe y se actualizara")
+					# ~ print(i["id"],"   ",i["datos"])
+					ProductosDetallesM.objects.filter(idpart=i["id"]).update(cant=i["datos"])
+				if i['accion'] == 'nuevo':
+					# ~ print("el registro no existe y se agregara")
+					# ~ print(i)
+					# ~ El registro no existe, se crea un nuevo registro
+					g = ProductosDetallesM(idpart=i["id"], idprd=idprod, cant=i["datos"])
+					g.save()
 				if i['accion'] == 'eliminar':
 					ProductosDetallesM.objects.filter(id=i["id"]).delete()
 					
 			if i['destino'] == "MAQYHERR":
 				if i['accion'] == 'actualizar':
-					res = MaquiyHerraM.objects.filter(idprd=idprod).filter(idism=i["id"]).exists()
-					if res==True :
-						# ~ El registro existe y se actualiza
-						MaquiyHerraM.objects.filter(idism=i["id"]).update(cant=i["datos"])
-					else:
-						# ~ El registro no existe, se crea un nuevo registro
-						g = MaquiyHerraM(idism=i["id"], idprd=idprod, cant=i["datos"])
-						g.save()
-					
+					# ~ El registro existe y se actualiza
+					MaquiyHerraM.objects.filter(idism=i["id"]).update(cant=i["datos"])
+				if i['accion'] == 'nuevo':
+					# ~ El registro no existe, se crea un nuevo registro
+					g = MaquiyHerraM(idism=i["id"], idprd=idprod, cant=i["datos"])
+					g.save()					
 				if i['accion'] == 'eliminar':
 						MaquiyHerraM.objects.filter(id=i["id"]).delete()				
 				
 			if i['destino'] == "CSTSADNLS":
 				if i['accion'] == 'actualizar':
-					res = CstsAdnlsM.objects.filter(idprd=idprod).filter(idcstanls=i["id"]).exists()
-					if res==True :
-						# ~ El registro existe y se actualiza
-						CstsAdnlsM.objects.filter(idcstanls=i["id"]).update(cant=i["datos"])
-					else:
-						# ~ El registro no existe, se crea un nuevo registro
-						g = CstsAdnlsM(idcstanls=i["id"], idprd=idprod, cant=i["datos"])
-						g.save()
-					
+					# ~ El registro existe y se actualiza
+					CstsAdnlsM.objects.filter(idcstanls=i["id"]).update(cant=i["datos"])
+				if i['accion'] == 'nuevo':
+					# ~ El registro no existe, se crea un nuevo registro
+					g = CstsAdnlsM(idcstanls=i["id"], idprd=idprod, cant=i["datos"])
+					g.save()
 				if i['accion'] == 'eliminar':
-						CstsAdnlsM.objects.filter(id=i["id"]).delete()		
+					CstsAdnlsM.objects.filter(id=i["id"]).delete()		
 
 			if i['destino'] == "TOTALIZAR":
 				ProductosM.objects.filter(id=idprod).update(costo=float(i["datos"]))
@@ -136,18 +130,18 @@ def detallar(request, idprod):
 		
 	if request.method == 'GET':
 		for i in ProductosDetallesM.objects.filter(idprd=idprod):
-			print(i.idprd,"  ",i.idpart)
+			# ~ print(i.idprd,"  ",i.idpart)
 			if PartidasM.objects.filter(id = i.idpart).exists() == True:
 				part = PartidasM.objects.get(id = i.idpart)			
-				
-				print(part)
+				# ~ print(i.idpart)
 				idatos.append(	
-					{'id':       i.id,  
-					 'nombre':   part.nomb,
-					 'umedida':  i.unid,
+					{'id'      : i.id,
+					 'idpart'  : i.idpart,  
+					 'nombre'  : part.nomb,
+					 'umedida' : part.unid,
 					 'cumedida': part.cost,
 					 'cantidad': i.cant,
-					 'costo':    i.cant*part.cost
+					 'costo'   :    i.cant*part.cost
 					})
 				total = total + i.cant*part.cost
 		totales["prddetlls"] = total
@@ -189,7 +183,7 @@ def detallar(request, idprod):
 		totales['totprd'] = round(totprd,2)
 		total = 0.0
 		
-	print(totales)
+	# ~ print(totales)
 	contexto['producto'] = producto 
 	contexto['idatos'] = idatos
 	contexto['mdatos'] = mdatos
