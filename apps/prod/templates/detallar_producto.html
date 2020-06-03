@@ -132,6 +132,104 @@
 		   </div>	   
 	  	</div>
 
+<!--
+	    <div id="mano-obra_prd" class="table-editable">		  
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+							<button id="ManObr" name="ManoObra_prd" onclick="SeleccionarTabla(this)" type="button" class="btn btn-link"  data-target="#__Mano-Obra_prd" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">MANO DE OBRA</button>
+		    			</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body"><p id="total_mano-obra_prd" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.cstsadnls }}</p></div>
+		  			</div>	
+				</div>
+		   </div>
+
+		   <div id="__Mano-Obra_prd" class="collapse">
+				 <table id="Mano-Obra_prd" class="table ">
+					<thead >
+						<tr>
+							<th style=" width: 5%;">ID</th>
+							<th style=" width: 45%;">DESCRIPCION</th>
+							<th style=" width: 10%;">U. MEDIDA</th>
+							<th style=" width: 15%;">COSTO/UNIDAD</th>
+							<th style=" width: 10%;">CANTIDAD</th>
+							<th style=" width: 15%;">SUBTOTAL</th>
+						</tr>
+					</thead>
+					<tbody >
+						
+						{% for i in modatos %}
+							<tr id="otrs-{{ i.id }}" name="regn" >
+								<td >{{ i.id }} </td>
+								<td >{{ i.nombre }}</td>
+								<td > {{ i.umedida}}</td>
+								<td > {{ i.cumedida}}</td>
+								<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>
+								<td > {{ i.costo }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<i id="btnAgregar" onclick="AgregarRegistro(this)" name="Mano-obra" class="fa fa-plus-square  fa-2x" aria-hidden="true" style="color:green"></i>
+				<i id="btnEliminar" onclick="EliminarRegistro(this)" name="Mano-obra" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 			
+		   </div>	   
+	  	</div>
+-->
+	    
+<!--
+	    <div id="servicio_prd" class="table-editable">		  
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+							<button id="Serv" name="Servicio_prd" onclick="SeleccionarTabla(this)" type="button" class="btn btn-link"  data-target="#__Servicio_prd" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">SERVICIOS</button>
+		    			</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body"><p id="total_servicio_prd" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.cstsadnls }}</p></div>
+		  			</div>	
+				</div>
+		   </div>
+
+		   <div id="__Servicio_prd" class="collapse">
+				 <table id="Servicio_prd" class="table ">
+					<thead >
+						<tr>
+							<th style=" width: 5%;">ID</th>
+							<th style=" width: 45%;">DESCRIPCION</th>
+							<th style=" width: 10%;">U. MEDIDA</th>
+							<th style=" width: 15%;">COSTO/UNIDAD</th>
+							<th style=" width: 10%;">CANTIDAD</th>
+							<th style=" width: 15%;">SUBTOTAL</th>
+						</tr>
+					</thead>
+					<tbody >
+						
+						{% for i in modatos %}
+							<tr id="otrs-{{ i.id }}" name="regn" >
+								<td >{{ i.id }} </td>
+								<td >{{ i.nombre }}</td>
+								<td > {{ i.umedida}}</td>
+								<td > {{ i.cumedida}}</td>
+								<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>
+								<td > {{ i.costo }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<i id="btnAgregar" onclick="AgregarRegistro(this)" name="Mano-obra" class="fa fa-plus-square  fa-2x" aria-hidden="true" style="color:green"></i>
+				<i id="btnEliminar" onclick="EliminarRegistro(this)" name="Mano-obra" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 			
+		   </div>	   
+	  	</div>
+-->
+
 	    <div id="table_otros-costos_prd" class="table-editable">		  
 			<div class="row">
 				<div class="col-md-9">
@@ -178,6 +276,8 @@
 				<i id="btnEliminar" onclick="EliminarRegistro(this)" name="Otros-costos" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 			
 		   </div>	   
 	  	</div>
+
+
 
 	  	<button id="export-btn" class="btn btn-primary">Guardar Registros</button>
 	  	
