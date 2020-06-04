@@ -17,7 +17,7 @@ class InsumosF(forms.ModelForm):
 		model = InsumosM
 		fields = [
 			'codigo', 
-			'fingso',
+			# ~ 'fingso',
 			'descrip',
 			'umedida',
 			'cantd',
@@ -46,7 +46,7 @@ class InsumosF(forms.ModelForm):
 		]
 		labels = {
 			'codigo':'CODIGO DEL PRODUCTO', 
-			'fingso':'FECHA DE INGRESO DEL REGISTRO',
+			# ~ 'fingso':'FECHA DE INGRESO DEL REGISTRO',
 			'descrip':'DESCRIPCIÓN DEL PRODUCTO',
 			'umedida':'UNIDAD DE MEDIDA',			
 			'cantd':'CANTIDAD',
@@ -75,7 +75,7 @@ class InsumosF(forms.ModelForm):
 		}
 		widgets = {
 			'codigo' :forms.TextInput(attrs={'class':'form-control'}),
-			'fingso' :forms.TextInput(attrs={'class':'form-control'}),
+			# ~ 'fingso' :forms.TextInput(attrs={'class':'form-control'}),
 			'descrip':forms.TextInput(attrs={'class':'form-control'}),
 			'umedida':forms.TextInput(attrs={'class':'form-control'}),			
 			'cantd'  :forms.TextInput(attrs={'class':'form-control'}),			

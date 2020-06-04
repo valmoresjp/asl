@@ -51,13 +51,9 @@ def editar(request, idprod ):
 def eliminar(request, idprod):
 
 	if request.method == 'POST':
-
 		url_ant = "inicio_producto"
 		reg = ProductosM.objects.get(id=idprod)
-		# ~ print (" NOTA: se deben eliminar los registros de materiales pertenecientes a este producto")
-		# ~ print ("       estos están ubicados en la tabla ProductosDetallesM")
 		reg.delete()
-		
 		return redirect(url_ant)
 	else:
 		reg = ProductosM.objects.get(id=idprod)

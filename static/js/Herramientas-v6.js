@@ -314,6 +314,12 @@ $("#Materiales").change( function(){
 	//recalcula cuando se elimina una fila de la tabla
 	CalculoTotal();
 });
+  $("#patron").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#Listado-body tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
 
 function CerrarLista(id){
 	$(DIV_LISTA).css("display","none");

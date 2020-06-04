@@ -1,0 +1,68 @@
+{% extends  'base.html' %}
+
+{% block header %}
+	<br>
+	<h1 class="display-5">Lista de Precios de Insumos y Servicios</h1>
+<!--    <h3>{{ form.cliente|upper }}</h3>
+    <div class="card">
+        <div class="card-body">     
+            <h3>{{ form.proyecto | title }} </h3>
+            <p>{{ form.descripcion }}</p>
+        </div>
+    </div> -->
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+<!--
+    <button type="submit" class="btn btn-default">Listar Insumos</button>
+-->
+    <a href="{% url 'agregar_mate' %}" class="btn btn-primary"  role="button">Agregar Insumo o Servicio</a>
+    <br>
+		 <p>Escriba palabras claves para buscar:</p>  
+		<input class="form-control" id="patron" type="text" placeholder="Buscar registros...">
+	<br>
+    <table id="Listado" class="table table-hover table-bordered small">
+        <thead class="thead-dark" style="font-size: 20px; font-weight: bold; font-style: Arial">
+            <tr>
+                <th style=" width: 5%; " ></th>
+                <th style=" width: 3%; " >ID</th>
+                <th style=" width: 5%; " >CODIGO</th>
+                <th style=" width: 22%;" >DESCRIPCIÓN</th>
+                <th style=" width: 5%;"  >UNIDAD</th>
+                <th style=" width: 5%;"  >CANT/UND</th>
+                <th style=" width: 10%;" >COSTO</th> 
+                <th style=" width: 10%;" >COSTO/UMED</th> 
+                <th style=" width: 5%;"  >INVENT</th>
+                <th style=" width: 15%;" >DISTRIBUIDOR</th> 
+                <th style=" width: 5%;"  >TIPO</th>
+            </tr>    
+        </thead>
+        <tbody id="Listado-body" style="font-size: 18px; font-style: Arial" >
+                {% for valor in regs %}
+                <tr>
+                    <td > 
+						<a class="edit" href="{% url 'editar_mate' idinsm=valor.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-edit fa-1x" style="color:green"></i></a>
+                        <a class="delete" href="{% url 'eliminar_mate' idinsm=valor.id %}" title="Eliminar" data-toggle="tooltip"><i class="fa fa-trash fa-1x" style="color:red"></i></a>
+                    </td>
+                    <td >{{ valor.id }}</td>
+                    <td >{{ valor.codigo }}</td>
+                    <td >{{ valor.descripcion }}</td>
+                    <td >{{ valor.umedida }}</td>
+                    <td >{{ valor.cantidad }}</td>
+                    <td >{{ valor.costo }}</td>
+                    <td >{{ valor.cumedida }}</td>
+                    <td >{{ valor.inventario }}</td>
+                    <td > <a href="#" data-toggle="tooltip" title="{{ valor.distribuidores }}">Listado de Distribuidores</a></td>
+                    <td >{{ valor.tipo }}</td>
+                    
+                </tr>
+                {% endfor %}
+        </tbody>
+                
+    </table>  
+   
+</div>
+
+
+{% endblock %}

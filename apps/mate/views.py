@@ -8,7 +8,36 @@ from django.contrib.auth.decorators import login_required
 
 def inicio(request):
 	regs = InsumosM.objects.all()
-	return render (request,'inicio_mate.html',{'regs': regs})
+	idatos=[]
+	for i in regs:
+		# ~ print("Distribuidor	Costo	Costo/Umedida")
+		a=""
+		if i.cmedi1() > 0:
+			a = i.distb1 + " , " + str(i.costo1).strip()+" , " + str(i.cmedi1()).strip() + "\n"
+		if i.cmedi2() > 0:
+			a = a + " , " +i.distb2 + " , " + str(i.costo2).strip()+" , " + str(i.cmedi2()).strip() + "\n"
+		if i.cmedi3() > 0:
+			a = a + " , " +i.distb3 + " , " + str(i.costo3).strip()+" , " + str(i.cmedi3()).strip() + "\n"
+		if i.cmedi4() > 0:
+			a = a + " , " +i.distb4 + " , " + str(i.costo4).strip()+" , " + str(i.cmedi4()).strip() + "\n"
+		if i.cmedi5() > 0:
+			a = a + " , " + i.distb5 + " , " + str(i.costo5).strip()+" , " + str(i.cmedi5()).strip() + "\n"
+			
+		idatos.append(	
+					{'id'            : i.id,
+					 'codigo'        : i.codigo,  
+					 'descripcion'   : i.descrip,
+					 'cantidad'      : i.cantd,
+					 'umedida'       : i.umedida,
+					 'costo'         : i.max(),
+					 'cumedida'      : i.cumedida,
+					 'inventario'    : i.inven,
+					 'distribuidores': a,
+					 'tipo'          : i.tipo
+					})
+					
+					
+	return render (request,'inicio_mate-v2.html',{'regs': idatos})
 
 @login_required(login_url='/inicio/ingreso')	
 def agregar(request):
@@ -55,3 +84,30 @@ def agregar(request):
 		# form = Insumo(initial={'fingso': fingso, 'factu1': factu1})
 		form = InsumosF()
 	return render( request, 'agregar_mate.html', {'form':form})
+	
+	
+@login_required(login_url='/inicio/ingreso')	
+def editar(request,idinsm):
+
+	insumo = InsumosM.objects.get(id=idinsm)
+	if request.method == 'GET':
+		form = InsumosF(instance=insumo)
+	else:
+		form = InsumosF(request.POST, instance=insumo)
+		if form.is_valid():
+			form.save()
+		return redirect('inicio_mate') 
+	return render(request,'agregar_mate.html', {'form':form})
+
+@login_required(login_url='/inicio/ingreso')
+def eliminar(request, idinsm):
+
+	if request.method == 'POST':
+		url_ant = "inicio_mate"
+		insumo = InsumosF.objects.get(id=idinsm)
+		insumo.delete()
+		return redirect(url_ant)
+	else:
+		insumo = InsumosM.objects.get(id=idinsm)
+	
+	return render(request, 'eliminar_mate.html',{'reg':insumo})
