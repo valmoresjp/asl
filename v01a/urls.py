@@ -25,13 +25,11 @@ from apps.principal import views
 
 
 urlpatterns = [
-<<<<<<< HEAD
+
 #    path('admin/', admin.site.urls),
     path('',  include("apps.principal.urls")),
-=======
 	path('admin/', admin.site.urls),
     path('inicio/',  include("apps.principal.urls")),
->>>>>>> dc6ffa78b9ae859101736760ebd50bf7fa11c110
     path('insumos/', include("apps.mate.urls")),
     path('partidas/', include("apps.partida.urls")),
     path('productos/', include("apps.prod.urls")),

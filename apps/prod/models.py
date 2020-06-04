@@ -19,12 +19,8 @@ class ProductosM(models.Model):
 	codp = models.CharField(max_length=20)  #Codigo del producto
 	desc = models.CharField(max_length=1000)# descripcion del producto
 	unid = models.CharField(max_length=10) # unidad de medida del producto
-<<<<<<< HEAD
-
-=======
 	costo = models.FloatField(default = 0.0) # costo totaldel producto
-	
->>>>>>> dc6ffa78b9ae859101736760ebd50bf7fa11c110
+
 class MaquiyHerraM(models.Model):
 	idism = models.IntegerField() #id del insumo, vinculada con la tabal InsumosM
 	idprd = models.IntegerField() #id del producto al que esta asociado, vinculado con la tabla ProductosDetallesM

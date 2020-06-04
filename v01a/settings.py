@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '!-6f4)8nty+1wz+9t#n!zxcj=%p#u_8(i@jm89_p8(+ukpx7d%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['svjsp.pythonanywhere.com']
 
@@ -128,5 +128,5 @@ DATE_FORMAT = ['%d-%m-%y']
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+#STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
