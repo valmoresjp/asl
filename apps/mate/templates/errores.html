@@ -1,0 +1,29 @@
+{% extends  'base.html' %}
+
+{% block header %}
+<h3>Listado de Precio de Insumos y Servicios</h3>
+<!--    <h3>{{ form.cliente|upper }}</h3>
+    <div class="card">
+        <div class="card-body">     
+            <h3>{{ form.proyecto | title }} </h3>
+            <p>{{ form.descripcion }}</p>
+        </div>
+    </div> -->
+{% endblock %}
+
+{% block content %}
+<div class="container">
+{% for field in form %}
+    <div class="fieldWrapper">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+    </div>
+{% endfor %}
+   
+</div>
+
+
+{% endblock %}

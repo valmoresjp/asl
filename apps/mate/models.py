@@ -22,7 +22,7 @@ class InsumosM(models.Model):
 	# FACTU(n): Fecha de actualización del producto para el producto n(donde n va de 1 a 5).
 
 	codigo  = models.CharField(max_length=26)
-	fingso  = models.DateTimeField(null=True, blank=True)
+	# ~ fingso  = models.DateTimeField(null=True, blank=True)
 	descrip = models.CharField(max_length=60)
 	umedida = models.CharField(max_length=5)
 	cantd   = models.FloatField(default = 1.00)

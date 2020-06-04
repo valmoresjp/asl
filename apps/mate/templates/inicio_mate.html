@@ -18,11 +18,16 @@
     <button type="submit" class="btn btn-default">Listar Insumos</button>
 -->
     <a href="{% url 'agregar_mate' %}" class="btn btn-primary"  role="button">Agregar Insumo o Servicio</a>
+    <br>
+		 <p>Escriba palabras claves par abuscar:</p>  
+		<input class="form-control" id="patron" type="text" placeholder="Buscar registros...">
+	<br>
     <table id="Listado" class="table table-hover table-bordered small">
         <thead class="thead-dark" style="font-size: 20px; font-weight: bold; font-style: Arial">
             <tr>
+                <th style=" width: 5%;" ></th>
+                <th style=" width: 5%;" >ID</th>
                 <th style=" width: 5%;" >CODIGO</th>
-                <th style=" width: 15%;" >FECHA INGRESO</th>
                 <th style=" width: 20%;" >DESCRIPCIÓN</th>
                 <th style=" width: 5%;" >UNIDAD</th>
                 <th style=" width: 5%;" >CANTIDAD</th>
@@ -31,14 +36,17 @@
                 <th style=" width: 15%;" >DISTRIBUIDOR</th> 
                 <th style=" width: 10%;" >COSTO</th>            
                 <th style=" width: 5%;" >COSTO/MEDIDA</th>            
-                <th style=" width: 10%;" >FECHA DE ACTUALIZACIÓN</th>
             </tr>    
         </thead>
-        <tbody style="font-size: 18px; font-weight: bold; font-style: Arial" >
+        <tbody id="Listado-body" style="font-size: 18px; font-style: Arial" >
                 {% for valor in regs %}
                 <tr>
+                    <td rowspan="6" > 
+						<a class="edit" href="{% url 'editar_mate' idinsm=valor.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-edit fa-1x" style="color:green"></i></a>
+                        <a class="delete" href="{% url 'eliminar_mate' idinsm=valor.id %}" title="Eliminar" data-toggle="tooltip"><i class="fa fa-trash fa-1x" style="color:red"></i></a>
+                    </td>
+                    <td rowspan="6" >{{ valor.id }}</td>
                     <td rowspan="6" >{{ valor.codigo }}</td>
-                    <td rowspan="6" >{{ valor.fingso | date:" d-m-Y H:i" }}</td>
                     <td rowspan="6" >{{ valor.descrip }}</td>
                     <td rowspan="6" >{{ valor.umedida }}</td>
                     <td rowspan="6" >{{ valor.cantd }}</td>
@@ -49,31 +57,31 @@
                     <td>{{ valor.distb1 }}</td>                    
                     <td>{{ valor.costo1 }}</td>
                     <td>{{ valor.cmedi1 }}</td>
-                    <td>{{ valor.factu1 | date:" d-m-Y H:i" }}</td>
+                </tr>
+                <tr>
+                    <td>{{ valor.distb1 }}</td>                    
+                    <td>{{ valor.costo1 }}</td>
+                    <td>{{ valor.cmedi1 }}</td>
                 </tr>
                 <tr>
                     <td>{{ valor.distb2 }}</td>
                     <td>{{ valor.costo2 }}</td>
                     <td>{{ valor.cmedi2 }}</td>
-                    <td>{{ valor.factu2 | date:" d-m-Y H:i"}}</td>
                 </tr>
                 <tr>
                     <td>{{ valor.distb3 }}</td>
                     <td>{{ valor.costo3 }}</td>
                     <td>{{ valor.cmedi3 }}</td>
-                    <td>{{ valor.factu3 | date:" d-m-Y H:i"}}</td>
                 </tr>
                 <tr>
                     <td>{{ valor.distb4 }}</td>
                     <td>{{ valor.costo4 }}</td>
                     <td>{{ valor.cmedi4 }}</td>
-                    <td>{{ valor.factu4 | date:" d-m-Y H:i"}}</td>
                 </tr>
                 <tr>
                     <td>{{ valor.distb5 }}</td>
                     <td>{{ valor.costo5 }}</td>
                     <td>{{ valor.cmedi5 }}</td>
-                    <td>{{ valor.factu5 | date:" d-m-Y H:i"}}</td>
                 </tr> 
                 {% endfor %}
         </tbody>
