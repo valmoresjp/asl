@@ -22,10 +22,10 @@ def inicio(request):
 			a = a + " , " +i.distb4 + " , " + str(i.costo4).strip()+" , " + str(i.cmedi4()).strip() + "\n"
 		if i.cmedi5() > 0:
 			a = a + " , " + i.distb5 + " , " + str(i.costo5).strip()+" , " + str(i.cmedi5()).strip() + "\n"
-			
-		idatos.append(	
+
+		idatos.append(
 					{'id'            : i.id,
-					 'codigo'        : i.codigo,  
+					 'codigo'        : i.codigo,
 					 'descripcion'   : i.descrip,
 					 'cantidad'      : i.cantd,
 					 'umedida'       : i.umedida,
@@ -35,11 +35,11 @@ def inicio(request):
 					 'distribuidores': a,
 					 'tipo'          : i.tipo
 					})
-					
-					
+
+
 	return render (request,'inicio_mate-v2.html',{'regs': idatos})
 
-@login_required(login_url='/inicio/ingreso')	
+@login_required(login_url='/inicio/ingreso')
 def agregar(request):
 	# print("dentor de agregar insumos")
 	# print(request.POST['fingso'])
@@ -74,7 +74,7 @@ def agregar(request):
 			if f[4]!=-1:
 				instancia.factu5 = f[4]
 			instancia.save()
-		else:		
+		else:
 			print("Error al guardar en la base de datos")
 			return render(request,'errores_020819.html',{'form': form})
 		return redirect ('inicio_mate')
@@ -84,9 +84,9 @@ def agregar(request):
 		# form = Insumo(initial={'fingso': fingso, 'factu1': factu1})
 		form = InsumosF()
 	return render( request, 'agregar_mate.html', {'form':form})
-	
-	
-@login_required(login_url='/inicio/ingreso')	
+
+
+@login_required(login_url='/inicio/ingreso')
 def editar(request,idinsm):
 
 	insumo = InsumosM.objects.get(id=idinsm)
@@ -96,7 +96,7 @@ def editar(request,idinsm):
 		form = InsumosF(request.POST, instance=insumo)
 		if form.is_valid():
 			form.save()
-		return redirect('inicio_mate') 
+		return redirect('inicio_mate')
 	return render(request,'agregar_mate.html', {'form':form})
 
 @login_required(login_url='/inicio/ingreso')
@@ -104,10 +104,10 @@ def eliminar(request, idinsm):
 
 	if request.method == 'POST':
 		url_ant = "inicio_mate"
-		insumo = InsumosF.objects.get(id=idinsm)
+		insumo = InsumosM.objects.get(id=idinsm)
 		insumo.delete()
 		return redirect(url_ant)
 	else:
 		insumo = InsumosM.objects.get(id=idinsm)
-	
+
 	return render(request, 'eliminar_mate.html',{'reg':insumo})

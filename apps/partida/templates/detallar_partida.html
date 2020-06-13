@@ -4,15 +4,15 @@
  	<h1>Partida: {{ partida.nomb|upper }}</h1>
  	<h3 >ID: <span id="codp">{{ partida.id }}</span></h3>
  	<div class="card">
-    	<div class="card-body">     
+    	<div class="card-body">
     		<p>{{ partida.desc }}</p>
     	</div>
-  	</div> 
+  	</div>
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-		
+
 		<div id="table_clon">
 		    <table id="TablaClon" class="table">
 		      	<tr class="hide" name="regn" >
@@ -29,7 +29,7 @@
 		      	</tr>
 		    </table>
 	  	</div>
-  	
+
   		<div class="card bg-primary text-white" >
 			  <div class="row">
 				  <div class="col-md-9">
@@ -41,8 +41,8 @@
 			  </div>
 		  </div>
 		  <br>
-  	
-  	  	<div id="table_materiales" class="table-editable">		  
+
+  	  	<div id="table_materiales" class="table-editable">
 			<div class="row">
 				<div class="col-md-9">
 		   	  		<div class="card bg-light text-dark">
@@ -50,11 +50,11 @@
 							<button id="Ingrt" name="Ingrediente_partida" onclick="SeleccionarTabla(this)" type="button" class="btn btn-link"  data-target="#__Ingrediente_partida" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">INGREDIENTES</button>
 		    			</div>
 		  			</div>
-				</div>	   		
+				</div>
 		   		<div class="col-md-3">
 		   	  		<div class="card bg-light text-dark">
 		    			<div class="card-body"><p id="total_ingrediente_partida" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ total }}</p></div>
-		  			</div>	
+		  			</div>
 				</div>
 		   </div>
 
@@ -74,7 +74,7 @@
 		      		</tr>
 		    	</thead>
 		    	<tbody >
-					
+
 					{% for i in datos %}
 						<tr id="ingr-{{i.pdm_id}}" name="regn" >
 							<td >{{ i.ism_id }} </td>
@@ -92,13 +92,13 @@
 		    </table>
 
        		<i id="btnAgregar" onclick="AgregarRegistro(this)" name="_prd" class="fa fa-plus-square fa-2x" aria-hidden="true" style="color:green"></i>
-			<i id="btnEliminar" onclick="EliminarRegistro(this)" name="Ingrediente_partida" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 		   
-               			
-		   </div>	   
+			<i id="btnEliminar" onclick="EliminarRegistro(this)" name="Ingrediente_partida" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i>
+
+		   </div>
 	  	</div>
-	    
+
 	  	<button id="export-btn" class="btn btn-primary">Guardar Registros</button>
-	  	
+
 	  	<div id="linsumos"  style="width:70%; background-color:lightgray; display:none">
 			<i id="btnAgregar" onclick="CerrarLista(this)" name="_prd" class="fa fa-window-close fa-2x" aria-hidden="true" style="color:green"></i>
 
@@ -110,7 +110,7 @@
 							<th style=" width: 10%;">U. MEDIDA</th>
 							<th style=" width: 15%;">COSTO/UNIDAD</th>
 					    </tr>
-					    
+
 				 </thead>
 				<tbody>
 					{% for i in insumos %}
@@ -123,7 +123,7 @@
 							    <td>{{ i.umedida }}</td>
 							    <td>{{ i.cumedida }}</td>
 <!--
-							    <td>{{ i.max }}</td> 
+							    <td>{{ i.max }}</td>
 -->
 							</tr>
 					{% endfor %}
@@ -135,7 +135,7 @@
 			<input id="MCantidad" type="text" name="MCantidad"  style="width:100%; display:none" placeholder="Ingrese la cantidad..">
 		</div>
 </div>
-	  	
+
 
 <!--
 <button type="button" class="btn btn-primary" id="EnviarDatos" >Guardar Datos</button>
@@ -144,22 +144,22 @@
 <div class="modal fade " id="myModal3" role="dialog">
 	<div class="modal-dialog modal-dialog-centered" role="document" id="dialogo">
 		<!-- Modal content-->
-		<div class="modal-content" id="dialogo">      
+		<div class="modal-content" id="dialogo">
 		    <div class="modal-header">
 		          <h4 class="modal-title">Continuar o Guardar</h4>
 		          <button type="button" class="close" data-dismiss="modal"> &times;</button>
 		    </div>
 
 		    <div class="modal-body">
-		        <p>Desea guardar los cambios realizados?.</p>	
+		        <p>Desea guardar los cambios realizados?.</p>
 		    </div>
 
 		    <div class="modal-footer">
 		        <button type="button" class="btn btn-danger" data-dismiss="modal">No Guardar</button>
 		    	<form method="post">
 					{% csrf_token %}
-						<input id="ObjDatos" style="display:none" type="text" name="ObjDatos">	
-					<button id="benviar" type="submit" class="btn btn-primary" >Guardar y Continuar</button>  
+						<input id="ObjDatos" style="display:none" type="text" name="ObjDatos">
+					<button id="benviar" type="submit" class="btn btn-primary" >Guardar y Continuar</button>
     			</form>
 		    </div>
 		</div>

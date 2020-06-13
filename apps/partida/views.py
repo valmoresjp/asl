@@ -17,11 +17,11 @@ def inicio(request):
 	# ~ print('Pagina de Inicio')
 	registro = PartidasM.objects.values()
 	obj = PartidasM.objects.all()
-	
+
 	contexto = {
 				'obj': obj,
 	            }
-	
+
 	return render (request,'inicio_partida.html', contexto)
 
 @login_required(login_url='/inicio/ingreso')
@@ -60,7 +60,7 @@ def editar(request, idpart):
 		form = PartidasF(request.POST, instance=partidas)
 		if form.is_valid():
 			form.save()
-		return redirect('inicio_partida') 
+		return redirect('inicio_partida')
 	return render(request,'nuevo_partida.html', {'form':form})
 
 @login_required(login_url='/inicio/ingreso')
@@ -74,7 +74,7 @@ def eliminar(request, idpart):
 		for i in PartidaDetallesM.objects.filter(idpart=reg.id):
 			i.delete()
 		reg.delete()
-		
+
 		return redirect(url_ant)
 	else:
 		reg = PartidasM.objects.get(id=idpart)
@@ -87,7 +87,7 @@ def detallar(request, idpart):
 	datos = []
 
 	if request.method =='POST':
-		
+
 		for i in json.loads(request.POST["ObjDatos"]):
 			# ~ print(i)
 			if i['destino'] == "PARTDETLLS":
@@ -95,9 +95,9 @@ def detallar(request, idpart):
 					instance = PartidaDetallesM.objects.filter(idism=i["id"]).update(cant=i["datos"])
 				if i["accion"] == "nuevo":
 					g = PartidaDetallesM(idism=i["id"], idpart=idpart, cant=i["datos"])
-					g.save()					
+					g.save()
 				if i["accion"] == "eliminar":
-					PartidaDetallesM.objects.filter(idpart=idpart).filter(id=i["id"]).delete()			
+					PartidaDetallesM.objects.filter(idpart=idpart).filter(id=i["id"]).delete()
 		total = 0.0
 		# ~ for k in PartidasM.objects.all():
 			# ~ print(k.id)
@@ -107,7 +107,7 @@ def detallar(request, idpart):
 				total = total +  ism.cumedida()*i.cant
 		ss = PartidasM.objects.filter(id=idpart).update(cost=round(total,2))
 		total=0.0
-		
+
 		url = "/partidas/detallar/" + str(idpart) + "/"
 		# ~ print(url)
 		return redirect(url)
@@ -116,25 +116,24 @@ def detallar(request, idpart):
 		total = 0.0
 		for i in PartidaDetallesM.objects.filter(idpart=idpart):
 			ism   = InsumosM.objects.get(id=i.idism)
-			datos.append(	
-					{'pdm_id':     i.id, 
+			datos.append(
+					{'pdm_id':     i.id,
 					 'pdm_codi':   i.idism,
 					 'pdm_codp':   i.idpart,
 					 'pdm_cant':   i.cant,
 					 'ism_id':     ism.id,
 					 'ism_codigo': ism.codigo,
-					 'ism_fingso': ism.fingso,
 					 'ism_descrip': ism.descrip,
 					 'ism_umedida': ism.umedida,
 					 'ism_costo':   ism.cumedida(),
 					 'ism_total':   round(ism.cumedida()*i.cant,2)
 					 })
 			total = total +  ism.cumedida()*i.cant
-			
+
 	# ~ agregar el formset a la variable contexto
 	# ~ contexto['formset'] = formset)
 	# ~ print(datos)
-	contexto['datos'] = datos 
+	contexto['datos'] = datos
 	contexto['partida'] = PartidasM.objects.get(id=idpart)
 	contexto['insumos'] = InsumosM.objects.all()
 	contexto['total'] = round(total,2)
@@ -156,6 +155,6 @@ def detallar(request, idpart):
 	# ~ cmax = insumo.max()
 	# ~ cprom = insumo.prom()
 	# ~ print([cmin, cmax, cprom])
-	
+
 	# ~ return render(request,'itemizado-1.html')
-	
+

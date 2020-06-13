@@ -16,7 +16,7 @@ def inicio(request):
 	contexto = {
 				'obj': obj,
 	            }
-	
+
 	return render (request,'inicio_producto.html', contexto)
 
 @login_required(login_url='/inicio/ingreso')
@@ -44,7 +44,7 @@ def editar(request, idprod ):
 		form = ProductosF(request.POST, instance=producto)
 		if form.is_valid():
 			form.save()
-		return redirect('inicio_producto') 
+		return redirect('inicio_producto')
 	return render(request,'nuevo_producto.html', {'form':form})
 
 @login_required(login_url='/inicio/ingreso')
@@ -57,9 +57,9 @@ def eliminar(request, idprod):
 		return redirect(url_ant)
 	else:
 		reg = ProductosM.objects.get(id=idprod)
-	
+
 	return render(request, 'eliminar_producto.html',{'reg':reg})
-	
+
 def detallar(request, idprod):
 	print("INGRESANDO A DETALLAR: ", idprod)
 	contexto = {}
@@ -81,7 +81,7 @@ def detallar(request, idprod):
 		# ~ print(url)
 		# ~ print(request.POST['ObjDatos'])
 		for i in json.loads(request.POST["ObjDatos"]):
-			
+
 			if i['destino'] == "INSUMOS":
 				if i['accion'] == 'actualizar':
 					# ~ res = ProductosDetallesM.objects.filter(idprd=idprod).filter(idpart=i["id"]).exists()
@@ -96,7 +96,7 @@ def detallar(request, idprod):
 					g.save()
 				if i['accion'] == 'eliminar':
 					ProductosDetallesM.objects.filter(id=i["id"]).delete()
-					
+
 			if i['destino'] == "MAQYHERR":
 				if i['accion'] == 'actualizar':
 					# ~ El registro existe y se actualiza
@@ -104,10 +104,10 @@ def detallar(request, idprod):
 				if i['accion'] == 'nuevo':
 					# ~ El registro no existe, se crea un nuevo registro
 					g = MaquiyHerraM(idism=i["id"], idprd=idprod, cant=i["datos"])
-					g.save()					
+					g.save()
 				if i['accion'] == 'eliminar':
-						MaquiyHerraM.objects.filter(id=i["id"]).delete()				
-				
+						MaquiyHerraM.objects.filter(idprd=idprod).filter(idism=i["id"]).delete()
+
 			if i['destino'] == "CSTSADNLS":
 				if i['accion'] == 'actualizar':
 					# ~ El registro existe y se actualiza
@@ -117,22 +117,22 @@ def detallar(request, idprod):
 					g = CstsAdnlsM(idcstanls=i["id"], idprd=idprod, cant=i["datos"])
 					g.save()
 				if i['accion'] == 'eliminar':
-					CstsAdnlsM.objects.filter(id=i["id"]).delete()		
+					CstsAdnlsM.objects.filter(id=i["id"]).delete()
 
 			if i['destino'] == "TOTALIZAR":
 				ProductosM.objects.filter(id=idprod).update(costo=float(i["datos"]))
-	
+
 		return redirect(url)
-		
+
 	if request.method == 'GET':
 		for i in ProductosDetallesM.objects.filter(idprd=idprod):
 			# ~ print(i.idprd,"  ",i.idpart)
 			if PartidasM.objects.filter(id = i.idpart).exists() == True:
-				part = PartidasM.objects.get(id = i.idpart)			
+				part = PartidasM.objects.get(id = i.idpart)
 				# ~ print(i.idpart)
-				idatos.append(	
+				idatos.append(
 					{'id'      : i.id,
-					 'idpart'  : i.idpart,  
+					 'idpart'  : i.idpart,
 					 'nombre'  : part.nomb,
 					 'umedida' : part.unid,
 					 'cumedida': part.cost,
@@ -140,15 +140,15 @@ def detallar(request, idprod):
 					 'costo'   :    i.cant*part.cost
 					})
 				total = total + i.cant*part.cost
-		totales["prddetlls"] = total
+		totales["prddetlls"] = round(total+0.5,2)
 		totprd = totprd + total
 		total = 0.0
-		
+
 		for i in MaquiyHerraM.objects.all():
 			if InsumosM.objects.filter(id = i.idism).exists() == True:
 				ism = InsumosM.objects.get(id = i.idism) #se debe filtrar con el idsim y que sea tipo MATERIAL
-				mdatos.append(	
-					{'id':       i.id,  
+				mdatos.append(
+					{'id':       ism.id,
 					 'nombre':   ism.descrip,
 					 'umedida':  ism.umedida,
 					 'cumedida': ism.cumedida,
@@ -156,31 +156,40 @@ def detallar(request, idprod):
 					 'costo':    ism.cumedida()*i.cant
 				})
 				total = total + ism.cumedida()*i.cant
-		totales["maqyherr"] = total
+		totales["maqyherr"] = round(total+0.5,2)
 		totprd = totprd + total
 		total = 0.0
-					
+
 		for i in CstsAdnlsM.objects.filter(idprd = idprod):
 
 			if CostosDescripcionM.objects.filter(id = i.idcstanls).exists() == True:
-				cstsadnls = CostosDescripcionM.objects.get(id = i.idcstanls) 
-				cdatos.append(	
-					{'id':       i.id,  
+				cstsadnls = CostosDescripcionM.objects.get(id = i.idcstanls)
+				if cstsadnls.referencia == 'UMED':
+					sbtotal = cstsadnls.cumedida*i.cant
+				if cstsadnls.referencia == 'TINS':
+					sbtotal = (i.cant*totales['prddetlls'])/100
+				if cstsadnls.referencia == 'TMAT':
+					sbtotal = (i.cant*totales['maqyherr'])/100
+				if cstsadnls.referencia == 'TIMA':
+					sbtotal = (i.cant*( totales['maqyherr'] + totales['prddetlls'] ) )/100
+
+				cdatos.append(
+					{'id':       i.id,
 					 'nombre':   cstsadnls.nombre,
 					 'umedida':  cstsadnls.umedida,
 					 'cumedida': cstsadnls.cumedida,
 					 'cantidad': i.cant,
-					 'costo':    cstsadnls.cumedida*i.cant
+					 'costo':    round(sbtotal+0.5,2)
 				})
-				total = total + cstsadnls.cumedida*i.cant
-			
-		totales["cstsadnls"] = total
+				total = total + sbtotal
+
+		totales["cstsadnls"] = round(total+0.5,2)
 		totprd = totprd + total
 		totales['totprd'] = round(totprd,2)
 		total = 0.0
-		
+
 	# ~ print(totales)
-	contexto['producto'] = producto 
+	contexto['producto'] = producto
 	contexto['idatos'] = idatos
 	contexto['mdatos'] = mdatos
 	contexto['cdatos'] = cdatos
@@ -189,5 +198,5 @@ def detallar(request, idprod):
 	contexto['partidas'] =   PartidasM.objects.all()
 	contexto['cstsanls'] =   CostosDescripcionM.objects.all()
 	contexto['totales'] = totales
-	
+
 	return render(request,'detallar_producto.html',contexto)
