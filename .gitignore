@@ -1,2 +1,6 @@
 CambiosRealizados
 db.sqlite3
+*.py[cod]
+*$py.class
+__pycache__/
+

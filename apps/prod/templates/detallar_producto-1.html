@@ -49,7 +49,7 @@
 		  </div
 		  <br>
   	
-   	  	<div id="Insumos_div">		  
+  	  	<div id="Insumos_div" class="table-editable">		  
 			<div class="row">
 				<div class="col-md-9">
 		   	  		<div class="card bg-light text-dark">
@@ -109,6 +109,9 @@
 							{% for i in partidas %}
 								<tr id="partida_{{ i.id }}" title="Presione para agregar a la partida" data-toggle="tooltip"  onclick="SelTblListar(this)">
 									<td >{{ i.id }}</td>
+	<!--
+									<td >{{ i.codp}}</td>
+	-->
 									<td>{{ i.nomb }}</td>
 									<td>{{ i.unid }}</td>
 									<td>{{ i.cost }}</td> 
@@ -117,10 +120,9 @@
 						</tbody>
 				</table>
 			</div>
-	  	
 	  	</div>
- 	  	
-  	  	<div id="Materiales_div">		  
+  	  	
+  	  	<div id="Materiales_div" class="table-editable">		  
 			<div class="row">
 				<div class="col-md-9">
 		   	  		<div class="card bg-light text-dark">
@@ -167,34 +169,38 @@
 		   </div>	   
 			
 			<div id="Materiales_lis"   style="width:70%; background-color:lightgray; display:none">
-				<table id="Materiales_agr" class="table lista">
-					<thead>
-							<tr>
-								<th style=" width: 5%;">ID</th>
-								<th style=" width: 45%;">DESCRIPCION</th>
-								<th style=" width: 10%;">U. MEDIDA</th>
-								<th style=" width: 15%;">COSTO/UNIDAD</th>
-								<th style=" width: 10%;">C. MAX</th>
+			<table id="Materiales_agr" class="table lista">
+				<thead>
+					    <tr>
+							<th style=" width: 5%;">ID</th>
+							<th style=" width: 45%;">DESCRIPCION</th>
+							<th style=" width: 10%;">U. MEDIDA</th>
+							<th style=" width: 15%;">COSTO/UNIDAD</th>
+							<th style=" width: 10%;">C. MAX</th>
+					    </tr>
+					    
+				 </thead>
+				<tbody>
+					{% for i in insumos %}
+							<tr id="insumo_{{ i.id }}" title="Presione para agregar material" data-toggle="tooltip" onclick="SelTblListar(this)" >
+								<td >{{ i.id }}</td>
+<!--
+							    <td >{{ i.codigo }}</td>
+-->
+							    <td >{{ i.descrip }}</td>
+							    <td>{{ i.umedida }}</td>
+							    <td>{{ i.cumedida }}</td>
+							    <td>{{ i.max }}</td> 
 							</tr>
-							
-					</thead>
-					<tbody>
-						{% for i in insumos %}
-								<tr id="insumo_{{ i.id }}" title="Presione para agregar material" data-toggle="tooltip" onclick="SelTblListar(this)" >
-									<td >{{ i.id }}</td>
-									<td >{{ i.descrip }}</td>
-									<td>{{ i.umedida }}</td>
-									<td>{{ i.cumedida }}</td>
-									<td>{{ i.max }}</td> 
-								</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
+					{% endfor %}
+				/tbody>
+			</table>
+		</div>
 	  	
 	  	</div>
-
-		<div id="CostosAdicionales_div">
+		</div>
+	    
+	    <div id="CostosAdicionales_div" class="table-editable">		  
 			<div class="row">
 				<div class="col-md-9">
 		   	  		<div class="card bg-light text-dark">
@@ -209,8 +215,8 @@
 		  			</div>	
 				</div>
 		   </div>
-			
-			<div id="__Otros-costos_prd" class="collapse">
+
+		   <div id="__Otros-costos_prd" class="collapse">
 				<table id="CostosAdicionales_dat" class="table datos">
 					<thead >
 						<tr>
@@ -268,8 +274,6 @@
 				</table>
 			</div>	   
 		
-			
-			
 		</div>
 
 		<div id="Utilidades_div" class="table-editable">		  
@@ -283,71 +287,17 @@
 				</div>	   		
 		   		<div class="col-md-3">
 		   	  		<div class="card bg-light text-dark">
-		    			<div class="card-body"><p id="Utilidades_tot" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.utilidades }}</p></div>
+		    			<div class="card-body"><p id="Utilidades_tot" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.maqyherr }}</p></div>
 		  			</div>	
 				</div>
 		   </div>
-		   
-		   <div id="__Utilidades_prd" class="collapse">
-				<table id="Utilidades_dat" class="table datos">
-					<thead >
-						<tr>
-							<th style=" width: 5%;">ID</th>
-							<th style=" width: 45%;">DESCRIPCION</th>
-							<th style=" width: 10%;">U. MEDIDA</th>
-							<th style=" width: 10%;">COSTO/UNIDAD</th>
-							<th style=" width: 10%;">CANTIDAD</th>
-							<th style=" width: 10%;">SUBTOTAL</th>
-							<th style=" width: 10%; display:none;">REF</th>
-						</tr>
-					</thead>
-					<tbody >
-						{% for i in udatos %}
-							<tr id="otrs-{{ i.id }}" name="regn" >
-								<td >{{ i.id }} </td>
-								<td >{{ i.nombre }}</td>
-								<td > {{ i.umedida}}</td>
-								<td > {{ i.cumedida}}</td>
-								<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>
-								<td > {{ i.costo }}</td>
-								<td style="display:none;"> {{ i.referencia }}</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-				<i id="btnAgregar" onclick="AgregarRegistro(this)" name="Otros-costos" class="fa fa-plus-square  fa-2x" aria-hidden="true" style="color:green"></i>
-				<i id="btnEliminar" onclick="EliminarRegistro(this)" name="Otros-costos" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 			
-		   </div>
-			
-			<div id="Utilidades_lis"  style="width:70%; background-color:lightgray; display:none">
-				<table id="Utilidades_agr" class="table lista">
-					<thead>
-								<tr>
-									<th style=" width: 5%;">ID</th>
-									<th style=" width: 45%;">DESCRIPCION</th>
-									<th style=" width: 10%;">U. MEDIDA</th>
-									<th style=" width: 15%;">COSTO/UNIDAD</th>
-									<th style=" width: 15%;">REFERENCIA</th>
-								
-								</tr>
-					</thead>
-					<tbody>
-							{% for i in utilidades %}
-									<tr id="csts_{{ i.id }}" title="Presione para agregar costos..." data-toggle="tooltip" onclick="SelTblListar(this)" >
-										<td >{{ i.id }}</td>
-										<td >{{ i.nombre }}</td>
-										<td>{{ i.umedida }}</td>
-										<td>{{ i.cumedida }}</td>
-										<td>{{ i.referencia }}</td>
-									</tr>
-							{% endfor %}
-						</tbody>
-				</table>
-			</div>	
-		   
-		   
 		</div>
-		<button id="export-btn" class="btn btn-primary">Guardar Registros</button>
+	    
+	  	<button id="export-btn" class="btn btn-primary">Guardar Registros</button>
+	  	
+		<div id="ModificarCantidad"  style="width:25%; background-color:blue; display:none position: relative;">
+			<input id="MCantidad" type="text" name="MCantidad"  style="width:100%; display:none" placeholder="Ingrese lA cantidad..">
+		</div>
 </div>
 	  	
 <!-- Modal -->

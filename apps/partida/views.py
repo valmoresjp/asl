@@ -123,7 +123,6 @@ def detallar(request, idpart):
 					 'pdm_cant':   i.cant,
 					 'ism_id':     ism.id,
 					 'ism_codigo': ism.codigo,
-					 'ism_fingso': ism.fingso,
 					 'ism_descrip': ism.descrip,
 					 'ism_umedida': ism.umedida,
 					 'ism_costo':   ism.cumedida(),

@@ -13,14 +13,10 @@
 {% block content %}
 <div class="container-fluid">
 		
-		<div id="table_clon">
+	<div id="table_clon">
 		    <table id="TablaClon" class="table">
 		      	<tr class="hide" name="regn" >
-
 		    		<td ></td>
-<!--
-		    		<td class="col-sm-1" ></td>
--->
 					<td title="Escriba la descripcion del producto..." data-toggle="tooltip"></td>
 					<td ></td>
 					<td ></td>
@@ -30,57 +26,50 @@
 		    </table>
 	  	</div>
   	
-  		<div class="card bg-primary text-white" >
+  			<div class="card bg-primary text-white" >
 			  <div class="row">
 				  <div class="col-md-9">
 					<div class="card-body" style="font-size: 28px; font-weight: bold; font-style: Arial">COSTO TOTAL</div>
 				  </div>
 				  <div class="col-md-3">
-	    			<div class="card-body"><p id="costo_partida" style="font-size: 28px; text-align: right;font-weight: bold; font-style: Arial">{{ total }}</p></div>
+	    			<div class="card-body"><p id="costo_total" style="font-size: 28px; text-align: right;font-weight: bold; font-style: Arial">{{ total }}</p></div>
 				</div>
 			  </div>
-		  </div>
+		  </div
 		  <br>
   	
-  	  	<div id="table_materiales" class="table-editable">		  
+   	  	<div id="Partidas_div">		  
 			<div class="row">
 				<div class="col-md-9">
 		   	  		<div class="card bg-light text-dark">
 		    			<div class="card-body">
-							<button id="Ingrt" name="Ingrediente_partida" onclick="SeleccionarTabla(this)" type="button" class="btn btn-link"  data-target="#__Ingrediente_partida" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">INGREDIENTES</button>
+		    				<button id="Partidas_sel" name="Partidas_prt" onclick="SeleccionarTabla(this)" type="button" class="btn btn-link"  data-target="#__Partidas_prt" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">INGREDIENTES</button>
 		    			</div>
 		  			</div>
 				</div>	   		
 		   		<div class="col-md-3">
 		   	  		<div class="card bg-light text-dark">
-		    			<div class="card-body"><p id="total_ingrediente_partida" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ total }}</p></div>
+		    			<div class="card-body"><p id="Partidas_tot" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ total }}</p></div>
 		  			</div>	
 				</div>
 		   </div>
 
-		   <div id="__Ingrediente_partida" class="collapse">
-		   	 <table id="Ingrediente_partida" class="table ">
-				<thead >
+			<div id="__Partidas_prt" class="collapse">
+				<table id="Partidas_dat" class="table datos">
+					<thead >
 		    		<tr>
 		    		    <th style=" width: 5%;">ID</th>
-<!--
-		    		    <th class="col-sm-1">CODIGO</th>
--->
 					    <th style=" width: 45%;">DESCRIPCIÓN</th>
-					    <th style=" width: 5%;">UNIDAD</th>
-					   	<th style=" width: 15%;">PRECIO UNITARIO</th>
+					    <th style=" width: 5%;">U. MEDIDA</th>
+					   	<th style=" width: 15%;">COSTO/UNIDAD</th>
 					   	<th style=" width: 15%;">CANTIDAD</th>
-					   	<th style=" width: 15%;">PRECIO TOTAL</th>
+					   	<th style=" width: 15%;">SUBTOTAL</th>
 		      		</tr>
 		    	</thead>
-		    	<tbody >
-					
+					<tbody >
 					{% for i in datos %}
 						<tr id="ingr-{{i.pdm_id}}" name="regn" >
 							<td >{{ i.ism_id }} </td>
-<!--
-							<td class="col-sm-1" >{{ i.ism_codigo }}</td>
--->
 							<td title="Escriba la descripcion del producto..." data-toggle="tooltip">{{ i.ism_descrip }}</td>
 							<td >{{ i.ism_umedida }}</td>
 							<td >{{ i.ism_costo}}</td>
@@ -89,48 +78,38 @@
 						</tr>
 					{% endfor %}
 		    	</tbody>
-		    </table>
-
-       		<i id="btnAgregar" onclick="AgregarRegistro(this)" name="_prd" class="fa fa-plus-square fa-2x" aria-hidden="true" style="color:green"></i>
-			<i id="btnEliminar" onclick="EliminarRegistro(this)" name="Ingrediente_partida" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 		   
-               			
+				</table>
+				<i id="btnAgregar_prt" onclick="AgregarRegistro(this)" name="Partidas_prt" class="fa fa-plus-square  fa-2x" aria-hidden="true" style="color:green"></i>
+				<i id="btnEliminar_prt" onclick="EliminarRegistro(this)" name="Partidas_prt" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 		
 		   </div>	   
-	  	</div>
-	    
-	  	<button id="export-btn" class="btn btn-primary">Guardar Registros</button>
 	  	
-	  	<div id="linsumos"  style="width:70%; background-color:lightgray; display:none">
-			<i id="btnAgregar" onclick="CerrarLista(this)" name="_prd" class="fa fa-window-close fa-2x" aria-hidden="true" style="color:green"></i>
-
-			<table id="TablaInsumos" class="table">
-				<thead>
-					    <tr>
-				    		<th style=" width: 5%;">ID</th>
-							<th style=" width: 45%;">DESCRIPCION</th>
-							<th style=" width: 10%;">U. MEDIDA</th>
-							<th style=" width: 15%;">COSTO/UNIDAD</th>
-					    </tr>
-					    
-				 </thead>
-				<tbody>
-					{% for i in insumos %}
-							<tr id="insumo_{{ i.id }}" title="Presione para agregar material" data-toggle="tooltip" onclick="SelTblListar(this)" >
-								<td >{{ i.id }}</td>
-<!--
-							    <td >{{ i.codigo }}</td>
--->
-							    <td >{{ i.descrip }}</td>
-							    <td>{{ i.umedida }}</td>
-							    <td>{{ i.cumedida }}</td>
-<!--
-							    <td>{{ i.max }}</td> 
--->
+	  		<div id="Partidas_lis"  style="width:70%; background-color:lightgray; display:none">
+				<table id="Partidas_agr" class="table lista">
+					<thead>
+							<tr>
+								<th style=" width: 5%;">ID</th>
+								<th style=" width: 45%;">DESCRIPCION</th>
+								<th style=" width: 10%;">U. MEDIDA</th>
+								<th style=" width: 15%;">COSTO/UNIDAD</th>
 							</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-
+							
+					 </thead>
+						 <tbody> 
+							{% for i in insumos %}
+									<tr id="insumo_{{ i.id }}" title="Presione para agregar material" data-toggle="tooltip" onclick="SelTblListar(this)" >
+										<td >{{ i.id }}</td>
+										<td >{{ i.descrip }}</td>
+										<td>{{ i.umedida }}</td>
+										<td>{{ i.cumedida }}</td>
+									</tr>
+							{% endfor %}
+						</tbody>
+				</table>
+			</div>
+	  	
+	  	</div>
+  	
+		<button id="export-btn" class="btn btn-primary">Guardar Registros</button>
 		<div id="ModificarCantidad"  style="width:25%; background-color:blue; display:none position: relative;">
 			<input id="MCantidad" type="text" name="MCantidad"  style="width:100%; display:none" placeholder="Ingrese la cantidad..">
 		</div>
