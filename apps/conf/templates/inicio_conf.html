@@ -34,8 +34,8 @@
                 {% for reg in registro %}
 					<tr>
 						<td>
-                            <a class="edit" href="{% url 'editar_conf' idconf=reg.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-pen-square fa-2x" aria-hidden="true" style="color:green"></i></a>
-                            <a class="delete" href="{% url 'eliminar_conf' idconf=reg.id %}" title="Eliminar" data-toggle="tooltip"><i class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> </a>
+                            <a class="edit" href="{% url 'editar_conf' idconf=reg.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-edit fa-1x" aria-hidden="true" style="color:green"></i></a>
+                            <a class="delete" href="{% url 'eliminar_conf' idconf=reg.id %}" title="Eliminar" data-toggle="tooltip"><i class="fa fa-trash fa-1x" aria-hidden="true" style="color:red"></i> </a>
                         </td>
 						<td >{{ reg.nombre }}</td>
 						<td >{{ reg.umedida }}</td>

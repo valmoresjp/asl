@@ -10,7 +10,6 @@ var ObjDatos=[];//{'accion':"", "id":-1, "datos":[-1]}
 var ID_TBL_ACT=null;  // almacena el id de la tabla activa, es decir en uso
 var TBL_LISTA = null;      // almacena el id de la tabla para listar
 var DIV_LISTA = null;      // almacena el id del div que contiene TBL_LISTA
-var $CLD_LISTAR = null;     // almacena el id de la celda donde se requiere listar TBL_LISTA
 var VALOR_TMP = null;
 var DATOS = {'cant':-1, 'cumedida':-1, 'total':-1}
 var TOTAL = null; // almacena el id de la celda que muestra el total
@@ -21,30 +20,31 @@ var REF =[]; // almacena las celdas de referencia para calculo que sean expresad
 var REGS=[]; // almacena todos los objetos que se agregan
 var Conf = [];
 var Conf_datos = {
-	div 		: null;
-	tbl 		: null;
-	destino		: null;
-	id_tbl_act  : null;
-	tbl_lista	: null;
-	div_lista	: null;
-	cld_lista	: null;
-	ref_cld 	: {'cantidad':-1, 'cumedida':-1, 'total':-1, 'cld_listar': -1,'referencia':-1};
-	cld_total   : null;
-	subtotal 	: null;
-	subtotales	: [];
+	div 		: null,
+	ref 		: null,
+	tbl 		: null,
+	destino		: null,
+	id_tbl_act  : null,
+	tbl_lista	: null,
+	div_lista	: null,
+	cld_lista	: null,
+	cld_ref 	: {'cantidad':-1, 'cumedida':-1, 'total':-1, 'cld_listar': -1,'referencia':-1},
+	total   : null,
+	subtotal 	: null,
+	subtotales	: [],
 	limpiar:function(){
-					div 		: null;
-					tbl 		: null;
-					destino		: null;
-					id_tbl_act  : null;
-					tbl_lista	: null;
-					div_lista	: null;
-					cld_lista	: null;
-					ref_cld 	: {'cantidad':-1, 'cumedida':-1, 'total':-1, 'cld_listar': -1,'referencia':-1};
-					cld_total   : null;
-					subtotal 	: null;
-					subtotales	: [];
-		
+					this.div 		= null;
+					this.ref 		= null;
+					this.tbl 		= null;
+					this.destino		= null;
+					this.id_tbl_act  = null;
+					this.tbl_lista	= null;
+					this.div_lista	= null;
+					this.cld_lista	= null;
+					this.cld_ref 	= {'cantidad':-1, 'cumedida':-1, 'total':-1, 'cld_listar': -1,'referencia':-1};
+					this.total   = null;
+					this.subtotal 	= null;
+					this.subtotales	= [];
 	}
 };
 
@@ -57,22 +57,19 @@ var registros = {
 		tipo:"",
 		accion:"",
 		tabla:"",
-		idcumedida :[],
+		$idcumedida :"",
 		asignar_cantidad: function(){
 							this.$idcant.text(((parseFloat(this.cantidad)).toFixed(2)).toString().replace(".",",") );
 							this.total();
-							//~ console.log("Cantidad: " +  this.cantidad);
+							console.log("Cantidad: " +  this.cantidad);
 						},
 		total : function(){
 					var total= 0.0;
-					var r = this.idcumedida.entries();
-					for ( i=0;i<this.idcumedida.length;i++){
-						total = total + parseFloat(this.cantidad)*parseFloat($(this.idcumedida[i]).text().replace(",","."));
-						//~ console.log("Total: " + total +  "   " + this.cantidad + "    " + parseFloat($(this.idcumedida[i]).text().replace(",",".")));
-					}
-					total = total + 0.5;
-					total = (this.tipo == 'UMED'? total : total/100);
+					console.log(this.$idcumedida.html());
+					total = parseFloat(this.cantidad)*parseFloat(this.$idcumedida.html().replace(",","."));
+					//~ total = total + 0.5;
 					this.$idtotal.text((total.toFixed(2)).toString().replace(".",","));
+					console.log(this.cantidad + "  "+ $(this.$idcumedida).text() + " = " + total);
 				},
 		limpiar:function(){
 					this.$idreg ="";
@@ -80,20 +77,19 @@ var registros = {
 					this.$idcant="";
 					this.cantidad="1";
 					this.tipo="";
-					this.idcumedida=[];
+					this.$idcumedida;
 				}
 };
 
 document.body.addEventListener("keydown", function(event) {
+	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
   if (event.code === 'Escape' || event.keyCode === 27) {
     // Aqui la lógica para el caso de Escape ...
     if ( count_esc == 0 ){
-		$(DIV_LISTA).css("display","none");		
-		$("#Blistar").removeClass("modificando_lista");
+		//~ console.log("escapando  " + '#'+tbl_act.div_lista);
+		$('#'+tbl_act.div_lista).css("display","none");		
+		$("#Blistar").parent().removeClass("modificando_lista");
 		$("#Blistar").remove();
-		
-		//~ EliminarRegistro($('.seleccionado').attr("id"));
-		cotn_esc = 0;
 	}
 
   }
@@ -101,9 +97,10 @@ document.body.addEventListener("keydown", function(event) {
 
 function Existentes(id_reg){
 	//~ Verifica la existencia del registro que se quiere agregar
+	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
 	var existe = -1;
-	//~ console.log("Registro: " + id_reg+ "  " + ID_TBL_ACT);
-	$(ID_TBL_ACT + " > tbody > tr").each(function(i, elemento){
+	//~ console.log("Registro: " + id_reg + "  " + '#'+tbl_act.tbl);
+	$('#'+tbl_act.tbl + " > tbody > tr").each(function(i, elemento){
 		if ( $(elemento).find("td").eq(1).text() === id_reg ){
 			existe = $(elemento).attr("id");
 			return false;
@@ -115,13 +112,14 @@ function Existentes(id_reg){
 function FiltrarInsumos(patron="") {
 	//~ Filtra la tabla activa 
 	var input, filter, table, tr, td, i, txtValue;
+	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
 	
   filter = patron.toUpperCase(); //input.value.toUpperCase();
-  table = document.getElementById(TBL_LISTA);
+  table = document.getElementById(tbl_act.tbl_lista);
   tr = table.getElementsByTagName("tr");
   // Filtra la tabla de acuerdo al patron ingresado
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[DATOS['cld_listar']-1];
+    td = tr[i].getElementsByTagName("td")[tbl_act.cld_ref['cld_listar']-1];
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -140,14 +138,15 @@ function Listar(id){
 	//~ console.log("Keypress...filtrando productos");	
     var pos = {};
 	var rect = $(id).position();
+	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
 
 	pos.ancho = $(id).width();
 	pos.alto  = $(id).height();
 	pos.x     = window.scrollY + id.getBoundingClientRect().top  + pos.alto + 10;
 	pos.y     = window.scrollX + id.getBoundingClientRect().left;
-	$(DIV_LISTA).offset({top:pos.x,left:pos.y});	
+	$('#'+tbl_act.div_lista).offset({top:pos.x,left:pos.y});	
 	FiltrarInsumos($(id).val());
-	$(DIV_LISTA).show();
+	$('#'+tbl_act.div_lista).show();
 }
 
 function ModificarCantidad(id){
@@ -156,7 +155,10 @@ function ModificarCantidad(id){
 	var rect = $(id).position();
 	var input = "<input id='MCantidad' type='text' name='MCantidad'  style='width:100%;' text-align:right; placeholder='Ingrese la cantidad..'>";
 	var VALOR_TMP = $(id).html();
-
+	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
+	var idtd=$(id);
+	var idtr=$(id).parent();
+	
 	if ( !$(id).hasClass("modificando_cant") ) {
 
 		$(id).addClass("modificando_cant");
@@ -165,10 +167,13 @@ function ModificarCantidad(id){
 		$("#MCantidad").val(VALOR_TMP);
 		
 		$("#MCantidad").keyup(function(e){
-			//~ var valor = 
+			//~ console.log(e.which);
+
 			if (e.which == 13){
+				//~ console.log($(this).val());
 				//~ $(".modificando_cant").text($(this).val());
 				var a = REGS.find(function(element){ return element.$idreg.attr("id") == $(".modificando_cant").parent().attr("id") });
+
 				if ( !a ){
 					//~  el registro no existe y es almacenado para calculos
 					// quiere decir que este ya existe en la BD
@@ -179,31 +184,34 @@ function ModificarCantidad(id){
 					registros.$idtotal = registros.$idreg.find("td").eq(5);
 					registros.$idcant  = registros.$idreg.find("td").eq(4);
 					registros.tipo     = registros.$idreg.find("td").eq(4) != "%" ? "UMED" : "%" ;
-					registros.idcumedida.push( registros.$idreg.find("td").eq(3) );
+					registros.$idcumedida = registros.$idreg.find("td").eq(3);
+					
 					registros.cantidad = parseFloat($(this).val().replace(",","."));
 					registros.asignar_cantidad();
 					registros.accion   = registros.accion == "nuevo" ? 'nuevo' : 'actualizar'
-					registros.tabla=DESTINO;
+					registros.tabla=tbl_act.destino;
 					
 					REGS.push($.extend( {}, registros ));// copia el objeto dentro de REGS
 					registros.limpiar();
 				}else{
+					//~ console.log("Registro existe");
 					// el registro no existe en la BD y se esta agregando nuevo
-					a.idbd  = parseInt(a.$idreg.find("td").eq(0).html());
+					a.idbd  = parseInt(idtr.find("td").eq(0).html());
 					a.cantidad      = parseFloat($(this).val().replace(",","."));
 					a.asignar_cantidad();
 				}
 		
 				CalculoTotal();
-				$(this).val("");
-				$(".modificando_cant").removeClass("modificando_cant");
-				$("#MCantidad").hide();
+				//~ $(this).val("");
+				
+				$("#MCantidad").remove();
+				$(id).removeClass("modificando_cant") ;
 			}
 			if (e.which == 27){
-				$(".modificando_cant").text(VALOR_TMP);
-				$(this).val("");
-				$(".modificando_cant").removeClass("modificando_cant");
-				$("#MCantidad").hide();
+				$(id).text(VALOR_TMP);
+				$("#MCantidad").val("");
+				$(id).removeClass("modificando_cant");
+				$("#MCantidad").remove();
 				VALOR_TMP = null;
 			}
 			
@@ -218,103 +226,93 @@ function SelTblListar(idreg){
 	
 	var campo = [];
 	var id;
+	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
+	
 	$(idreg).find("td").each(function(i,e){
 		campo.push($(e).html());
 	});
-	
-	if (Existentes(campo[DATOS['cld_listar']-1]) == -1){
-		if ( ID_TBL_ACT == "#Insumos_prd" ){
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(0).text(campo[0]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child')).find("td").eq(1).text(campo[1]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child')).find("td").eq(2).text(campo[2]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child')).find("td").eq(3).text(campo[3]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child')).find("td").eq(4).text(1);
-			id = $( $(ID_TBL_ACT + ' tbody tr:last-child')).find("td").eq(4);
+	//~ console.log(campo);
+	//~ console.log("Entro:"+'#'+tbl_act.tbl);
+	if (Existentes(campo[tbl_act.cld_ref['cld_listar']-1]) == -1){
+			
+			$('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(0).text(campo[0]);
+			$('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(1).text(campo[1]);
+			$('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(2).text(campo[2]);
+			$('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(3).text(campo[3]);		
+			//~ var a = REGS.find(function(element){ return element.$idreg.attr("id") == $('#'+tbl_act.tbl+ ' tbody tr:last').attr("id") });
+			
+			
+		if ( tbl_act.tbl == "Insumos_dat" ){
+
+			$('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4).text(1);
+			id = $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(4);
 			registros.idbd = campo[0];
-			registros.$idreg   = $(ID_TBL_ACT + ' tbody tr:last')
-			registros.$idtotal = $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(5);
-			registros.$idcant  = $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(4);
+			registros.$idreg   = $('#'+tbl_act.tbl + ' tbody tr:last')
+			registros.$idtotal = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(5);
+			registros.$idcant  = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4);
 			registros.tipo = 'UMED';
-			registros.idcumedida.push( $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(3) );
+			registros.$idcumedida =  $('#'+tbl_act.tbl +' tbody tr:last-child').find("td").eq(3) ;
 		}
-		if ( ID_TBL_ACT == "#Materiales_prd" ){
-			$( $(ID_TBL_ACT + ' tbody tr:last') ).find("td").eq(0).text(campo[0]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(1).text(campo[1]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(2).text(campo[2]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(3).text(campo[3]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(4).text(1);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(5).text(campo[4]);
-			id = $( $(ID_TBL_ACT + ' tbody tr:last-child')).find("td").eq(4);
+		if ( tbl_act.tbl == "Materiales_dat" ){
+			
+			$('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4).text(1);
+			$('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(5).text(campo[4]);
+			id = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4);
 			registros.idbd = campo[0];
-			registros.$idreg   = $(ID_TBL_ACT + ' tbody tr:last')
-			registros.$idtotal = $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(5);
-			registros.$idcant  = $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(4);
+			registros.$idreg   = $('#'+tbl_act.tbl + ' tbody tr:last')
+			registros.$idtotal = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(5);
+			registros.$idcant  = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4);
 			registros.tipo = 'UMED';
-			registros.idcumedida.push( $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(3) );
+			registros.$idcumedida =  $('#'+tbl_act.tbl +' tbody tr:last-child').find("td").eq(3) ;
 		}
-		if ( ID_TBL_ACT == "#Otros-costos_prd" ){
-			$( $(ID_TBL_ACT + ' tbody tr:last') ).find("td").eq(0).text(campo[0]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(1).text(campo[1]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(2).text(campo[2]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(3).text(campo[3]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(4).text(1);
+		if ( tbl_act.tbl == "CostosAdicionales_dat" ){
+			$('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4).text(1);
 			registros.idbd = campo[0];
-			registros.$idreg   = $(ID_TBL_ACT + ' tbody tr:last')
-			registros.$idtotal = $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(5);
-			registros.$idcant  = $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(4);
+			registros.$idreg   = $('#'+tbl_act.tbl + ' tbody tr:last')
+			registros.$idtotal = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(5);
+			registros.$idcant  = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4);
 			registros.tipo = campo[4];
-	
-				if ( registros.tipo  === 'UMED' ){
-					registros.idcumedida.push( $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(3) );
-				}
-				if ( registros.tipo === 'TINS' ){
-					registros.idcumedida.push('#total_insumo_prd');
-				}
-				if ( registros.tipo === 'TMAT' ){
-					registros.idcumedida.push('#total_materiales_prd');
-				}
-				if ( registros.tipo === 'TIMA' ){
-					registros.idcumedida.push('#total_insumo_prd');
-					registros.idcumedida.push('#total_materiales_prd');
-				}
+			registros.$idcumedida =  $('#'+tbl_act.tbl +' tbody tr:last-child').find("td").eq(3) ;
 				
-			id = $( $(ID_TBL_ACT + ' tbody tr:last-child')).find("td").eq(4);
+			id = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4);
 		}
-		if ( ID_TBL_ACT == "#Ingrediente_partida" ){
-			//~ console.log("----------");
-			$( $(ID_TBL_ACT + ' tbody tr:last') ).find("td").eq(0).text(campo[0]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(1).text(campo[1]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(2).text(campo[2]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(3).text(campo[3]);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(4).text(1);
-			$( $(ID_TBL_ACT + ' tbody tr:last-child') ).find("td").eq(5).text(1);
-			id = $( $(ID_TBL_ACT + ' tbody tr:last-child')).find("td").eq(5);
+		if ( tbl_act.tbl == "Partidas_dat" ){
+			$( '#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4).text(1);
+			$( '#'+tbl_act.tbl+ ' tbody tr:last-child').find("td").eq(5).text(campo[3]);
+			id = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(5);
 			registros.idbd = campo[0];
-			registros.$idreg   = $(ID_TBL_ACT + ' tbody tr:last')
-			registros.$idtotal = $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(5);
-			registros.$idcant  = $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(4);
+			registros.$idreg   = $('#'+tbl_act.tbl+ ' tbody tr:last')
+			registros.$idtotal = $('#'+tbl_act.tbl+ ' tbody tr:last-child').find("td").eq(5);
+			registros.$idcant  = $('#'+tbl_act.tbl+ ' tbody tr:last-child').find("td").eq(4);
 			registros.tipo = 'UMED';
-			registros.idcumedida.push( $(ID_TBL_ACT + ' tbody tr:last-child').find("td").eq(3) );
+			registros.$idcumedida =  $('#'+tbl_act.tbl +' tbody tr:last-child').find("td").eq(3) ;
 			
 		}
-		$("#Blistar").removeClass("modificando_lista");
+		if ( tbl_act.tbl == "Utilidades_dat" ){
+			$('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4).text(1);
+			id = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4);
+			registros.idbd = campo[0];
+			registros.$idreg   = $('#'+tbl_act.tbl + ' tbody tr:last')
+			registros.$idtotal = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(5);
+			registros.$idcant  = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4);
+			registros.tipo = 'UMED';
+			registros.$idcumedida =  $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(3);
+		}
+		$("#Blistar").parent().removeClass("modificando_lista");
 		$("#Blistar").remove();
-		$( $(DIV_LISTA) ).hide();
-		registros.tabla=DESTINO;
+		$( $('#'+tbl_act.div_lista) ).hide();
+		registros.tabla=tbl_act.destino;
 		registros.accion="nuevo";
 		registros.total();
 		REGS.push($.extend( {}, registros ));// copia el objeto dentro de REGS
 		registros.limpiar();
 		
-		//~ CalculoTotalRegistro(id);
 		CalculoTotal();
 		SeleccionarRegistro($(".seleccionado"));
 		
-		//~ console.log("SALIENDO: Seleccionando datos de la lista...");
 	}else{
 			$("#linsumos").hide();
 			alert("El registro que desea agregar ya existe...");
-			
 	}
 }
 
@@ -325,41 +323,57 @@ function CalculoTotal(){
 	var valor = 0.0;
 	var total = 0.0;
 	var ref=null;
+	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
 	//~ console.log("Calculo del Total");
 	TABLAS = ['Insumos_prd', 'Materiales_prd', 'Otros-costos_prd']
-	 
+	//~ console.log("SBTOTAL:");
+	//~ console.log(sbtotal);
+	sbtotal={};
+	$("p[id$='_tot']").each(function(i,elemento){
+		$(elemento).html("0.0");
+	});
+	
 	$('.datos  > tbody > tr').each(function(i,elemento){
-		if (TABLAS.find(element => element == $(elemento).parent().parent().attr("id") ) ){
-			idtbl = $(elemento).parent().parent().attr("id");
+
+			idtbl = $(elemento).parent().parent().attr("id")
+			idtbl = idtbl.substr(0,idtbl.length - 4);
 			
-			//~ sbtotal[idtbl] = sbtotal[idtbl] == undefined ? 0 : sbtotal[idtbl];
-			valor  = parseFloat( $(elemento).find("td").eq(DATOS['total']).text().replace(",","."));
-			
-			console.log($(elemento).find("td:last").text().replace(",","."));
-			ref = $(elemento).find("td:last").text().replace(",",".");
-			               
+			valor  = parseFloat( $(elemento).find("td").eq(5).text().replace(",","."));
+			//~ ref = $(elemento).find("td:last").text().replace(",",".");
+			//~ console.log(idtbl + " ---  " + sbtotal[idtbl] );
 			sbtotal[idtbl] = sbtotal[idtbl] == undefined ? 0 : sbtotal[idtbl]
-			if ( ref === "UMED" ){
-				sbtotal[idtbl] = sbtotal[idtbl] +  valor + 0.5;
-			}
-			if ( ref === "TINS" ){
-				total = total + sbtotal[idtbl]*DATOS['cant']/100;
-			}
-			if ( ref === "TMAT" ){
-				total = total + sbtotal[idtbl];
-			}
-			if ( ref === "TIMA" ){
-				total = total + sbtotal[idtbl];
-			}
-			$( "#total_" + idtbl ).html(sbtotal[idtbl].toFixed(2).replace(".",","));
-			total = total + sbtotal[idtbl];
+			sbtotal[idtbl] = sbtotal[idtbl] +  valor;
+			//~ console.log(idtbl + " " + valor+ "  " + sbtotal[idtbl] );
+			$( "#" + idtbl + "_tot" ).html(sbtotal[idtbl].toFixed(2).replace(".",","));
+			//~ sbtotal.total = sbtotal.total + sbtotal[idtbl];
+	});
+	console.log(sbtotal);
+	total =0.0;
+	sbtotal.Utilidades = 0.0;
+	for ( i in sbtotal){
+		console.log(i + "  " + sbtotal[i]);
+		total = total + sbtotal[i];
+	}
+	sbtotal.total = total;
+	//~ sbtotal.total = total;
+	
+	console.log(sbtotal);
+	$('#Utilidades_dat  > tbody > tr').each(function(i,elemento){
+		//~ console.log($(elemento).find('td').eq(1).html());
+		if( $(elemento).find('td').eq(1).html().toUpperCase() == "UTILIDADES" ){
+			porcentaje = parseFloat( $(elemento).find('td').eq(4).html().replace(",",".") );
+			sbtotal.Utilidades = (porcentaje*sbtotal.total)/100;
+			//~ console.log(porcentaje + "   " + sbtotal.total);
 		}
 	});
-	sbtotal.total = total.toFixed(2);
-	console.log(sbtotal);
-
-	total_prod = total.toFixed(2).replace(".",",");
-	$( TOTAL ).html(total_prod);
+	sbtotal.total = (sbtotal.total + sbtotal.Utilidades).toFixed(2);
+	sbtotal.Utilidades = sbtotal.Utilidades.toFixed(2);
+	//~ console.log(sbtotal);
+	//~ Utilidades_tot
+	//~ console.log(sbtotal.total);
+	$( "#costo_total" ).text(sbtotal.total.replace(".",","));
+	$('#Utilidades_dat  > tbody > tr').find("td").eq(5).html(sbtotal.Utilidades.toString().replace(".",","));
+	$( "#Utilidades_tot" ).text(sbtotal.Utilidades.toString().replace(".",","));
 	
 }
 
@@ -375,44 +389,34 @@ $("#patron").on("keyup", function() {
     });
   });
 
-$(".datos > tbody > tr").change(function(){
- console.log("Se modifico una celda");
-});
-
 function CerrarLista(id){
-	$(DIV_LISTA).css("display","none");
+	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
+	$(tbl_act.div_lista).css("display","none");
 }
 
 function AgregarRegistro(id){
-	//~ console.log("Agregando registro");
-
+	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
 	var $clone = $CLON.find('tr.hide').clone(true).removeClass('hide table-line');
 	  
-	$TABLE = $(ID_TBL_ACT);
-	//~ console.log(ID_TBL_ACT);
-	//~ console.log("idTABLE: " + idTABLE + " TABLE: " + '#'+$(this).attr("name"));
-	
+	idreg = tbl_act.tbl.substr(0,3) +"-"+$('#'+tbl_act.tbl + '> tbody > tr').length;
 	$clone.attr("class","table-remove");
-	$clone.attr("id","reg-"+$(ID_TBL_ACT + '> tbody > tr').length);
-	$TABLE.append($clone); 
-	//~ RecalcularFormularios("AGREGAR", '#' + $(this).attr("name") );
-	
-	if ( ID_TBL_ACT === "#Materiales_prd" ){
+	$clone.attr("id",idreg);
+	$('#'+tbl_act.tbl).append($clone);
+	//~ console.log(tbl_act.tbl);
+	if ( tbl_act.tbl === "Materiales_dat" ){
 		
-		$(ID_TBL_ACT + " > tbody > tr > td:nth-child(2)").on("click", function(){
+		$('#' + tbl_act.tbl + " > tbody > tr > td:nth-child(2)").on("click", function(){
 				var input = "<input id='Blistar' type='text' name='Blistar'  onkeyup='Listar(this)' style='width:100%;' placeholder='Ingrese el nombre...'>";
 				if ( !$(this).hasClass("modificando_lista") ) {
-					//~ console.log("VALOR: ingresando");
 					$(this).addClass("modificando_lista");				
 					$(this).append(input);
 				}
 				$("#Blistar").focus();
-					
 		});
 	}
-	if ( ID_TBL_ACT === "#Insumos_prd" ){
+	if ( tbl_act.tbl === "Insumos_dat" ){
 	
-		$(ID_TBL_ACT + " > tbody > tr > td:nth-child(2)").on("click", function(){
+		$('#' + tbl_act.tbl + " > tbody > tr > td:nth-child(2)").on("click", function(){
 				var input = "<input id='Blistar' type='text' name='Blistar'  onkeyup='Listar(this)' style='width:100%;' placeholder='Ingrese nombre..'>";
 				if ( !$(this).hasClass("modificando_lista") ) {
 					$(this).addClass("modificando_lista");				
@@ -422,21 +426,32 @@ function AgregarRegistro(id){
 					
 		});
 	}
-	if ( ID_TBL_ACT === "#Otros-costos_prd" ){
-		//~ console.log("fffff: " + ID_TBL_ACT);
-		$(ID_TBL_ACT + " > tbody > tr > td:nth-child(2)").on("click", function(){
+	if ( tbl_act.tbl === "CostosAdicionales_dat" ){
+	
+		$('#' + tbl_act.tbl + " > tbody > tr > td:nth-child(2)").on("click", function(){
 				var input = "<input id='Blistar' type='text' name='Blistar'  onkeyup='Listar(this)' style='width:100%;' placeholder='Ingrese nombre..'>";
 				if ( !$(this).hasClass("modificando_lista") ) {
 					$(this).addClass("modificando_lista");				
 					$(this).append(input);
 				}
 				$("#Blistar").focus();
-					
 		});
 	}
-	if ( ID_TBL_ACT === "#Ingrediente_partida" ){
+	if ( tbl_act.tbl === "Partidas_dat" ){
 		//~ console.log("Ingrediente_partida: " + ID_TBL_ACT);
-		$(ID_TBL_ACT + " > tbody > tr > td:nth-child(2)").on("click", function(){
+		$('#' + tbl_act.tbl + " > tbody > tr > td:nth-child(2)").on("click", function(){
+				var input = "<input id='Blistar' type='text' name='Blistar'  onkeyup='Listar(this)' style='width:100%;' placeholder='Ingrese nombre..'>";
+				if ( !$(this).hasClass("modificando_lista") ) {
+					$(this).addClass("modificando_lista");				
+					$(this).append(input);
+				}
+				$("#Blistar").focus();
+					
+		});
+	}
+	if ( tbl_act.tbl === "Utilidades_dat" ){
+		//~ console.log("Ingrediente_partida: " + ID_TBL_ACT);
+		$('#' + tbl_act.tbl + " > tbody > tr > td:nth-child(2)").on("click", function(){
 				var input = "<input id='Blistar' type='text' name='Blistar'  onkeyup='Listar(this)' style='width:100%;' placeholder='Ingrese nombre..'>";
 				if ( !$(this).hasClass("modificando_lista") ) {
 					$(this).addClass("modificando_lista");				
@@ -451,15 +466,22 @@ function AgregarRegistro(id){
 
 function EliminarRegistro(id){
 	
-	var $idTABLE = $(".seleccionado").parent();
-	var DIR = $($idTABLE.parent()).attr("id");
+	//~ var $idTABLE = $(".seleccionado").parent();
+	//~ var DIR = $($idTABLE.parent()).attr("id");
+	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
 	
 	r = $(".seleccionado").find("td").eq(0).text() == "" ? -1 : parseInt($(".seleccionado").find("td").eq(0).text());
 	var a = REGS.find(function(element){ return element.$idreg.attr("id") == $(".seleccionado").attr("id") });
-	console.log(a);
+	//~ console.log(a);
 	if (a){
 		if (a.accion === "nuevo"){
 			a.accion="NOGUARDAR";
+			a.$idreg = null;
+			for ( i=0;i<REGS.length;i++ ){
+				if (REGS[i].$idreg == null ){
+					REGS.splice(i,1);
+				}
+			}
 		}else{
 			a.id = r;
 			a.accion="eliminar";
@@ -471,11 +493,11 @@ function EliminarRegistro(id){
 		registros.$idtotal = registros.$idreg.find("td").eq(5);
 		registros.$idcant  = registros.$idreg.find("td").eq(4);
 		registros.tipo     = registros.$idreg.find("td").eq(2) != "%" ? "UMED" : "%" ;
-		registros.idcumedida.push( registros.$idreg.find("td").eq(3) );
+		registros.$idcumedida = registros.$idreg.find("td").eq(3);
 		registros.cantidad = parseFloat(registros.$idcant.val().replace(",","."));
 		registros.asignar_cantidad();
 		registros.accion   = "eliminar";
-		registros.tabla=DESTINO;
+		registros.tabla=tbl_act.destino;
 					
 		REGS.push($.extend( {}, registros ));// copia el objeto dentro de REGS
 		registros.limpiar();		
@@ -487,12 +509,9 @@ function EliminarRegistro(id){
 
 function SeleccionarTabla(id){
 	//~ tbl = '#' + $(id).attr("name");
-	
-	//~ console.log("Seleccionando Tabla: " + tbl);
-	
-	//~ ######################
-	
-	tbl = $(id).attr("id").subtr(0,tbl.length - 4);
+		
+	tbl = $(id).attr("id").substr(0,$(id).attr("id").length - 4);
+	//~ console.log("TABLA SELECCIONADA: " + tbl);
 	var a = Conf.find(function(element){ return element.ref === tbl });
 	if ( !a ){
 		Conf_datos.ref = tbl
@@ -501,66 +520,13 @@ function SeleccionarTabla(id){
 		Conf_datos.destino = tbl;
 		Conf_datos.div_lista = tbl + "_lis";
 		Conf_datos.tbl_lista = tbl + "_agr";
-		//~ Conf_datos.cld_lista = 
+		Conf_datos.total = tbl + "_tot"; 
 		Conf_datos.cld_ref={'cantidad':4, 'cumedida':3, 'total':5, 'cld_listar': 2};
 		Conf.push($.extend( {}, Conf_datos ));
 		Conf_datos.limpiar();
 	}
 	ID_TBL_ACT = tbl;
 	
-	//~ ##############
-	
-	
-	if ( tbl === "#Insumos_prd"){
-		
-		DESTINO = "INSUMOS";
-		ID_TBL_ACT = '#Insumos_prd';
-		TBL_LISTA       = 'TablaPartidas';
-		DIV_LISTA       = '#lpartidas';
-		$CLD_LISTAR      = $("#Insumos_prd > tbody > tr > td:nth-child(2)");
-		DATOS = {'cant':4, 'cumedida':3, 'total':5, 'cld_listar': 2};
-		TOTAL = '#costo_producto';
-		SUBTOTAL = '#total_Insumos_prd';
-		SBTOTALS = [ '#total_Insumos_prd', '#total_Materiales_prd', '#total_Otros-costos_prd'];			
-	
-	}
-
-	
-	if ( tbl === "#Materiales_prd" ){
-		DESTINO  ="MAQYHERR";
-		ID_TBL_ACT = '#Materiales_prd';
-		TBL_LISTA       = 'TablaInsumos';
-		DIV_LISTA       = '#linsumos';
-		$CLD_LISTAR      = $("#Insumos_prd > tbody > tr > td:nth-child(2)");
-		DATOS = {'cant':4, 'cumedida':3, 'total':5, 'cld_listar': 2};
-		TOTAL = '#costo_producto';
-		SUBTOTAL = '#total_Materiales_prd';
-		SBTOTALS = [ '#total_Insumos_prd', '#total_Materiales_prd', '#total_Otros-costos_prd'];		
-	}
-	
-	if ( tbl === "#OtrosCostos_prd" ){
-		DESTINO  ="CSTSADNLS";
-		ID_TBL_ACT = '#Otros-costos_prd';
-		TBL_LISTA       = 'TablaCstsAdnls';
-		DIV_LISTA       = '#CstsAdnls';
-		$CLD_LISTAR      = $("#Otros-costos_prd > tbody > tr > td:nth-child(2)");
-		DATOS = {'cant':4, 'cumedida':3, 'total':5, 'cld_listar': 2};
-		TOTAL = '#costo_producto';
-		SUBTOTAL = '#total_Otros-costos_prd';
-		SBTOTALS = [ '#total_Insumos_prd', '#total_Materiales_prd', '#total_Otros-costos_prd'];				
-	}
-	
-	if ( tbl === "#Ingrediente_partida" ){
-		DESTINO  ="PARTDETLLS";
-		ID_TBL_ACT = '#Ingrediente_partida';
-		TBL_LISTA       = 'TablaInsumos';
-		DIV_LISTA       = '#linsumos';
-		$CLD_LISTAR      = $("#Ingrediente_partida > tbody > tr > td:nth-child(3)");
-		DATOS = {'cant':4, 'cumedida':3, 'total':5, 'cld_listar': 2};
-		TOTAL = '#costo_partida';
-		//~ SUBTOTAL = '#total_ingrediente_partida';
-		//~ SBTOTALS = [ '#total_ingrediente_partida'];			
-	}
 }
 
 $("tr[name=regn]").click(function (e) {
@@ -568,14 +534,15 @@ $("tr[name=regn]").click(function (e) {
 });
 
 function SeleccionarRegistro(id){
-	var idTABLE = '#'+ $(id).closest("table").attr("id")+" tr";
+	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
+	//~ var idTABLE = '#'+ $(id).closest("table").attr("id")+" tr";
 	
-	$(ID_TBL_ACT + " > tbody > tr").each(function(i,e){
+	$('#'+tbl_act.tbl + " > tbody > tr").each(function(i,e){
 		if( id != e ){
 			if ( $(e).hasClass("seleccionado") ){
 				$(e).css("background-color",DSEL);
 				$(e).removeClass("seleccionado");
-				$(e).removeClass("modificando_lista");
+				//~ $(e).removeClass("modificando_lista");
 			}
 		}
 	});
@@ -605,7 +572,7 @@ $GUARDAR.click(function () {
  							});
 			}
 		}
-		ObjDatos.push({ "destino":"TOTALIZAR","accion":"actualizar", "id":-1, "datos":$( TOTAL ).html().replace(",",".")});
+		ObjDatos.push({ "destino":"TOTALIZAR","accion":"actualizar", "id":-1, "datos":$( '#costo_total' ).html().replace(",",".")});
 		
 		$("#ObjDatos").val(JSON.stringify(ObjDatos));
 			

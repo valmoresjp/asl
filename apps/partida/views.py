@@ -111,6 +111,7 @@ def detallar(request, idpart):
 		url = "/partidas/detallar/" + str(idpart) + "/"
 		# ~ print(url)
 		return redirect(url)
+
 	if request.method == 'GET':
 
 		total = 0.0
