@@ -151,7 +151,7 @@ function Listar(id){
 
 function ModificarCantidad(id){
     
-    var pos = {};
+    //~ var pos = {};
 	var rect = $(id).position();
 	var input = "<input id='MCantidad' type='text' name='MCantidad'  style='width:100%;' text-align:right; placeholder='Ingrese la cantidad..'>";
 	var VALOR_TMP = $(id).html();
@@ -170,8 +170,6 @@ function ModificarCantidad(id){
 			//~ console.log(e.which);
 
 			if (e.which == 13){
-				//~ console.log($(this).val());
-				//~ $(".modificando_cant").text($(this).val());
 				var a = REGS.find(function(element){ return element.$idreg.attr("id") == $(".modificando_cant").parent().attr("id") });
 
 				if ( !a ){
@@ -180,7 +178,6 @@ function ModificarCantidad(id){
 					
 					registros.$idreg   = $($(".modificando_cant").parent())
 					registros.idbd     = parseInt(registros.$idreg.find("td").eq(0).html());
-					//~ registros.idbd     = registros.$idreg.find("td").eq(0);
 					registros.$idtotal = registros.$idreg.find("td").eq(5);
 					registros.$idcant  = registros.$idreg.find("td").eq(4);
 					registros.tipo     = registros.$idreg.find("td").eq(4) != "%" ? "UMED" : "%" ;
@@ -202,7 +199,6 @@ function ModificarCantidad(id){
 				}
 		
 				CalculoTotal();
-				//~ $(this).val("");
 				
 				$("#MCantidad").remove();
 				$(id).removeClass("modificando_cant") ;
@@ -231,7 +227,7 @@ function SelTblListar(idreg){
 	$(idreg).find("td").each(function(i,e){
 		campo.push($(e).html());
 	});
-	//~ console.log(campo);
+	console.log(campo);
 	//~ console.log("Entro:"+'#'+tbl_act.tbl);
 	if (Existentes(campo[tbl_act.cld_ref['cld_listar']-1]) == -1){
 			
@@ -240,7 +236,6 @@ function SelTblListar(idreg){
 			$('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(2).text(campo[2]);
 			$('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(3).text(campo[3]);		
 			//~ var a = REGS.find(function(element){ return element.$idreg.attr("id") == $('#'+tbl_act.tbl+ ' tbody tr:last').attr("id") });
-			
 			
 		if ( tbl_act.tbl == "Insumos_dat" ){
 
@@ -295,7 +290,7 @@ function SelTblListar(idreg){
 			registros.$idreg   = $('#'+tbl_act.tbl + ' tbody tr:last')
 			registros.$idtotal = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(5);
 			registros.$idcant  = $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(4);
-			registros.tipo = 'UMED';
+			registros.tipo = campo[4];
 			registros.$idcumedida =  $('#'+tbl_act.tbl + ' tbody tr:last-child').find("td").eq(3);
 		}
 		$("#Blistar").parent().removeClass("modificando_lista");
@@ -320,14 +315,12 @@ function CalculoTotal(){
 	var total = 0.0;
 	var sbtotal = new Object();
 	var idtbl ="";
+	var tipo="";
 	var valor = 0.0;
 	var total = 0.0;
 	var ref=null;
 	var tbl_act = Conf.find(function(element){ return element.ref === ID_TBL_ACT });
-	//~ console.log("Calculo del Total");
 	TABLAS = ['Insumos_prd', 'Materiales_prd', 'Otros-costos_prd']
-	//~ console.log("SBTOTAL:");
-	//~ console.log(sbtotal);
 	sbtotal={};
 	$("p[id$='_tot']").each(function(i,elemento){
 		$(elemento).html("0.0");
@@ -339,25 +332,19 @@ function CalculoTotal(){
 			idtbl = idtbl.substr(0,idtbl.length - 4);
 			
 			valor  = parseFloat( $(elemento).find("td").eq(5).text().replace(",","."));
-			//~ ref = $(elemento).find("td:last").text().replace(",",".");
-			//~ console.log(idtbl + " ---  " + sbtotal[idtbl] );
 			sbtotal[idtbl] = sbtotal[idtbl] == undefined ? 0 : sbtotal[idtbl]
 			sbtotal[idtbl] = sbtotal[idtbl] +  valor;
-			//~ console.log(idtbl + " " + valor+ "  " + sbtotal[idtbl] );
 			$( "#" + idtbl + "_tot" ).html(sbtotal[idtbl].toFixed(2).replace(".",","));
-			//~ sbtotal.total = sbtotal.total + sbtotal[idtbl];
 	});
-	console.log(sbtotal);
+
 	total =0.0;
 	sbtotal.Utilidades = 0.0;
 	for ( i in sbtotal){
-		console.log(i + "  " + sbtotal[i]);
 		total = total + sbtotal[i];
 	}
 	sbtotal.total = total;
 	//~ sbtotal.total = total;
 	
-	console.log(sbtotal);
 	$('#Utilidades_dat  > tbody > tr').each(function(i,elemento){
 		//~ console.log($(elemento).find('td').eq(1).html());
 		if( $(elemento).find('td').eq(1).html().toUpperCase() == "UTILIDADES" ){

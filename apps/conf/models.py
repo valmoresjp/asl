@@ -20,7 +20,9 @@ class CostosDescripcionM(models.Model):
 		('UMED','UNIDAD/MEDIDA'),
 		('TINS','INSUMOS'),
 		('TMAT','MATERIALES'),
-		('TIMA','INSUMOS+MATERIALES')
+		('TCAD','COSTOS_ADICIONALES'),
+		('TIMA','INSUMOS+MATERIALES'),
+		('IMAC','INSUMOS+MATERIALES+COSTOS_ADICIONALES'),
 	)
 	
 	nombre = models.CharField(max_length=24, null=True, blank=True)

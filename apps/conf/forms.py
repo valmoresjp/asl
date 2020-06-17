@@ -19,7 +19,9 @@ REFER = (
 		('UMED','UNIDAD/MEDIDA'),
 		('TINS','INSUMOS'),
 		('TMAT','MATERIALES'),
+		('TCAD','COSTOS_ADICIONALES'),
 		('TIMA','INSUMOS+MATERIALES'),
+		('IMAC','INSUMOS+MATERIALES+COSTOS_ADICIONALES'),
 )
 
 class CostosDescripcionF(forms.ModelForm):
