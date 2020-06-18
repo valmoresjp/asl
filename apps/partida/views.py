@@ -79,7 +79,7 @@ def detallar(request, idpart):
 		for i in json.loads(request.POST["ObjDatos"]):
 			if i['destino'] == "Partidas":
 				if i["accion"] == "actualizar":
-					PartidaDetallesM.objects.filter(idism=i["id"]).update(cant=i["datos"])
+					PartidaDetallesM.objects.filter(idpart=idpart).filter(idism=i["id"]).update(cant=i["datos"])
 				if i["accion"] == "nuevo":
 					g = PartidaDetallesM(idism=i["id"], idpart=idpart, cant=i["datos"])
 					g.save()
