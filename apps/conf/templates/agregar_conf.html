@@ -1,17 +1,15 @@
 {% extends  'base.html' %}
 
-{% block header %}
-<h3>AGREGAR VARIABLE DE CONFIGURACION</h3>
-<!--    <h3>{{ form.cliente|upper }}</h3>
-    <div class="card">
-        <div class="card-body">     
-            <h3>{{ form.proyecto | title }} </h3>
-            <p>{{ form.descripcion }}</p>
-        </div>
-    </div> -->
-{% endblock %}
+
 
 {% block content %}
+
+<div class="container-fluid" >
+	<br>
+	<h1 class="display-5">Configuracion</h1>
+	<br>
+</div>
+
     <form   method="post" enctype='multipart/form-data' multiple="multiple">
         {% csrf_token %}
 			<table id="Listado" class="table table-hover table-bordered small">
@@ -22,9 +20,7 @@
                     <tr><td  >REFERENCIA: </td>  <td  >{{ form.referencia }}</td></tr> 
                 </tbody>
             </table> 
-<!--
-		{{ form.as_table }}
--->
+
         <button type="submit"> Guardar</button>
         <a href="{% url 'inicio_conf' %}" class="btn btn-info" role="button">Atras</a>
     </form>

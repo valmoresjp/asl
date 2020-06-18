@@ -1,7 +1,7 @@
 {% extends  'base.html' %}
 
-{% block header %}
-
+{% block content %}
+<br>
   	<div class="container-fluid">     
     <div class="row">
       <div class="col-sm-6">
@@ -19,10 +19,8 @@
        </div>
     </div>
   </div>
-{% endblock %}
 
-{% block content %}
-<div class="container">
+<div class="container-fluid">
 		
 		<div id="table_clon">
 		    <table id="TablaClon" class="table">
@@ -81,7 +79,7 @@
 					{% for i in idatos %}
 						<tr id="insm-{{i.id}}" name="regn" >
 							<td >{{ i.idpart }} </td>
-							<td >{{ i.nombre }}</td>
+							<td><a class="edit" href="{% url 'detallar_partida' idpart=i.idpart %}" title="Detallar Producto" data-toggle="tooltip" >{{ i.nombre  | upper }}</a></td> 
 							<td >{{ i.umedida}}</td>
 							<td >{{ i.cumedida}}</td>
 							<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>

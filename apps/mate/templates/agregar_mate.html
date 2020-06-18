@@ -1,17 +1,11 @@
 {% extends  'base.html' %}
 
-{% block header %}
-<h2>Listado de Precio de Insumos y Servicios</h2>
-<!--    <h3>{{ form.cliente|upper }}</h3>
-    <div class="card">
-        <div class="card-body">     
-            <h3>{{ form.proyecto | title }} </h3>
-            <p>{{ form.descripcion }}</p>
-        </div>
-    </div> -->
-{% endblock %}
 
 {% block content %}
+<br>
+	<h2>Nuevo Insumo</h2>
+	
+	<br>
     <form   method="post" enctype='multipart/form-data' multiple="multiple">
         {% csrf_token %}
         <!-- {{ form.as_table }} -->

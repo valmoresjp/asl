@@ -36,8 +36,8 @@ def inicio(request):
 					 'tipo'          : i.tipo
 					})
 
+	return render (request,'inicio_mate.html',{'regs': idatos})
 
-	return render (request,'inicio_mate-v2.html',{'regs': idatos})
 
 @login_required(login_url='/inicio/ingreso')
 def agregar(request):
