@@ -1,21 +1,21 @@
-import os, shutil
-from django.conf import settings
-from datetime import datetime
+# ~ import os, shutil
+# ~ from django.conf import settings
+# ~ from datetime import datetime
 import json
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 
-from apps.mate.forms import InsumosF
+# ~ from apps.mate.forms import InsumosF
 from apps.mate.models import InsumosM
 from apps.partida.models import PartidasM, PartidaDetallesM
-from apps.partida.forms import PartidasF, PartidaDetallesF
+# ~ from apps.partida.forms import PartidasF, PartidaDetallesF
 from django.contrib.auth.decorators import login_required
 
 #from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
 
 def inicio(request):
 	# ~ print('Pagina de Inicio')
-	registro = PartidasM.objects.values()
+	# ~ registro = PartidasM.objects.values()
 	obj = PartidasM.objects.all()
 	
 	contexto = {
@@ -26,7 +26,6 @@ def inicio(request):
 
 @login_required(login_url='/inicio/ingreso')
 def nuevo(request):
-	# ~ print("Nuevo")
 	if request.method == 'POST':
 		form = PartidasF(request.POST)
 		if form.is_valid():
@@ -63,7 +62,6 @@ def eliminar(request, idpart):
 		for i in PartidaDetallesM.objects.filter(idpart=reg.id):
 			i.delete()
 		reg.delete()
-		
 		return redirect(url_ant)
 	else:
 		reg = PartidasM.objects.get(id=idpart)
@@ -76,30 +74,26 @@ def detallar(request, idpart):
 	datos = []
 	
 	if request.method =='POST':
-		print(request.POST["ObjDatos"])
 		for i in json.loads(request.POST["ObjDatos"]):
-			# ~ print(i)
 			if i['destino'] == "Partidas":
 				if i["accion"] == "actualizar":
-					instance = PartidaDetallesM.objects.filter(idism=i["id"]).update(cant=i["datos"])
+					PartidaDetallesM.objects.filter(idism=i["id"]).update(cant=i["datos"])
 				if i["accion"] == "nuevo":
 					g = PartidaDetallesM(idism=i["id"], idpart=idpart, cant=i["datos"])
 					g.save()					
 				if i["accion"] == "eliminar":
 					PartidaDetallesM.objects.filter(idpart=idpart).filter(id=i["id"]).delete()			
 		total = 0.0
-		# ~ for k in PartidasM.objects.all():
-			# ~ print(k.id)
 		for i in PartidaDetallesM.objects.filter(idpart=idpart):
 			if InsumosM.objects.filter(id=i.idism).exists() == True:
 				ism   = InsumosM.objects.get(id=i.idism)
 				total = total +  ism.cumedida()*i.cant
-		# ~ ss = PartidasM.objects.filter(id=idpart).update(cost=round(total,2))
+		PartidasM.objects.filter(id=idpart).update(cost=round(total,2))
 		total=0.0
 		
 		url = "/partidas/detallar/" + str(idpart) + "/"
-		# ~ print(url)
 		return redirect(url)
+		
 	if request.method == 'GET':
 
 		total = 0.0
