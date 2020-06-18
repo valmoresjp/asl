@@ -28,26 +28,15 @@ def inicio(request):
 def nuevo(request):
 	# ~ print("Nuevo")
 	if request.method == 'POST':
-		#form = Proyecto(request.POST, request.FILES or None)
 		form = PartidasF(request.POST)
-		# ~ print(request.POST)
-		# ~ print(form)
 		if form.is_valid():
 			form.save()
-			# ~ print("Guardada Nueva partida")
-		else:
-			# ~ print(" No se almaceno el formulario. Error!!")
-			# ~ print(form)
-			return render(request,'errores.html',{'form': form})
-			# fh = request.POST['fecha'].replace(" ","_").replace(":","").replace("-","")[0:15]
-			# cliente = request.POST.get('cliente').upper()
 
-		#return redirect ('/proyectos/')
-		# datos = {'fecha':fh, 'clien			'codp': forms.TextInput(attrs={'class':'form-control'}),te':cliente }
-		# print(datos)
+		else:
+			return render(request,'errores.html',{'form': form})
+
 		return redirect ('inicio_partida')
 	else:
-		# ~ print("ingresando a nueva partida")
 		form = PartidasF()
 	return render(request,'nuevo_partida.html', {'form': form})
 
@@ -78,7 +67,7 @@ def eliminar(request, idpart):
 		return redirect(url_ant)
 	else:
 		reg = PartidasM.objects.get(id=idpart)
-	# ~ print(reg.nomb)
+
 	return render(request, 'eliminar_partida.html',{'reg':reg})
 
 @login_required(login_url='/inicio/ingreso')
@@ -89,15 +78,17 @@ def detallar(request, idpart):
 	if request.method =='POST':
 
 		for i in json.loads(request.POST["ObjDatos"]):
-			# ~ print(i)
+			print(idpart)
 			if i['destino'] == "Partidas":
 				if i["accion"] == "actualizar":
-					instance = PartidaDetallesM.objects.filter(idism=i["id"]).update(cant=i["datos"])
+					PartidaDetallesM.objects.filter(idism=i["id"]).update(cant=i["datos"])
 				if i["accion"] == "nuevo":
 					g = PartidaDetallesM(idism=i["id"], idpart=idpart, cant=i["datos"])
 					g.save()
 				if i["accion"] == "eliminar":
-					PartidaDetallesM.objects.filter(idpart=idpart).filter(id=i["id"]).delete()
+				    print(i)
+				    a = PartidaDetallesM.objects.filter(idpart=idpart).filter(id=i["id"]).delete()
+				    print(a)
 		total = 0.0
 		# ~ for k in PartidasM.objects.all():
 			# ~ print(k.id)
@@ -105,7 +96,7 @@ def detallar(request, idpart):
 			if InsumosM.objects.filter(id=i.idism).exists() == True:
 				ism   = InsumosM.objects.get(id=i.idism)
 				total = total +  ism.cumedida()*i.cant
-		ss = PartidasM.objects.filter(id=idpart).update(cost=round(total,2))
+		PartidasM.objects.filter(id=idpart).update(cost=round(total,2))
 		total=0.0
 
 		url = "/partidas/detallar/" + str(idpart) + "/"
@@ -131,31 +122,10 @@ def detallar(request, idpart):
 					 })
 			total = total +  ism.cumedida()*i.cant
 
-	# ~ agregar el formset a la variable contexto
-	# ~ contexto['formset'] = formset)
-	# ~ print(datos)
 	contexto['datos'] = datos
+
 	contexto['partida'] = PartidasM.objects.get(id=idpart)
 	contexto['insumos'] = InsumosM.objects.all()
 	contexto['total'] = round(total,2)
 	return render(request,'detallar_partida.html',contexto)
-
-# ~ def agregar(request,codp, codi):
-	# ~ partida = PartidasM.objects.get(id=codp)
-	# ~ insumo  = InsumosM.objects.get(id=codi)
-	# ~ form = PartidaDetallesF({'codp': codp, 'codi': codi, 'cant': 1.0})
-	# ~ if form.is_valid():
-		# ~ temp = form.save(commit=False)
-
-
-	# ~ url_ant = "/detallar/" + str(codp) +"/"
-	# ~ print("agregar insumo")
-	# ~ codi = codi
-	# ~ cant = 1.0
-	# ~ cmin = insumo.min()
-	# ~ cmax = insumo.max()
-	# ~ cprom = insumo.prom()
-	# ~ print([cmin, cmax, cprom])
-
-	# ~ return render(request,'itemizado-1.html')
 

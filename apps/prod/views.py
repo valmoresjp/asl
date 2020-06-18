@@ -32,7 +32,6 @@ def nuevo(request):
 
 		return redirect ('inicio_producto')
 	else:
-		# ~ print("ingresando a nuevo_producto")
 		form = ProductosF()
 	return render(request,'nuevo_producto.html', {'form': form})
 
@@ -73,9 +72,6 @@ def detallar(request, idprod):
 	total = 0.0
 
 	producto   = ProductosM.objects.get(id=idprod)
-	# ~ materiales = MaquiyHerraM.objects.all()
-	# ~ partida    = PartidaDetallesM.objects.all()
-	# ~ prd_deta   = ProductosDetallesM.objects.filter(idprd=idprod)
 
 	if request.method =='POST':
 		url = "/productos/detallar/" + str(idprod) + "/"
@@ -83,17 +79,17 @@ def detallar(request, idprod):
 
 			if i['destino'] == "Insumos":
 				if i['accion'] == 'actualizar':
-					ProductosDetallesM.objects.filter(idpart=i["id"]).update(cant=i["datos"])
+					ProductosDetallesM.objects.filter(idprd=idprod).filter(idpart=i["id"]).update(cant=i["datos"])
 				if i['accion'] == 'nuevo':
 					g = ProductosDetallesM(idpart=i["id"], idprd=idprod, cant=i["datos"])
 					g.save()
 				if i['accion'] == 'eliminar':
-					ProductosDetallesM.objects.filter(id=i["id"]).delete()
+					ProductosDetallesM.objects.filter(idprd=idprod).filter(id=i["id"]).delete()
 
 			if i['destino'] == "Materiales":
 				if i['accion'] == 'actualizar':
 					# ~ El registro existe y se actualiza
-					MaquiyHerraM.objects.filter(idism=i["id"]).update(cant=i["datos"])
+					MaquiyHerraM.objects.filter(idprd=idprod).filter(idism=i["id"]).update(cant=i["datos"])
 				if i['accion'] == 'nuevo':
 					# ~ El registro no existe, se crea un nuevo registro
 					g = MaquiyHerraM(idism=i["id"], idprd=idprod, cant=i["datos"])
@@ -104,13 +100,13 @@ def detallar(request, idprod):
 			if i['destino'] == "CostosAdicionales":
 				if i['accion'] == 'actualizar':
 					# ~ El registro existe y se actualiza
-					CstsAdnlsM.objects.filter(id=i["id"]).update(cant=i["datos"])
+					CstsAdnlsM.objects.filter(idprd=idprod).filter(id=i["id"]).update(cant=i["datos"])
 				if i['accion'] == 'nuevo':
 					# ~ El registro no existe, se crea un nuevo registro
 					g = CstsAdnlsM(idcstanls=i["id"], idprd=idprod, cant=i["datos"])
 					g.save()
 				if i['accion'] == 'eliminar':
-					CstsAdnlsM.objects.filter(id=i["id"]).delete()
+					CstsAdnlsM.objects.filter(idprd=idprod).filter(id=i["id"]).delete()
 
 			if i['destino'] == "Utilidades":
 				if i['accion'] == 'actualizar':
@@ -131,10 +127,8 @@ def detallar(request, idprod):
 
 	if request.method == 'GET':
 		for i in ProductosDetallesM.objects.filter(idprd=idprod):
-
 			if PartidasM.objects.filter(id = i.idpart).exists() == True:
 				part = PartidasM.objects.get(id = i.idpart)
-
 				idatos.append(
 					{'id'      : i.id,
 					 'idpart'  : i.idpart,
@@ -151,7 +145,7 @@ def detallar(request, idprod):
 
 		for i in MaquiyHerraM.objects.filter(idprd=idprod):
 			if InsumosM.objects.filter(id = i.idism).exists() == True:
-				ism = InsumosM.objects.get(id = i.idism) #se debe filtrar con el idsim y que sea tipo MATERIAL
+				ism = InsumosM.objects.get(id = i.idism)
 				mdatos.append(
 					{'id':       ism.id,
 					 'nombre':   ism.descrip,
