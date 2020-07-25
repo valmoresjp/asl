@@ -8,7 +8,7 @@ from django.http import HttpResponse
 # ~ from apps.mate.forms import InsumosF
 from apps.mate.models import InsumosM
 from apps.partida.models import PartidasM, PartidaDetallesM
-# ~ from apps.partida.forms import PartidasF, PartidaDetallesF
+from apps.partida.forms import PartidasF, PartidaDetallesF
 from django.contrib.auth.decorators import login_required
 
 #from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
@@ -97,11 +97,7 @@ def detallar(request, idpart):
 
 		url = "/partidas/detallar/" + str(idpart) + "/"
 		return redirect(url)
-<<<<<<< HEAD
 
-=======
-
->>>>>>> fc168bd524e232db3d177fb0f5093270468a978f
 	if request.method == 'GET':
 
 		total = 0.0
