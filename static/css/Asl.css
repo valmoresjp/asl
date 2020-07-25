@@ -1,0 +1,52 @@
+
+.titulo_1{
+	font-family: Arial;
+	font-size: 14px;
+	letter-spacing: 2px;
+	word-spacing: 2px;
+	color: #000000;
+	font-weight: 700;
+/*
+	text-decoration: underline solid rgb(68, 68, 68);
+*/
+	font-style: normal;
+	font-variant: normal;
+	text-transform: uppercase;
+}
+.titulo_2{
+	font-family: Arial;
+	font-size: 10px;
+/*
+	letter-spacing: 2px;
+*/
+	word-spacing: 2px;
+	color: #000000;
+/*
+	font-weight: 700;
+*/
+/*
+	text-decoration: underline solid rgb(68, 68, 68);
+*/
+	font-style: normal;
+	font-variant: normal;
+	text-transform: uppercase;
+}
+.borde_error {
+  border-style: solid;
+  border: solid 3px red;
+}
+
+hr.style13 {
+	height: 5px;
+	border: 0;
+	box-shadow: 0 5px 5px -5px #8c8b8b inset;
+}
+
+.margin-left{
+    margin-left: 80px ;
+}
+.marca {
+    border-width:10px;  
+    border-left-style:solid;
+    border-color:red;
+}

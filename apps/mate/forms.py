@@ -4,12 +4,32 @@ from apps.mate.models import InsumosM
 
 
 TIPO_ELEMENTO = (
-		('..','Selecccionar...'),
-		('MAT','MATERIAL-'),
+		('...','Selecccionar tipo de Item...'),
+		('MAT','MATERIAL'),
 		('PER','PERSONAL'),
-		('MYH','MAQyHERR'),
+		# ~ ('MYH','MAQyHERR'),
 		('SER','SERVICIO'),
 		('ING','INGREDIENTE'),
+	)
+
+UMEDIDA =(
+		('..','Selecccione la unidad de medida...'),
+		('%'  ,'PORCENTAJE'),
+		('KWH','KILOVATIO-HORA'),
+		('M3' ,'METROS CUBICOS'),
+		('LTS','LITROS'),
+		('ML','MILILITROS'),
+		('CC','CENTIMETROS CÚBICOS'),
+		('KGR','KILOGRAMOS'),
+		('Gr' ,'Gramos'),
+		('MTS','METROS'),
+		('KM' ,'KILOMETROS'),
+		('UND','UNIDAD'),
+		('HH' ,'HORAS-HOMBRE'),
+		('HRS','HORAS'),
+		('MES','MENSUAL'),
+		('DIA','DIARIO'),
+		('HM' ,'HORAS-MAQUINA'),
 	)	
 
 class InsumosF(forms.ModelForm):
@@ -45,9 +65,9 @@ class InsumosF(forms.ModelForm):
 			'factu5'
 		]
 		labels = {
-			'codigo':'CODIGO DEL PRODUCTO', 
+			'codigo':'CODIGO DEL ITEM', 
 			# ~ 'fingso':'FECHA DE INGRESO DEL REGISTRO',
-			'descrip':'DESCRIPCIÓN DEL PRODUCTO',
+			'descrip':'DESCRIPCIÓN DEL ITEM',
 			'umedida':'UNIDAD DE MEDIDA',			
 			'cantd':'CANTIDAD',
 			'inven':'INVENTARIO',
@@ -77,33 +97,33 @@ class InsumosF(forms.ModelForm):
 			'codigo' :forms.TextInput(attrs={'class':'form-control'}),
 			# ~ 'fingso' :forms.TextInput(attrs={'class':'form-control'}),
 			'descrip':forms.TextInput(attrs={'class':'form-control'}),
-			'umedida':forms.TextInput(attrs={'class':'form-control'}),			
-			'cantd'  :forms.TextInput(attrs={'class':'form-control'}),			
-			'inven'  :forms.TextInput(attrs={'class':'form-control'}),			
+			'umedida':forms.Select(attrs={'class':'form-control'}, choices=UMEDIDA),			
+			'cantd'  :forms.TextInput(attrs={'class':'form-control', 'type':'number'}),			
+			'inven'  :forms.TextInput(attrs={'class':'form-control', 'type':'number'}),			
 			'tipo'  : forms.Select(attrs={'class':'form-control'}, choices=TIPO_ELEMENTO ),
 						
 			'distb1' :forms.TextInput(attrs={'class':'form-control'}),
-			'costo1' :forms.TextInput(attrs={'class':'form-control'}),
+			'costo1' :forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
 			# ~ 'cantm1' :forms.TextInput(attrs={'class':'form-control'}),
 			'factu1' :forms.TextInput(attrs={'class':'form-control'}),
 			
 			'distb2' :forms.TextInput(attrs={'class':'form-control'}),
-			'costo2' :forms.TextInput(attrs={'class':'form-control'}),
+			'costo2' :forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
 			# ~ 'cantm2' :forms.TextInput(attrs={'class':'form-control'}),
 			'factu2' :forms.TextInput(attrs={'class':'form-control'}),
 			
 			'distb3' :forms.TextInput(attrs={'class':'form-control'}),
-			'costo3' :forms.TextInput(attrs={'class':'form-control'}),
+			'costo3' :forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
 			# ~ 'cantm3' :forms.TextInput(attrs={'class':'form-control'}),
 			'factu3' :forms.TextInput(attrs={'class':'form-control'}),
 
 			'distb4' :forms.TextInput(attrs={'class':'form-control'}),
-			'costo4' :forms.TextInput(attrs={'class':'form-control'}),
+			'costo4' :forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
 			# ~ 'cantm4' :forms.TextInput(attrs={'class':'form-control'}),
 			'factu4' :forms.TextInput(attrs={'class':'form-control'}),
 
 			'distb5' :forms.TextInput(attrs={'class':'form-control'}),
-			'costo5' :forms.TextInput(attrs={'class':'form-control'}),
+			'costo5' :forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
 			# ~ 'cantm5' :forms.TextInput(attrs={'class':'form-control'}),
 			'factu5' :forms.TextInput(attrs={'class':'form-control'})
 

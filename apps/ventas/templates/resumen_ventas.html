@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+
+{% block content %}	
+
+<br>
+ <div class="container-fluid">
+	<h1 class="display-5">ESTADISTICAS: {{ periodo }}</h1>
+</div>
+
+<div class="container-fluid">
+	<div class="btn-group" id="an_os" >
+	<a href="{% url 'resumen_ventas' ayo=0  %}" class="btn btn-primary" role="button">Hasta la Fecha</a>
+	  {% for i in ayos %}
+		<a href="{% url 'resumen_ventas' ayo=i  %}" class="btn btn-primary" role="button">{{ i }}</a>
+	  {% endfor %}
+	</div>
+	<br>
+	<br>
+    <div class="row">
+    
+		<div class="col-xl-3 col-md-6 mb-4">
+			<div class="card border-left-primary shadow h-100 py-2">
+				<div class="card-body">
+					<div class="row no-gutters align-items-center">
+						<div class="col mr-2">
+							<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">CLIENTES</div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800">{{ anual.clientes }}</div>
+						</div>
+						<div class="col-auto">
+						  <i class="fa fa-users  fa-2x text-gray-300"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+            
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">PEDIDOS</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ anual.pedidos }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOTAL VENDIDO</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ anual.total |floatformat:2}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fa fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">UTILIDADES</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ anual.utilidades |floatformat:2}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Personal</div>
+                      <div class="h6 mb-0 font-weight-bold text-gray-800">{{ anual.personal |floatformat:2}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">MATERIALES</div>
+                      <div class="h6 mb-0 font-weight-bold text-gray-800">{{ anual.materiales |floatformat:2}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">SERVICIOS</div>
+                      <div class="h6 mb-0 font-weight-bold text-gray-800">{{ anual.servicios |floatformat:2}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">INSUMOS</div>
+                      <div class="h6 mb-0 font-weight-bold text-gray-800">{{ anual.insumos |floatformat:2}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+     </div>
+   
+		<div class="row">
+			<div class="col-sm-12">
+					<label for="resumen-an_os" style="font-size: 32px; font-style: Arial">Resumen Mensual</label>
+                    <table class="table table-hover" id="resumen-an_os">
+                        <thead class="thead-light" style="font-size: 16px; font-style: Arial">
+                            <tr>
+                                <th style=" width: 10%;" >MES</th>
+                                <th style=" width: 10%;" >CLIENTES</th>
+                                <th style=" width: 10%;" >PEDIDOS</th>
+                                <th style=" width: 10%;" >TOTAL</th>
+                                <th style=" width: 10%;" >INSUMOS</th>
+                                <th style=" width: 10%;" >MATERIALES</th>
+                                <th style=" width: 10%;" >PERSONAL</th> 
+                                <th style=" width: 15%;" >SERVICIOS</th> 
+                                <th style=" width: 15%;" >UTILIDADES</th> 
+                             </tr>
+                        </thead>
+                        <tbody style="font-size: 14px; font-style: Arial">
+							{% for i in mensual %}
+							  <tr id="m1" class="mes visible"  >
+                                <td >{{ i.mes }} </td>
+                                <td >{{ i.ncli }}</td>
+                                <td >{{ i.nped }}</td>
+                                <td >{{ i.tota |floatformat:2}}</td>
+                                <td >{{ i.insm |floatformat:2}}</td>
+                                <td >{{ i.mate |floatformat:2}}</td>
+                                <td >{{ i.pers |floatformat:2}}</td> 
+                                <td >{{ i.serv |floatformat:2}}</td> 
+                                <td >{{ i.util |floatformat:2}}</td> 
+                             </tr>
+							{% endfor %}
+							
+							
+							
+                        </tbody>
+                    </table>	
+			
+			</div>
+		
+		</div>
+		
+    </div>
+{%endblock %}

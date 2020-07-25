@@ -4,10 +4,8 @@
 
 {% block content %}
 <br>
-<h1>Listado de Productos</h1>
+<h1>Listado de Productos en Proceso</h1>
 <br><br>
-
-
     <div class="container-fluid">
 
     	<div class="row">
@@ -16,38 +14,37 @@
             </div>
 
     	</div>
+    	<input class="form-control" id="patron" type="text" placeholder="Escriba para filtrar...">
         <div class="row">
                 <div class="col-md-12">
-                    <table class="table users table-hover">
-                        <thead>
+                    <table class="table users table-hover" >
+                        <thead style=" text-align: center; font-style: Arial">
                             <tr>
                                 <th style=" width: 5%;"></th>
                                 <th style=" width: 5%;">ID</th>
-                                <th style=" width: 30%;">NOMBRE</th>
-                                <th style=" width: 10%;">CÓDIGO</th>
-                                <th style=" width: 40%;">DESCRIPCIÓN</th> 
+                                <th style=" width: 30%;">PRODUCTO</th>
+                                <th style=" width: 25%;">DESCRIPCIÓN</th> 
                                 <th style=" width: 10%;">COSTO</th>   
+                                <th style=" width: 10%;">ACTUALIZACION</th>   
                              </tr>
                         </thead>
                         {% for reg in obj %}   
-                            <tbody>
+                            <tbody id="Listado-body" style="font-size: 12px; text-align: left; font-style: Arial">
                                 <tr>
                                     <td>
                                       <a class="edit" href="{% url 'editar_producto' idprod=reg.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-edit fa-1x" style="color:green"></i></a>
                                       <a class="delete" href="{% url 'eliminar_producto' idprod=reg.id %}" title="Eliminar" data-toggle="tooltip"><i class="fa fa-trash fa-1x" style="color:red"></i></a>
                                     </td>
 									 <td>{{ reg.id }}</td>
-									  <td><a class="edit" href="{% url 'detallar_producto' idprod=reg.id %}" title="Detallar Partida" data-toggle="tooltip" >{{ reg.nomb | upper }}</a></td> 
-                                     <td>{{ reg.codp }}</td>
-                                     <td>{{ reg.desc }}</td> 
-                                     <td>{{ reg.costo }}</td> 
-<!--
-                                    <td>{{ reg.fecha|date:"d-m-Y h:m" }}</td>
-                                    <td>{{ reg.cliente }}</td>
--->
-<!--
-                                    <td><a href="" title="Detallar Proyecto" data-toggle="tooltip">{{ reg.nomb }}</a></td>
--->
+									 <td><a class="edit" href="{% url 'detallar_producto' idprod=reg.id %}" title="Detallar Partida" data-toggle="tooltip" >{{ reg.nomb | upper }}</a></td> 
+                                     <td>
+										<a data-toggle="collapse" href="#collapseReg_{{reg.id}}" >{{ reg.nomb | truncatewords_html:5 }}</a>
+										<div class="collapse" id="collapseReg_{{reg.id}}"  >
+											{{ reg.nomb }}
+										</div>
+                                     </td>
+                                     <td>{{ reg.costo }}</td>
+                                     <td>{{ reg.fhactu|date:"d-m-Y H:i" }}</td>
                                 </tr>
                             </tbody>
                         {% endfor %}
