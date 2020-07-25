@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)https://www.codingwithricky.com/2019/08/28/easy-django-plotly/ -->
+<html class=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="generator" content="Hexo 3.9.0">
+  
+  
+  <title>Easily plot graphs in your website using Plotly + Python | CODING w/RICKY</title>
+  <meta name="author" content="Richard Barella">
+  
+  <meta name="description" content="100 billion ways to plot data on the web, but this one is the easiest">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Easily plot graphs in your website using Plotly + Python">
+  <meta property="og:site_name" content="CODING w/RICKY">
+
+  
+    <meta property="og:image" content="">
+  
+
+  
+  
+    <link href="https://www.codingwithricky.com/favicon.png" rel="icon">
+  
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/journal.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/highlight-default.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/comment.css" media="screen" type="text/css">
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-sham.min.js"></script>
+  <![endif]-->
+
+  <script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/f(6).txt"></script><script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/f(7).txt"></script><script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/osd.js"></script><script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/f(8).txt" id="google_shimpl"></script><script async="" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/analytics.js"></script><script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/jquery-2.0.3.min.js"></script>
+  
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-132790562-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+<script async="" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/f(9).txt"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-9466063552461452",
+          enable_page_level_ads: true
+     });
+</script>
+
+<script async="" custom-element="amp-ad" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/amp-ad-0.1.js"></script>
+
+<link rel="preload" href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/f(10).txt" as="script"><script type="text/javascript" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/f(10).txt"></script><link rel="preload" href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/f(11).txt" as="script"><script type="text/javascript" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/f(11).txt"></script><style id="plotly.js-style-global"></style><style id="plotly.js-style-modebar-686998"></style><script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/share.js"></script><script type="text/javascript" async="" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/embed.js"></script><style type="text/css">.fancybox-margin{margin-right:15px;}</style><link rel="prefetch" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.5c5dad4ae74bbb3422efd01116dc45e6.css"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.6c1eae6bc9387c9331312cf9e26ec68e.js"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.7f8ed42388da812e66b571110fd74f8b.js"><link rel="prefetch" as="script" href="https://disqus.com/next/config.js"><script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/alfalfalfa.0823c767a3bc925f628afd9bed26c958.js" async="" charset="UTF-8"></script></head>
+
+<body style="">
+  <nav id="main-nav" class="navbar  navbar-default navbar-fixed-top" role="navigation" style="opacity: 1;">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <a class="navbar-brand" href="https://www.codingwithricky.com/">CODING w/RICKY</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="https://www.codingwithricky.com/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="https://www.codingwithricky.com/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="https://www.codingwithricky.com/subscribe" title="Subscribe for email updates">
+			  <i class="fa fa-envelope"></i>Subscribe
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container" style="height: auto !important;">
+    <div class="content" style="height: auto !important;">
+      
+
+
+	
+		<div class="page-header ">		
+			<h1 class="title "> Easily plot graphs in your website using Plotly + Python</h1>
+		</div>		
+	
+
+
+
+
+
+
+<div class="row post" style="height: auto !important;">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9" style="height: auto !important; min-height: 0px !important;">
+	
+
+	<!-- content -->
+	<div class="mypage" style="height: auto !important;">		
+	  
+		 <div class="alert alert-success description">
+			<i class="fa fa-info-circle"></i> <p>100 billion ways to plot data on the web, but this one is the easiest</p>
+			
+		 </div> <!-- alert -->
+	  		
+
+	  <p>For the last few days I have been scratching my head. How do you plot all the data in your django website, without having to figure out D3 or any other complicated graphing libraries?</p>
+<p>I've looked at several solutions, including Djangos Graphos, Chartit, NVD3… Everyone online seems to be recommending to use charting libraries off of this list: <a href="https://djangopackages.org/grids/g/charts/" target="_blank" rel="noopener">https://djangopackages.org/grids/g/charts/</a></p>
+<p>It's frustrating to try many solutions to find out that they are all too complicated to understand, and the copy+paste approach doesn't work most of the time.</p>
+<p>However, one good thing came out of this process. I discovered that <a href="https://plot.ly/javascript/open-source-announcement/" target="_blank" rel="noopener">Plotly is now open-source</a>! Years ago I once played around with Plotly's graphing library, marveling at it's ease of use and admiring it's beauty, however to use it in the past we had to make our plots public for all to see and store them on Plotly's servers. This limited how I could use Plotly in my projects, but that limit isn't on Plotly anymore. Now we can use Plotly just like any other library in Python, Javascript, and other programming languages.</p><div class="google-auto-placed ap_container" style="width: 100%; height: auto; clear: none; text-align: center;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-9466063552461452" data-adsbygoogle-status="done" style="display: block; margin: auto; background-color: transparent; height: 280px;"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:848px;background-color:transparent;"><ins id="aswift_1_anchor" style="display: block; border: none; height: 280px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 848px; background-color: transparent; overflow: visible;"><iframe id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0;width:848px;height:280px;" sandbox="allow-forms allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="848" height="280" frameborder="0" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!1" data-google-query-id="CNyHvpnWtuoCFcZbfgodYVwDZQ" data-load-complete="true"></iframe></ins></ins></ins></div>
+<p>Today I will show you how absolutely easy it is to plot graphs in Django using Plotly's Python API. We are going to make a simple interactive plot that looks like this:</p>
+<p><a href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/easy-django-plotly.png" title="Plotly plot" class="fancybox" rel="gallery0"><img src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/easy-django-plotly.png" alt="Plotly plot"></a></p>
+<a id="more"></a>
+
+<h2 id="The-Basics-of-plotting-with-Plotly"><a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#The-Basics-of-plotting-with-Plotly" class="headerlink" title="The Basics of plotting with Plotly"></a>The Basics of plotting with Plotly</h2><p>To get a simple graph up and rendering in plotly is easy, just 8 lines of code:</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> plotly.offline <span class="keyword">import</span> plot</span><br><span class="line"><span class="keyword">import</span> plotly.graph_objs <span class="keyword">as</span> go</span><br><span class="line"></span><br><span class="line">fig = go.Figure()</span><br><span class="line">scatter = go.Scatter(x=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], y=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</span><br><span class="line">                     mode=<span class="string">'lines'</span>, name=<span class="string">'test'</span>,</span><br><span class="line">                     opacity=<span class="number">0.8</span>, marker_color=<span class="string">'green'</span>)</span><br><span class="line">fig.add_trace(scatter)</span><br><span class="line">plt_div = plot(fig, output_type=<span class="string">'div'</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Now <code>plt_div</code> holds all the HTML needed to render the plot!</p>
+<p>How easy was that?</p>
+<p>If you want to quickly see your plot rendering in a web browser, paste the contents of <code>plt_div</code> into an HTML file like so, and then open your HTML file with your browser.</p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    PLT_DIV_CONTENTS_GO_HERE</span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Plotting-with-Plotly-Django"><a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#Plotting-with-Plotly-Django" class="headerlink" title="Plotting with Plotly + Django"></a>Plotting with Plotly + Django</h2><p>Here is an example Django view and template to display this plot:</p>
+<p><strong>views.py</strong></p>
+<figure class="highlight python"><table style="height: auto !important;"><tbody><tr style="height: auto !important;"><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code" style="height: auto !important;"><div class="google-auto-placed" style="width: 100%; height: auto; clear: both; text-align: center;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-9466063552461452" data-adsbygoogle-status="done" style="display: block; margin: 10px auto; background-color: transparent; height: 280px;"><ins id="aswift_2_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:607px;background-color:transparent;"><ins id="aswift_2_anchor" style="display: block; border: none; height: 280px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 607px; background-color: transparent; overflow: visible;"><iframe id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;border:0;width:607px;height:280px;" sandbox="allow-forms allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="607" height="280" frameborder="0" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/ads(1).html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!2" data-google-query-id="CK21tZnWtuoCFQ9ofgod8OcPZA" data-load-complete="true"></iframe></ins></ins></ins></div><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render</span><br><span class="line"><span class="keyword">from</span> plotly.offline <span class="keyword">import</span> plot</span><br><span class="line"><span class="keyword">from</span> plotly.graph_objs <span class="keyword">import</span> Scatter</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(request)</span>:</span></span><br><span class="line">    x_data = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">    y_data = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> x_data]</span><br><span class="line">    plot_div = plot([Scatter(x=x_data, y=y_data,</span><br><span class="line">                        mode=<span class="string">'lines'</span>, name=<span class="string">'test'</span>,</span><br><span class="line">                        opacity=<span class="number">0.8</span>, marker_color=<span class="string">'green'</span>)],</span><br><span class="line">               output_type=<span class="string">'div'</span>)</span><br><span class="line">    <span class="keyword">return</span> render(request, <span class="string">"index.html"</span>, context={<span class="string">'plot_div'</span>: plot_div})</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>index.html</strong></p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">HTML</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>test<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  {% autoescape off %}</span><br><span class="line">  {{ plot_div }}</span><br><span class="line">  {% endautoescape %}</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>The above code renders this:</p>
+<div>
+<script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+<script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/plotly-1.49.1.min.js"></script>
+<div id="5f0d8ea8-37ca-4438-8734-80a1468a53c8" class="plotly-graph-div js-plotly-plot" style="height:100%; width:100%;"><div class="plot-container plotly"><div class="svg-container" style="position: relative; width: 100%; height: 450px;"><svg class="main-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="847.5" height="450" style="background: white;"><defs id="defs-686998"><g class="clips"><clippath id="clip686998xyplot" class="plotclip"><rect width="688" height="270" transform="translate(0, 0) scale(1, 1)"></rect></clippath><clippath class="axesclip" id="clip686998x"><rect x="80" y="0" width="688" height="450"></rect></clippath><clippath class="axesclip" id="clip686998y"><rect x="0" y="100" width="847.5" height="270"></rect></clippath><clippath class="axesclip" id="clip686998xy"><rect x="80" y="100" width="688" height="270"></rect></clippath></g><g class="gradients"></g></defs><g class="bglayer"><rect class="bg" x="80" y="100" width="688" height="270" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"></rect></g><g class="draglayer cursor-crosshair"><g class="xy"><rect class="nsewdrag drag" data-subplot="xy" x="80" y="100" width="688" height="270" style="fill: transparent; stroke-width: 0; pointer-events: all;"></rect><rect class="nwdrag drag cursor-nw-resize" data-subplot="xy" x="60" y="80" width="20" height="20" style="fill: transparent; stroke-width: 0; pointer-events: all;"></rect><rect class="nedrag drag cursor-ne-resize" data-subplot="xy" x="768" y="80" width="20" height="20" style="fill: transparent; stroke-width: 0; pointer-events: all;"></rect><rect class="swdrag drag cursor-sw-resize" data-subplot="xy" x="60" y="370" width="20" height="20" style="fill: transparent; stroke-width: 0; pointer-events: all;"></rect><rect class="sedrag drag cursor-se-resize" data-subplot="xy" x="768" y="370" width="20" height="20" style="fill: transparent; stroke-width: 0; pointer-events: all;"></rect><rect class="ewdrag drag cursor-ew-resize" data-subplot="xy" x="148.8" y="370.5" width="550.4" height="20" style="fill: transparent; stroke-width: 0; pointer-events: all;"></rect><rect class="wdrag drag cursor-w-resize" data-subplot="xy" x="80" y="370.5" width="68.8" height="20" style="fill: transparent; stroke-width: 0; pointer-events: all;"></rect><rect class="edrag drag cursor-e-resize" data-subplot="xy" x="699.2" y="370.5" width="68.8" height="20" style="fill: transparent; stroke-width: 0; pointer-events: all;"></rect><rect class="nsdrag drag cursor-ns-resize" data-subplot="xy" x="59.5" y="127" width="20" height="216" style="fill: transparent; stroke-width: 0; pointer-events: all;"></rect><rect class="sdrag drag cursor-s-resize" data-subplot="xy" x="59.5" y="343" width="20" height="27" style="fill: transparent; stroke-width: 0; pointer-events: all;"></rect><rect class="ndrag drag cursor-n-resize" data-subplot="xy" x="59.5" y="100" width="20" height="27" style="fill: transparent; stroke-width: 0; pointer-events: all;"></rect></g></g><g class="layer-below"><g class="imagelayer"></g><g class="shapelayer"></g></g><g class="cartesianlayer"><g class="subplot xy"><g class="layer-subplot"><g class="shapelayer"></g><g class="imagelayer"></g></g><g class="gridlayer"><g class="x"><path class="xgrid crisp" transform="translate(122.75,0)" d="M0,100v270" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"></path><path class="xgrid crisp" transform="translate(220.15,0)" d="M0,100v270" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"></path><path class="xgrid crisp" transform="translate(317.53999999999996,0)" d="M0,100v270" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"></path><path class="xgrid crisp" transform="translate(414.94,0)" d="M0,100v270" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"></path><path class="xgrid crisp" transform="translate(512.3399999999999,0)" d="M0,100v270" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"></path><path class="xgrid crisp" transform="translate(609.73,0)" d="M0,100v270" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"></path><path class="xgrid crisp" transform="translate(707.13,0)" d="M0,100v270" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"></path></g><g class="y"><path class="ygrid crisp" transform="translate(0,265.36)" d="M80,0h688" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"></path><path class="ygrid crisp" transform="translate(0,135.18)" d="M80,0h688" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"></path><path class="ygrid crisp" transform="translate(0,330.45)" d="M80,0h688" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"></path><path class="ygrid crisp" transform="translate(0,200.26999999999998)" d="M80,0h688" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"></path></g></g><g class="zerolinelayer"></g><path class="xlines-below"></path><path class="ylines-below"></path><g class="overlines-below"></g><g class="xaxislayer-below"></g><g class="yaxislayer-below"></g><g class="overaxes-below"></g><g class="plot" transform="translate(80, 100) scale(1, 1)" clip-path="url(&#39;#clip686998xyplot&#39;)"><g class="scatterlayer mlayer"><g class="trace scatter trace2a161f" style="stroke-miterlimit: 2; opacity: 0.8;"><g class="fills"></g><g class="errorbars"></g><g class="lines"><path class="js-line" d="M-4242.67,425.72L-2294.75,360.63L-346.83,165.36L1601.09,-160.09" style="vector-effect: non-scaling-stroke; fill: none; stroke: rgb(0, 128, 0); stroke-opacity: 1; stroke-width: 2px; opacity: 1;"></path></g><g class="points"></g><g class="text"></g></g></g></g><g class="overplot"></g><path class="xlines-above crisp" d="M0,0" style="fill: none;"></path><path class="ylines-above crisp" d="M0,0" style="fill: none;"></path><g class="overlines-above"></g><g class="xaxislayer-above"><g class="xtick"><text text-anchor="middle" x="0" y="383" data-unformatted="2.2" data-math="N" transform="translate(122.75,0)" style="font-family: &quot;Open Sans&quot;, verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">2.2</text></g><g class="xtick"><text text-anchor="middle" x="0" y="383" data-unformatted="2.25" data-math="N" transform="translate(220.15,0)" style="font-family: &quot;Open Sans&quot;, verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">2.25</text></g><g class="xtick"><text text-anchor="middle" x="0" y="383" data-unformatted="2.3" data-math="N" transform="translate(317.53999999999996,0)" style="font-family: &quot;Open Sans&quot;, verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">2.3</text></g><g class="xtick"><text text-anchor="middle" x="0" y="383" data-unformatted="2.35" data-math="N" transform="translate(414.94,0)" style="font-family: &quot;Open Sans&quot;, verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">2.35</text></g><g class="xtick"><text text-anchor="middle" x="0" y="383" data-unformatted="2.4" data-math="N" transform="translate(512.3399999999999,0)" style="font-family: &quot;Open Sans&quot;, verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">2.4</text></g><g class="xtick"><text text-anchor="middle" x="0" y="383" data-unformatted="2.45" data-math="N" transform="translate(609.73,0)" style="font-family: &quot;Open Sans&quot;, verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">2.45</text></g><g class="xtick"><text text-anchor="middle" x="0" y="383" data-unformatted="2.5" data-math="N" transform="translate(707.13,0)" style="font-family: &quot;Open Sans&quot;, verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">2.5</text></g></g><g class="yaxislayer-above"><g class="ytick"><text text-anchor="end" x="79" y="4.199999999999999" data-unformatted="4" data-math="N" transform="translate(0,265.36)" style="font-family: &quot;Open Sans&quot;, verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">4</text></g><g class="ytick"><text text-anchor="end" x="79" y="4.199999999999999" data-unformatted="6" data-math="N" transform="translate(0,135.18)" style="font-family: &quot;Open Sans&quot;, verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">6</text></g><g class="ytick"><text text-anchor="end" x="79" y="4.199999999999999" data-unformatted="3" data-math="N" transform="translate(0,330.45)" style="font-family: &quot;Open Sans&quot;, verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">3</text></g><g class="ytick"><text text-anchor="end" x="79" y="4.199999999999999" data-unformatted="5" data-math="N" transform="translate(0,200.26999999999998)" style="font-family: &quot;Open Sans&quot;, verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">5</text></g></g><g class="overaxes-above"></g></g></g><g class="polarlayer"></g><g class="ternarylayer"></g><g class="geolayer"></g><g class="funnelarealayer"></g><g class="pielayer"></g><g class="sunburstlayer"></g><g class="glimages"></g></svg><div class="gl-container"></div><svg class="main-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="847.5" height="450"><defs id="topdefs-686998"><g class="clips"></g></defs><g class="indicatorlayer"></g><g class="layer-above"><g class="imagelayer"></g><g class="shapelayer"></g></g><g class="infolayer"><g class="g-gtitle"></g><g class="g-xtitle"></g><g class="g-ytitle"></g></g><g class="menulayer"></g><g class="zoomlayer"></g></svg><div class="modebar-container" style="position: absolute; top: 0px; right: 0px; width: 100%;"><div id="modebar-686998" class="modebar modebar--hover ease-bg"><div class="modebar-group"><a rel="tooltip" class="modebar-btn" data-title="Download plot as a png" data-toggle="false" data-gravity="n"><svg viewBox="0 0 1000 1000" class="icon" height="1em" width="1em"><path d="m500 450c-83 0-150-67-150-150 0-83 67-150 150-150 83 0 150 67 150 150 0 83-67 150-150 150z m400 150h-120c-16 0-34 13-39 29l-31 93c-6 15-23 28-40 28h-340c-16 0-34-13-39-28l-31-94c-6-15-23-28-40-28h-120c-55 0-100-45-100-100v-450c0-55 45-100 100-100h800c55 0 100 45 100 100v450c0 55-45 100-100 100z m-400-550c-138 0-250 112-250 250 0 138 112 250 250 250 138 0 250-112 250-250 0-138-112-250-250-250z m365 380c-19 0-35 16-35 35 0 19 16 35 35 35 19 0 35-16 35-35 0-19-16-35-35-35z" transform="matrix(1 0 0 -1 0 850)"></path></svg></a></div><div class="modebar-group"><a rel="tooltip" class="modebar-btn active" data-title="Zoom" data-attr="dragmode" data-val="zoom" data-toggle="false" data-gravity="n"><svg viewBox="0 0 1000 1000" class="icon" height="1em" width="1em"><path d="m1000-25l-250 251c40 63 63 138 63 218 0 224-182 406-407 406-224 0-406-182-406-406s183-406 407-406c80 0 155 22 218 62l250-250 125 125z m-812 250l0 438 437 0 0-438-437 0z m62 375l313 0 0-312-313 0 0 312z" transform="matrix(1 0 0 -1 0 850)"></path></svg></a><a rel="tooltip" class="modebar-btn" data-title="Pan" data-attr="dragmode" data-val="pan" data-toggle="false" data-gravity="n"><svg viewBox="0 0 1000 1000" class="icon" height="1em" width="1em"><path d="m1000 350l-187 188 0-125-250 0 0 250 125 0-188 187-187-187 125 0 0-250-250 0 0 125-188-188 186-187 0 125 252 0 0-250-125 0 187-188 188 188-125 0 0 250 250 0 0-126 187 188z" transform="matrix(1 0 0 -1 0 850)"></path></svg></a></div><div class="modebar-group"><a rel="tooltip" class="modebar-btn" data-title="Zoom in" data-attr="zoom" data-val="in" data-toggle="false" data-gravity="n"><svg viewBox="0 0 875 1000" class="icon" height="1em" width="1em"><path d="m1 787l0-875 875 0 0 875-875 0z m687-500l-187 0 0-187-125 0 0 187-188 0 0 125 188 0 0 187 125 0 0-187 187 0 0-125z" transform="matrix(1 0 0 -1 0 850)"></path></svg></a><a rel="tooltip" class="modebar-btn" data-title="Zoom out" data-attr="zoom" data-val="out" data-toggle="false" data-gravity="n"><svg viewBox="0 0 875 1000" class="icon" height="1em" width="1em"><path d="m0 788l0-876 875 0 0 876-875 0z m688-500l-500 0 0 125 500 0 0-125z" transform="matrix(1 0 0 -1 0 850)"></path></svg></a><a rel="tooltip" class="modebar-btn" data-title="Autoscale" data-attr="zoom" data-val="auto" data-toggle="false" data-gravity="n"><svg viewBox="0 0 1000 1000" class="icon" height="1em" width="1em"><path d="m250 850l-187 0-63 0 0-62 0-188 63 0 0 188 187 0 0 62z m688 0l-188 0 0-62 188 0 0-188 62 0 0 188 0 62-62 0z m-875-938l0 188-63 0 0-188 0-62 63 0 187 0 0 62-187 0z m875 188l0-188-188 0 0-62 188 0 62 0 0 62 0 188-62 0z m-125 188l-1 0-93-94-156 156 156 156 92-93 2 0 0 250-250 0 0-2 93-92-156-156-156 156 94 92 0 2-250 0 0-250 0 0 93 93 157-156-157-156-93 94 0 0 0-250 250 0 0 0-94 93 156 157 156-157-93-93 0 0 250 0 0 250z" transform="matrix(1 0 0 -1 0 850)"></path></svg></a><a rel="tooltip" class="modebar-btn" data-title="Reset axes" data-attr="zoom" data-val="reset" data-toggle="false" data-gravity="n"><svg viewBox="0 0 928.6 1000" class="icon" height="1em" width="1em"><path d="m786 296v-267q0-15-11-26t-25-10h-214v214h-143v-214h-214q-15 0-25 10t-11 26v267q0 1 0 2t0 2l321 264 321-264q1-1 1-4z m124 39l-34-41q-5-5-12-6h-2q-7 0-12 3l-386 322-386-322q-7-4-13-4-7 2-12 7l-35 41q-4 5-3 13t6 12l401 334q18 15 42 15t43-15l136-114v109q0 8 5 13t13 5h107q8 0 13-5t5-13v-227l122-102q5-5 6-12t-4-13z" transform="matrix(1 0 0 -1 0 850)"></path></svg></a></div><div class="modebar-group"><a rel="tooltip" class="modebar-btn" data-title="Toggle Spike Lines" data-attr="_cartesianSpikesEnabled" data-val="on" data-toggle="false" data-gravity="n"><svg viewBox="0 0 1000 1000" class="icon" height="1em" width="1em"><path d="M512 409c0-57-46-104-103-104-57 0-104 47-104 104 0 57 47 103 104 103 57 0 103-46 103-103z m-327-39l92 0 0 92-92 0z m-185 0l92 0 0 92-92 0z m370-186l92 0 0 93-92 0z m0-184l92 0 0 92-92 0z" transform="matrix(1.5 0 0 -1.5 0 850)"></path></svg></a><a rel="tooltip" class="modebar-btn active" data-title="Show closest data on hover" data-attr="hovermode" data-val="closest" data-toggle="false" data-gravity="ne"><svg viewBox="0 0 1500 1000" class="icon" height="1em" width="1em"><path d="m375 725l0 0-375-375 375-374 0-1 1125 0 0 750-1125 0z" transform="matrix(1 0 0 -1 0 850)"></path></svg></a><a rel="tooltip" class="modebar-btn" data-title="Compare data on hover" data-attr="hovermode" data-val="x" data-toggle="false" data-gravity="ne"><svg viewBox="0 0 1125 1000" class="icon" height="1em" width="1em"><path d="m187 786l0 2-187-188 188-187 0 0 937 0 0 373-938 0z m0-499l0 1-187-188 188-188 0 0 937 0 0 376-938-1z" transform="matrix(1 0 0 -1 0 850)"></path></svg></a></div><div class="modebar-group"><a href="https://plot.ly/" target="_blank" data-title="Produced with Plotly" class="modebar-btn plotlyjsicon modebar-btn--logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 132" height="1em" width="1em"><defs><style>.cls-1 {fill: #119dff;} .cls-2 {fill: #25fefd;} .cls-3 {fill: #fff;}</style></defs><title>plotly-logomark</title><g id="symbol"><rect class="cls-1" width="132" height="132" rx="6" ry="6"></rect><circle class="cls-2" cx="78" cy="54" r="6"></circle><circle class="cls-2" cx="102" cy="30" r="6"></circle><circle class="cls-2" cx="78" cy="30" r="6"></circle><circle class="cls-2" cx="54" cy="30" r="6"></circle><circle class="cls-2" cx="30" cy="30" r="6"></circle><circle class="cls-2" cx="30" cy="54" r="6"></circle><path class="cls-3" d="M30,72a6,6,0,0,0-6,6v24a6,6,0,0,0,12,0V78A6,6,0,0,0,30,72Z"></path><path class="cls-3" d="M78,72a6,6,0,0,0-6,6v24a6,6,0,0,0,12,0V78A6,6,0,0,0,78,72Z"></path><path class="cls-3" d="M54,48a6,6,0,0,0-6,6v48a6,6,0,0,0,12,0V54A6,6,0,0,0,54,48Z"></path><path class="cls-3" d="M102,48a6,6,0,0,0-6,6v48a6,6,0,0,0,12,0V54A6,6,0,0,0,102,48Z"></path></g></svg></a></div></div></div><svg class="main-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="847.5" height="450"><g class="hoverlayer"></g></svg></div></div></div>
+<script type="text/javascript">window.PLOTLYENV=window.PLOTLYENV || {}; if (document.getElementById("5f0d8ea8-37ca-4438-8734-80a1468a53c8")) {  Plotly.newPlot('5f0d8ea8-37ca-4438-8734-80a1468a53c8',     [{"marker": {"color": "green"}, "mode": "lines", "name": "test", "opacity": 0.8, "type": "scatter", "x": [0, 1, 2, 3], "y": [0, 1, 4, 9]}], {"template": {"data": {"bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "bar"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "barpolar"}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "choropleth": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "choropleth"}], "contour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "contour"}], "contourcarpet": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "contourcarpet"}], "heatmap": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmap"}], "heatmapgl": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmapgl"}], "histogram": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "histogram"}], "histogram2d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2d"}], "histogram2dcontour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2dcontour"}], "mesh3d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "mesh3d"}], "parcoords": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "parcoords"}], "scatter": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter"}], "scatter3d": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter3d"}], "scattercarpet": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattercarpet"}], "scattergeo": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergeo"}], "scattergl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergl"}], "scattermapbox": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattermapbox"}], "scatterpolar": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolar"}], "scatterpolargl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolargl"}], "scatterternary": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterternary"}], "surface": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "surface"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}]}, "layout": {"annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "colorscale": {"diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]], "sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}, "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "geo": {"bgcolor": "white", "lakecolor": "white", "landcolor": "#E5ECF6", "showlakes": true, "showland": true, "subunitcolor": "white"}, "hoverlabel": {"align": "left"}, "hovermode": "closest", "mapbox": {"style": "light"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "ternary": {"aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "title": {"x": 0.05}, "xaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "zerolinecolor": "white", "zerolinewidth": 2}, "yaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "zerolinecolor": "white", "zerolinewidth": 2}}}}, {"responsive": true}  )  };</script>
+</div>
+
+<p>Go ahead and click around on the plot, it’s fully responsive.</p>
+<p>I actually added that plot on this page by copying the javascript code that Plotly generated right into the markdown file of this blog post. I modified the code to point to a <a href="https://plot.ly/javascript/getting-started/#plotlyjs-cdn" target="_blank" rel="noopener">CDN for plotly.js</a> instead of including the entire <code>plotly.js</code> in the source-code of my blog.</p>
+<h2 id="Making-the-pages-load-faster"><a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#Making-the-pages-load-faster" class="headerlink" title="Making the pages load faster"></a>Making the pages load faster</h2><p>With the above code, the entire plotly javascript library is inside of the generated HTML within <code>plot_div</code>. This makes it simple to get plotly working on the web, since there are no dependancies, however the plots will load faster if you instead manually include <code>plotly.js</code>.</p>
+<p>This is the change to <code>plot()</code> that you will need to make:</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt_div = plot(fig, output_type=<span class="string">'div'</span>, include_plotlyjs=<span class="literal">False</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>This is the change to the HTML you will need to make:</p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.plot.ly/plotly-latest.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>Another tip:</strong></p>
+<p>If you don’t want the link to the plotly website on your graph, you can turn it off with including these options:</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plot_div = plot(... , show_link=<span class="literal">False</span>, link_text=<span class="string">""</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Conclusion"><a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Plotly is the only graphing library I know of that works the same in Python as it does on the web, meaning I don’t need to make any transformations of the data from a python format to generate the plots. This made it extremely easy for me to get started right away developing visuals for a project I'm working on.</p>
+<p>There are no special django plugins to download. No special javascript libraries to learn, no special way to format the data between python and html… everything just works :)</p>
+<p>Checkout <a href="https://plot.ly/" target="_blank" rel="noopener">https://plot.ly</a> for more information on how to make different kinds of plots.</p>
+<p>As always, any questions you have leave them in the comments below. I'd be glad to help, and maybe see what kind of projects you are working on.</p>
+	  
+	</div>
+
+	<!-- recommended posts -->
+	
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="https://www.codingwithricky.com/2020/05/20/plaid_django_example/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+  		
+
+        <li><a href="https://www.codingwithricky.com/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="https://www.codingwithricky.com/2019/08/18/easy-python-cli-with-click/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+
+    <!-- share -->
+    
+        
+    <div class="bdsharebuttonbox">
+        <a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#" class="bds_more" data-cmd="more"></a>
+        <a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+        <a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+        <a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+        <a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+        <a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a>
+        <a href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+    </div>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+
+
+        
+
+    
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
+  
+  	 <div id="disqus_thread"><iframe id="dsq-app2558" name="dsq-app2558" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/saved_resource(4).html" horizontalscrolling="no" verticalscrolling="no" style="height: 1491px !important;"></iframe><iframe id="indicator-north" name="indicator-north" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" style="width: 848px !important; border: none !important; overflow: hidden !important; top: 0px !important; min-width: 848px !important; max-width: 848px !important; position: fixed !important; z-index: 2147483646 !important; height: 0px !important; min-height: 0px !important; max-height: 0px !important; display: none !important;" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/saved_resource(5).html"></iframe><iframe id="indicator-south" name="indicator-south" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" style="width: 848px !important; border: none !important; overflow: hidden !important; bottom: 0px !important; min-width: 848px !important; max-width: 848px !important; position: fixed !important; z-index: 2147483646 !important; height: 0px !important; min-height: 0px !important; max-height: 0px !important; display: none !important;" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/saved_resource(6).html"></iframe></div>
+  
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta" style="height: auto !important; min-height: 0px !important;"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2019-08-28 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    </li><li><a href="https://www.codingwithricky.com/categories/Tutorials/">Tutorials<span>5</span></a></li>
+  
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="https://www.codingwithricky.com/tags/python/">python<span>2</span></a></li> <li><a href="https://www.codingwithricky.com/tags/web/">web<span>2</span></a></li> <li><a href="https://www.codingwithricky.com/tags/plots/">plots<span>1</span></a></li>
+    </ul>
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#The-Basics-of-plotting-with-Plotly"><span class="toc-article-text">The Basics of plotting with Plotly</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#Plotting-with-Plotly-Django"><span class="toc-article-text">Plotting with Plotly + Django</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#Making-the-pages-load-faster"><span class="toc-article-text">Making the pages load faster</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#Conclusion"><span class="toc-article-text">Conclusion</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+	<script async="" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/f(9).txt"></script>
+	<!-- side-ad -->
+	<ins class="adsbygoogle" style="display: block; height: 600px;" data-ad-client="ca-pub-9466063552461452" data-ad-slot="4337098047" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_3_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:263px;background-color:transparent;"><ins id="aswift_3_anchor" style="display: block; border: none; height: 600px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 263px; background-color: transparent; overflow: visible;"><iframe id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;border:0;width:263px;height:600px;" sandbox="allow-forms allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="263" height="600" frameborder="0" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/ads(2).html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!3" data-google-query-id="CJ3Q9pPWtuoCFVvpfgodytAAdA" data-load-complete="true"></iframe></ins></ins></ins>
+	<script>
+	     (adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'codingwithricky';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+    </div>
+  </div><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><ins id="aswift_0_anchor" style="display:block;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/ads(3).html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!0" data-load-complete="true"></iframe></ins></ins></ins><iframe id="google_osd_static_frame_9208887979712" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/saved_resource(7).html"></iframe><svg id="js-plotly-tester" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute; left: -10000px; top: -10000px; width: 9000px; height: 9000px; z-index: 1;"><path class="js-reference-point" d="M0,0H1V1H0Z" style="stroke-width: 0; fill: black;"></path></svg>
+  <div class="container-narrow">
+    <footer> <p>
+  © 2020 Richard Barella
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="https://www.codingwithricky.com/2019/08/28/easy-django-plotly/#" style="display: none;">   
+  <span>▲</span> 
+</a>
+
+<script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/jquery.imagesloaded.min.js"></script>
+<script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/gallery.js"></script>
+<script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/bootstrap.min.js"></script>
+<script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/main.js"></script>
+<script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/search.js"></script> 
+
+
+<link rel="stylesheet" href="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/jquery.fancybox.css" media="screen" type="text/css">
+<script src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+
+<!-- syntax highlighting -->
+
+
+
+<iframe style="display: none;" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/saved_resource(8).html"></iframe><div class="plotly-notifier"></div></body><iframe id="google_esf" name="google_esf" src="./Easily plot graphs in your website using Plotly + Python _ CODING w_RICKY_files/zrt_lookup.html" data-ad-client="ca-pub-9466063552461452" style="display: none;"></iframe></html>

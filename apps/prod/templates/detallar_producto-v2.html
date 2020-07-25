@@ -1,0 +1,443 @@
+{% extends  'base.html' %}
+
+{% block content %}
+<br>
+  	<div class="container-fluid">     
+    <div class="row">
+      <div class="col-sm-6">
+ 	<h1>Producto: {{ producto.nomb|upper }}</h1>
+ 	<h3 >ID: <span id="codp">{{ producto.id }}</span></h3>
+ 	<div class="card">
+    	<div class="card-body">     
+    		<p>{{ producto.desc }}</p>
+    	</div>
+
+  	</div>
+      </div>
+      <div class="col-sm-6">    	
+		  <img class="img-right" src="img_chania.jpg" alt="Chania" width="460" height="345"> 
+       </div>
+    </div>
+  </div>
+
+<div class="container-fluid" name="Detallar_prd">
+		
+		<div id="table_clon">
+		    <table id="TablaClon" class="table">
+		      	<tr class="hide" name="regn" >
+		    		<td ></td>
+					<td  ></td>
+					<td ></td>
+					<td ></td>
+					<td  title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)"></td>
+					<td ></td>
+		      	</tr>
+		    </table>
+	  	</div>
+	  	
+		<div class="card bg-primary text-white" >
+			  <div class="row">
+				  <div class="col-md-9">
+					<div class="card-body" style="font-size: 28px; font-weight: bold; font-style: Arial">COSTO TOTAL</div>
+				  </div>
+				  <div class="col-md-3">
+	    			<div class="card-body"><p id="costo_total" style="font-size: 28px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.totprd }}</p></div>
+				</div>
+			  </div>
+		  </div
+		  <br>
+  	
+   	  	<div id="Insumos_div">		  
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+		    				<button id="Insumos_sel" name="Insumos_prd" onclick="SeleccionarTabla(this)" type="button" class="btn btn-link"  data-target="#__Insumos_prd" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">INSUMOS(partidas)</button>
+		    			</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body "><p id="Insumos_tot" name="Insumos" class="total" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.prddetlls }}</p></div>
+		  			</div>	
+				</div>
+		   </div>
+
+			<div id="__Insumos_prd" class="collapse">
+				<table id="Insumos_dat" class="table datos">
+					<thead >
+		    		<tr>
+		    		    <th style=" width: 5%;">ID</th>
+					    <th style=" width: 45%;">DESCRIPCION</th>
+					    <th style=" width: 10%;">U. MEDIDA</th>
+					    <th style=" width: 15%;">COSTO/UNIDAD</th>
+					    <th style=" width: 10%;">CANTIDAD</th>
+					   	<th style=" width: 15%;">SUBTOTAL</th>
+		      		</tr>
+		    	</thead>
+					<tbody >
+					{% for i in pdatos %}
+						<tr id="insm-{{i.id}}" name="regn" >
+							<td >{{ i.idpart }} </td>
+							<td><a class="edit" href="{% url 'detallar_partida' idpart=i.idpart %}" title="Detallar Producto" data-toggle="tooltip" >{{ i.nombre  | upper }}</a></td> 
+							<td >{{ i.umedida}}</td>
+							<td >{{ i.cumedida}}</td>
+							<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>
+							<td >{{ i.costo }}</td>
+						</tr>
+					{% endfor %}
+		    	</tbody>
+				</table>
+
+				<i id="btnAgregar_prd" onclick="AgregarRegistro(this)" name="Insumos_prd" class="fa fa-plus-square  fa-2x" aria-hidden="true" style="color:green"></i>
+				<i id="btnEliminar_prd" onclick="EliminarRegistro(this)" name="Insumos_prd" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 		
+		   </div>	   
+	  	
+	  		<div id="Insumos_lis"  style="width:70%; background-color:lightgray; display:none">
+				<table id="Insumos_agr" class="table lista">
+						<thead>
+							<tr >
+								<th style=" width: 5%;">ID</th>
+								<th style=" width: 45%;">DESCRIPCION</th>
+								<th style=" width: 10%;">U. MEDIDA</th>
+								<th style=" width: 15%;">COSTO/UNIDAD</th>
+							</tr>
+							
+						</thead>
+						 <tbody> 
+							{% for i in partidas %}
+								<tr id="partida_{{ i.id }}" title="Presione para agregar a la partida" data-toggle="tooltip"  onclick="SelTblListar(this)">
+									<td >{{ i.id }}</td>
+									<td>{{ i.nomb }}</td>
+									<td>{{ i.unid }}</td>
+									<td>{{ i.cost }}</td> 
+								</tr>
+							{% endfor %}
+						</tbody>
+				</table>
+			</div>
+	  	
+	  	</div>
+ 	  	
+  	  	<div id="Materiales_div">		  
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+		    				<button id="Materiales_sel" onclick="SeleccionarTabla(this)" name="Materiales_prd" type="button" class="btn btn-link"  data-target="#__Materiales_prd" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">MATERIALES</button>
+		    			</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body"><p id="Materiales_tot" name="Materiales" class="total" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.maqyherr }}</p></div>
+		  			</div>	
+				</div>
+		   </div>
+
+			<div id="__Materiales_prd" class="collapse">
+				<table id="Materiales_dat" class="table datos">
+				<thead >
+		    		<tr>
+						<th style=" width: 5%;">ID</th>
+					    <th style=" width: 45%;">DESCRIPCION</th>
+					    <th style=" width: 10%;">U. MEDIDA</th>
+					    <th style=" width: 15%;">COSTO/UNIDAD</th>
+					    <th style=" width: 10%;">CANTIDAD</th>
+					   	<th style=" width: 15%;">SUBTOTAL</th>
+					   	
+		      		</tr>
+		    	</thead>
+				<tbody>
+					{% for i in mdatos %}
+						<tr id="mate-{{ i.id }}" name="regn" >
+							<td >{{ i.idmate}} </td>
+							<td title="Escriba la descripcion del producto..." data-toggle="tooltip">{{ i.nombre }}</td>
+							<td >{{ i.umedida }}</td>
+							<td >{{ i.cumedida}}</td>
+							<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>
+							<td >{{ i.costo }}</td>
+						</tr>
+					{% endfor %}
+		    	</tbody>
+		    </table>
+		    
+				<i id="btnAgregar_mate" onclick="AgregarRegistro(this)" name="Materiales_prd" class="fa fa-plus-square fa-2x" aria-hidden="true" style="color:green"></i>
+				<i id="btnEliminar_mate" onclick="EliminarRegistro(this)" name="Materiales_prd" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 		
+		   </div>	   
+			
+			<div id="Materiales_lis"   style="width:70%; background-color:lightgray; display:none">
+				<table id="Materiales_agr" class="table lista">
+					<thead>
+							<tr>
+								<th style=" width: 5%;">ID</th>
+								<th style=" width: 45%;">DESCRIPCION</th>
+								<th style=" width: 10%;">U. MEDIDA</th>
+								<th style=" width: 15%;">COSTO/UNIDAD</th>
+								<th style=" width: 10%;">C. MAX</th>
+							</tr>
+							
+					</thead>
+					<tbody>
+						{% for i in materiales %}
+								<tr id="insumo_{{ i.id }}" title="Presione para agregar material" data-toggle="tooltip" onclick="SelTblListar(this)" >
+									<td >{{ i.id }}</td>
+									<td >{{ i.descrip }}</td>
+									<td>{{ i.umedida }}</td>
+									<td>{{ i.cumedida }}</td>
+									<td>{{ i.max }}</td> 
+								</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+	  	
+	  	</div>
+
+		<div id="Servicios_div">
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+							<button id="Servicios_sel" name="OtrosCostos_prd" onclick="SeleccionarTabla(this)" type="button" class="btn btn-link"  data-target="#__Servicios_prd" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">SERVICIOS</button>
+		    			</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body"><p id="Servicios_tot"  name="Servicios" class="total" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.cstsadnls }}</p></div>
+		  			</div>	
+				</div>
+		   </div>
+			
+			<div id="__Servicios_prd" class="collapse">
+				<table id="Servicios_dat" class="table datos">
+					<thead >
+						<tr>
+							<th style=" width: 5%;">ID</th>
+							<th style=" width: 45%;">DESCRIPCION</th>
+							<th style=" width: 10%;">U. MEDIDA</th>
+							<th style=" width: 10%;">COSTO/UNIDAD</th>
+							<th style=" width: 10%;">CANTIDAD</th>
+							<th style=" width: 10%;">SUBTOTAL</th>
+							<th style=" width: 10%; display:none;">REF</th>
+						</tr>
+					</thead>
+					<tbody >
+						
+						{% for i in sdatos %}
+							<tr id="otrs-{{ i.id }}" name="regn" >
+								<td >{{ i.id }} </td>
+								<td >{{ i.nombre }}</td>
+								<td > {{ i.umedida}}</td>
+								<td > {{ i.cumedida}}</td>
+								<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>
+								<td > {{ i.costo }}</td>
+								<td style="display:none;"> {{ i.referencia }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<i id="btnAgregar" onclick="AgregarRegistro(this)" name="Servicios" class="fa fa-plus-square  fa-2x" aria-hidden="true" style="color:green"></i>
+				<i id="btnEliminar" onclick="EliminarRegistro(this)" name="Servicios" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 			
+		   </div>
+			
+			<div id="Servicios_lis"  style="width:70%; background-color:lightgray; display:none">
+				<table id="Servicios_agr" class="table lista">
+					<thead>
+								<tr>
+									<th style=" width: 5%;">ID</th>
+									<th style=" width: 45%;">DESCRIPCION</th>
+									<th style=" width: 10%;">U. MEDIDA</th>
+									<th style=" width: 15%;">COSTO/UNIDAD</th>
+									<th style=" width: 10%;">C. MAX</th>
+								
+								</tr>
+						 </thead>
+					<tbody>
+							{% for i in servicios %}
+									<tr id="servicios_{{ i.id }}" title="Presione para agregar costos..." data-toggle="tooltip" onclick="SelTblListar(this)" >
+									<td >{{ i.id }}</td>
+									<td >{{ i.descrip }}</td>
+									<td>{{ i.umedida }}</td>
+									<td>{{ i.cumedida }}</td>
+									<td>{{ i.max }}</td> 
+									</tr>
+							{% endfor %}
+						</tbody>
+				</table>
+			</div>	   
+		</div>
+
+		<div id="Personal_div">
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+							<button id="Personal_sel" name="Personal_prd" onclick="SeleccionarTabla(this)" type="button" class="btn btn-link"  data-target="#__Personal_prd" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">MANO DE OBRA</button>
+		    			</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body"><p id="Personal_tot"  name="Personal" class="total" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.cstsadnls }}</p></div>
+		  			</div>	
+				</div>
+		   </div>
+			
+			<div id="__Personal_prd" class="collapse">
+				<table id="Personal_dat" class="table datos">
+					<thead >
+						<tr>
+							<th style=" width: 5%;">ID</th>
+							<th style=" width: 45%;">DESCRIPCION</th>
+							<th style=" width: 10%;">U. MEDIDA</th>
+							<th style=" width: 10%;">COSTO/UNIDAD</th>
+							<th style=" width: 10%;">CANTIDAD</th>
+							<th style=" width: 10%;">SUBTOTAL</th>
+							<th style=" width: 10%; display:none;">TIPO</th>
+							<th style=" width: 10%; display:none;">REF</th>
+						</tr>
+					</thead>
+					<tbody >
+						
+						{% for i in pedatos %}
+							<tr id="otrs-{{ i.id }}" name="regn" >
+								<td >{{ i.id }} </td>
+								<td >{{ i.nombre }}</td>
+								<td > {{ i.umedida}}</td>
+								<td > {{ i.cumedida}}</td>
+								<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>
+								<td > {{ i.costo }}</td>
+								<td style="display:none;"> {{ i.tipo }}</td>
+								<td style="display:none;"> {{ i.referencia }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<i id="btnAgregar" onclick="AgregarRegistro(this)" name="Servicios" class="fa fa-plus-square  fa-2x" aria-hidden="true" style="color:green"></i>
+				<i id="btnEliminar" onclick="EliminarRegistro(this)" name="Servicios" class="fa fa-minus-square fa-2x" aria-hidden="true" style="color:red"></i> 			
+		   </div>
+			
+			<div id="Personal_lis"  style="width:70%; background-color:lightgray; display:none">
+				<table id="Personal_agr" class="table lista">
+					<thead>
+								<tr>
+									<th style=" width: 5%;">ID</th>
+									<th style=" width: 45%;">DESCRIPCION</th>
+									<th style=" width: 10%;">U. MEDIDA</th>
+									<th style=" width: 15%;">COSTO/UNIDAD</th>
+									<th style=" width: 10%;">C. MAX</th>
+								
+								</tr>
+						 </thead>
+					<tbody>
+							{% for i in personal %}
+									<tr id="per_{{ i.id }}" title="Presione para agregar costos..." data-toggle="tooltip" onclick="SelTblListar(this)" >
+										<td >{{ i.id }}</td>
+										<td >{{ i.descrip }}</td>
+										<td>{{ i.umedida }}</td>
+										<td>{{ i.cumedida }}</td>
+										<td>{{ i.max }}</td> 
+									</tr>
+							{% endfor %}
+						</tbody>
+				</table>
+			</div>	   
+		</div>
+
+
+		<div id="Utilidades_div" class="table-editable">		  
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+		    				<button id="Utilidades_sel" onclick="SeleccionarTabla(this)" name="Utilidades_prd" type="button" class="btn btn-link"  data-target="#__Utilidades_prd" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">UTILIDADES</button>
+		    			</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body"><p id="Utilidades_tot"  name="Utilidades" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.utilidades }}</p></div>
+		  			</div>	
+				</div>
+		   </div>
+		   
+		   <div id="__Utilidades_prd" class="collapse">
+				<table id="Utilidades_dat" class="table datos">
+					<thead >
+						<tr>
+							<th style=" width: 5%;">ID</th>
+							<th style=" width: 50%;">ITEM</th>
+							<th style=" width: 20%;">PORCENTAJE</th>
+							<th style=" width: 25%;">UTILIDAD</th>
+						</tr>
+					</thead>
+					<tbody >
+						<tr id="util-{{ i.id }}" name="regn" >
+							<td >II </td>
+							<td id="Insumos_tit" >Insumos </td>
+							<td id="Insumos_por" onclick="ModificarCantidad(this)" >{{ producto.pinsm }}</td>
+							<td id="Insumos_util"> {{ producto.prinsm }}</td>
+						</tr>
+						<tr id="util-{{ i.id }}"  >
+							<td >II </td>
+							<td id="Materiales_tit" >Materiales </td>
+							<td id="Materiales_por" name="Materiales"onclick="ModificarCantidad(this)" >{{ producto.pmate }}</td>
+							<td id="Materiales_util" > {{ producto.prmate }}</td>
+						</tr>
+						<tr >
+							<td >II </td>
+							<td id="Servicios_tit" >Servicios </td>
+							<td id="Servicios_por" onclick="ModificarCantidad(this)" name="Servicios">{{ producto.pserv }}</td>
+							<td id="Servicios_util"> {{ producto.prserv }}</td>
+						</tr>
+						<tr >
+							<td >II </td>
+							<td id="Personal_tit" >Personal </td>
+							<td id="Personal_por" onclick="ModificarCantidad(this)" name="Personal">{{ producto.ppers}}</td>
+							<td id="Personal_util"> {{ producto.prpers }}</td>
+						</tr>
+					</tbody>
+				</table>
+		   </div>
+			
+		</div>
+		
+		<div class="container-fluid row" >  
+			<button id="export-btn" class="btn btn-primary col-md-3">Guardar Registros</button>
+			<p class="col-md-1">         </p>
+			<a id="ref_prd" class="col-md-3" href="{% url 'agregar_ventas' idprod=producto.id cantidad=1 %}" type="button" ><button id="vender_prd" class="btn btn-primary ">Vender Producto</button></a>
+
+		</div>
+</div>
+	  	
+<!-- Modal -->
+<div class="modal fade " id="myModal3" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document" id="dialogo">
+		<!-- Modal content-->
+		<div class="modal-content" id="dialogo">      
+		    <div class="modal-header">
+		          <h4 class="modal-title">Continuar o Guardar</h4>
+		          <button type="button" class="close" data-dismiss="modal"> &times;</button>
+		    </div>
+
+		    <div class="modal-body">
+		        <p>Desea guardar los cambios realizados?.</p>	
+		    </div>
+
+		    <div class="modal-footer">
+		        <button type="button" class="btn btn-danger" data-dismiss="modal">No Guardar</button>
+		    	<form method="post">
+					{% csrf_token %}
+						<input id="ObjDatos" type="text" name="ObjDatos" style="display:none">	
+					<button id="benviar" type="submit" class="btn btn-primary" >Guardar y Continuar</button>  
+    			</form>
+		    </div>
+		</div>
+    </div>
+</div>
+
+
+
+{% endblock %}

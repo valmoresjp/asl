@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<br>
+<h1>Listado de Clientes</h1>
+<br><br>
+
+    <div class="container-fluid">
+
+    	<div class="row">
+            <div class="col-md-12">   
+                <a class="edit" href="{% url 'agregar_clientes' %}" title="Agregar" data-toggle="tooltip" ><i class="fa fa-user-plus fa-1x" style="color:green"></i></a>
+                                     
+            </div>
+
+    	</div>
+    	<input class="form-control" id="patron" type="text" placeholder="Escriba para filtrar...">
+        <div class="row">
+                <div class="col-md-12">
+                    <table class="table users table-hover">
+                        <thead>
+                            <tr>
+                                <th style=" width: 5%;"></th>
+                                <th style=" width: 5%;">ID</th>
+                                <th style=" width: 40%;">NOMBRE</th>
+                                <th style=" width: 20%;">TELÉFONO</th>
+                                <th style=" width: 20%;">REGISTRO</th>
+                                <th style=" width: 20%;">PEDIDOS</th>
+                                <th style=" width: 20%;">TOTAL</th>
+                                
+                             </tr>
+                        </thead>
+                        <tbody id="Listado-body">
+							{% for reg in clientes %}   
+                                <tr>
+                                    <td>
+										<a class="edit" href="{% url 'editar_clientes' idclie=reg.id %}" title="Editar" data-toggle="tooltip" > <i class="fa fa-edit fa-1x" style="color:green"></i></a>
+                                    </td>
+									<td>{{ reg.id }}</td>
+									<td><a class="edit" href="{% url 'detallar_clientes' idclie=reg.id%}" title="Detallar Clientes" data-toggle="tooltip" >{{ reg.nombre | upper }}</a></td> 
+									<td>{{ reg.telefono }}</td>
+                                     <td>{{ reg.fhreg|date:"d-m-Y H:i" }}</td> 
+                                     <td>{{ reg.total_pedidos }}</td> 
+                                     <td>{{ reg.total_adq|floatformat:2}}</td> 
+                                </tr>
+							{% endfor %} 
+                        </tbody>
+                    </table>   
+            </div> 
+        </div>
+    </div>
+{%endblock %}

@@ -3,15 +3,6 @@ from django.db import models
 # Create your models here.
 class InsumosM(models.Model):
 
-
-	TIPO_ELEMENTO = (
-	 	 ('MAT','MATERIAL'),
-	 	 ('PER','PERSONAL'),
-	 	 ('MYH','MAQyHERR'),
-	 	 ('SER','SERVICIO'),
-	 	 ('ING','INGREDIENTE'),
-	 	 )
-
 	# CODIGO: Codigo internor del producto 
 	# FINGSO: Fecha de Ingreso del producto. Este campo debe ser cargado automaticamente
 	# DESCRP: Descripcion del producto
@@ -27,7 +18,8 @@ class InsumosM(models.Model):
 	umedida = models.CharField(max_length=5)
 	cantd   = models.FloatField(default = 1.00)
 	inven   = models.FloatField(default = 0.0)
-	tipo    = models.CharField(max_length=14, choices=TIPO_ELEMENTO, default='ING')
+	# ~ tipo    = models.CharField(max_length=4, choices=TIPO_ELEMENTO, default='ING')
+	tipo    = models.CharField(max_length=4)
 	
 	distb1  = models.CharField(max_length=30) 
 	costo1	= models.FloatField(default=0.00)

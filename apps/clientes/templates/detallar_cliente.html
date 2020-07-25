@@ -1,0 +1,95 @@
+{% extends  'base.html' %}
+
+{% block content %}
+<br>
+
+ 	<h3>Cliente: {{ cliente.nombre |upper }}</h3>
+ 	<h3>Telefono: {{ cliente.telefono |upper }}</h3>
+ 	<h3 >ID: <span id="codp">{{ cliente.id }}</span></h3>
+ 	<h3 >FECHA DE ANIVERSARIO: <span id="aniversario">{{ cliente.fhaniver| date:"d-m-Y"  }}</span></h3>
+ 	<h3 >TOTAL PEDIDOS: <span id="pedidos">{{ cliente.total_pedidos }}</span></h3>
+ 	<h3 >TOTAL ADQUIRIDO: <span id="total">{{ cliente.total_adq |floatformat:2 }}</span></h3>
+ 
+<div class="container-fluid">
+		
+  	
+   	  	<div id="cliente_div">		  
+<!--
+			<div class="row">
+				<div class="col-md-9">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body">
+		    				<button id="Insumos_sel" name="Cliente_prd" onclick="SeleccionarTabla(this)" type="button" class="btn btn-link"  data-target="#__Cliente_prd" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">Cliente(partidas)</button>
+		    			</div>
+		  			</div>
+				</div>	   		
+		   		<div class="col-md-3">
+		   	  		<div class="card bg-light text-dark">
+		    			<div class="card-body"><p id="Cliente_tot" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.prddetlls }}</p></div>
+		  			</div>	
+				</div>
+		   </div>
+-->
+
+			<div id="Cliente_prd" >
+				<table id="Cliente_dat" class="table datos">
+					<thead style="font-size: 16px; font-style: Arial">
+		    		<tr>
+		    		    <th style=" width: 5%;">ID</th>
+					    <th style=" width: 30%;">PRODUCTO</th>
+					    <th style=" width: 5%;">CANTIDAD</th>
+					    <th style=" width: 10%;">COSTO</th>
+					    <th style=" width: 12%;">CONTRATO</th>
+					   	<th style=" width: 12%;">ENTREGA</th>
+					   	<th style=" width: 35%;">DIRECCION</th>
+					  
+		      		</tr>
+		    	</thead>
+
+					<tbody style="font-size: 14px; font-style: Arial">
+					{% for i in vdatos %}
+						<tr id="vnd-{{i.id}}" name="regn" >
+							<td >{{ i.idprod }} </td>
+							<td><a class="edit" href="" title="Detallar Producto" data-toggle="tooltip" >{{ i.nprod  | upper }}</a></td> 
+							<td >{{ i.cant}}</td>
+							<td >{{ i.costo}}</td>
+							<td >{{ i.fhacd | date:"d-m-Y" }} {{ i.fhacd |time:"H:i" }}</td>
+							<td >{{ i.fhentr| date:"d-m-Y" }} {{ i.fhentr |time:"H:i" }}
+							<td >{{ i.direc }}</td>
+						</tr>
+					{% endfor %}
+		    	</tbody>
+				</table>
+		   </div>	   
+
+</div>
+	  	
+<!-- Modal -->
+<div class="modal fade " id="myModal3" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document" id="dialogo">
+		<!-- Modal content-->
+		<div class="modal-content" id="dialogo">      
+		    <div class="modal-header">
+		          <h4 class="modal-title">Continuar o Guardar</h4>
+		          <button type="button" class="close" data-dismiss="modal"> &times;</button>
+		    </div>
+
+		    <div class="modal-body">
+		        <p>Desea guardar los cambios realizados?.</p>	
+		    </div>
+
+		    <div class="modal-footer">
+		        <button type="button" class="btn btn-danger" data-dismiss="modal">No Guardar</button>
+		    	<form method="post">
+					{% csrf_token %}
+						<input id="ObjDatos" type="text" name="ObjDatos" style="display:none">	
+					<button id="benviar" type="submit" class="btn btn-primary" >Guardar y Continuar</button>  
+    			</form>
+		    </div>
+		</div>
+    </div>
+</div>
+
+
+
+{% endblock %}

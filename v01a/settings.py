@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'apps.partida',
     'apps.prod',
     'apps.conf',
+    'apps.clientes',
+    'apps.ventas',
 ]
 
 MIDDLEWARE = [
@@ -110,11 +112,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-ve'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Santiago'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 

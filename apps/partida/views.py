@@ -8,7 +8,7 @@ from django.http import HttpResponse
 # ~ from apps.mate.forms import InsumosF
 from apps.mate.models import InsumosM
 from apps.partida.models import PartidasM, PartidaDetallesM
-# ~ from apps.partida.forms import PartidasF, PartidaDetallesF
+from apps.partida.forms import PartidasF, PartidaDetallesF
 from django.contrib.auth.decorators import login_required
 
 #from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile

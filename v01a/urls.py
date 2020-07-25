@@ -22,11 +22,15 @@ from apps.mate import views
 from apps.partida import views
 from apps.prod import views
 from apps.principal import views
+from apps.clientes import views
+from apps.ventas import views
 
 
 urlpatterns = [
 	path('admin/', admin.site.urls),
     path('inicio/',  include("apps.principal.urls")),
+    path('clientes/', include("apps.clientes.urls")),
+    path('ventas/', include("apps.ventas.urls")),
     path('insumos/', include("apps.mate.urls")),
     path('partidas/', include("apps.partida.urls")),
     path('productos/', include("apps.prod.urls")),

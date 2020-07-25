@@ -14,11 +14,17 @@
     <table id="Listado" class="table table-hover table-bordered small">
         <thead class="thead-dark" style="font-size: 24px; font-weight: bold; font-style: Arial">
             <tr>
+<!--
                 <th></th>
                 <th>NOMBRE</th>
                 <th>UNIDAD DE MEDIDA</th>
                 <th>COSTO/MEDIDA</th>
+                <th>TIPO DE ITEM</th>
                 <th>REFERENCIA</th>
+-->
+                <th></th>
+                <th>DESCRIPCION</th>
+                <th>PORCENTAJE</th>
             </tr>    
         </thead>
         <tbody style="font-size: 18px; font-style: Arial">
@@ -28,10 +34,13 @@
                             <a class="edit" href="{% url 'editar_conf' idconf=reg.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-edit fa-1x" aria-hidden="true" style="color:green"></i></a>
                             <a class="delete" href="{% url 'eliminar_conf' idconf=reg.id %}" title="Eliminar" data-toggle="tooltip"><i class="fa fa-trash fa-1x" aria-hidden="true" style="color:red"></i> </a>
                         </td>
-						<td >{{ reg.nombre }}</td>
-						<td >{{ reg.umedida }}</td>
+						<td >{{ reg.descripcion }}</td>
+						<td >{{ reg.porcentaje }}</td>
+<!--
 						<td >{{ reg.cumedida }}</td>
+						<td >{{ reg.tipo }}</td>
 						<td >{{ reg.referencia }}</td>
+-->
 					</tr>
                 {% endfor %}
         </tbody>

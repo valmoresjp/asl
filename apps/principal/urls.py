@@ -19,7 +19,6 @@ from apps.principal import views
 
 
 urlpatterns = [
-    # ~ path('admin/', admin.site.urls),
 	path('usuario/nuevo', views.usuario_nuevo, name="usuario_nuevo"),
 	path('usuario/nousuario', views.nousuario, name="nousuario_principal"),
 	path('privado/', views.privado, name="privado_principal"),
@@ -27,8 +26,4 @@ urlpatterns = [
 	path('usuario/noactivo', views.noactivo, name="noactivo_principal"),
 	path('ingreso', views.usuario_ingreso, name="usuario_ingreso"),
     path('',  views.inicio, name="inicio_principal"),
-    # ~ path('insumos/', include("apps.mate.urls")),
-    # ~ path('partidas/', include("apps.partida.urls")),
-    # ~ path('productos/', include("apps.prod.urls")),
-    # ~ path('configuracion/', include("apps.conf.urls")),
 ]

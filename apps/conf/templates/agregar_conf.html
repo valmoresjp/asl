@@ -6,21 +6,24 @@
 
 <div class="container-fluid" >
 	<br>
-	<h1 class="display-5">Configuracion</h1>
+	<h1 class="display-5">AGREGAR COSTO</h1>
 	<br>
 </div>
 
     <form   method="post" enctype='multipart/form-data' multiple="multiple">
         {% csrf_token %}
+<!--
 			<table id="Listado" class="table table-hover table-bordered small">
                 <tbody style="font-size: 20px; font-weight: bold; font-style: Arial" >
                     <tr><td  >NOMBRE DEL COSTO:</td><td  >{{ form.nombre }}</td></tr>
                     <tr><td  >UNIDAD DE MEDIDA:</td><td  >{{ form.umedida }}</td></tr>
                     <tr><td  >COSTO/MEDIDA:</td><td  >{{ form.cumedida }}</td></tr>
+                    <tr><td  >TIPO DE COSTO:</td><td  >{{ form.tipo }}</td></tr>
                     <tr><td  >REFERENCIA: </td>  <td  >{{ form.referencia }}</td></tr> 
                 </tbody>
             </table> 
-
+-->
+			{{ form.as_table}}
         <button type="submit"> Guardar</button>
         <a href="{% url 'inicio_conf' %}" class="btn btn-info" role="button">Atras</a>
     </form>

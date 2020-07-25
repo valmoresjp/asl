@@ -1,0 +1,66 @@
+{% extends  'base.html' %}
+
+
+<br>
+<h1>Producto: {{ producto.nomb }}</h1>
+<h1>ID: {{ producto.id }}</h1>
+<br><br>
+{% block content %}
+
+<div class="container-fluid">
+    <form   class="form" method="post" enctype='multipart/form-data' multiple="multiple">
+		{% csrf_token %}
+		{{ form.as_p }} 
+		<input id="vender_2"type="submit" class="btn btn-info" value="vender" style="display:none"/>
+    </form>	
+  
+    <!-- Button to Open the Modal -->
+  <button id="vender_1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Vender </button>
+  <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Acepta realizar la venta de: </h4>
+           <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <label for="producto" class="titulo_1">Producto: </label>
+          <p id="producto" class="texto_1"> {{ producto.nomb }}</p> 
+          <hr class="style13">
+          <label for="cantidad" class="titulo_1">Cantidad: </label>
+          <p id="cantidad" class="texto_1"> </p> 
+          <hr  class="style13">
+          <label for="costo_total" class="titulo_1">Costo Total: </label>
+          <p id="costo_total" class="texto_1"> </p>
+          <hr class="style13">
+          <label for="direccion_entrega" class="titulo_1">Direccion de Entrega: </label>
+          <p id="direccion_entrega" class="texto_1" > Retiro en tienda</p>
+          <hr class="style13">
+          <label for="fecha_entrega" class="titulo_1">Fecha de Entrega: </label>
+          <p id="fecha_entrega" class="texto_1" > </p>
+          <hr class="style13">	
+          <label for="costo_entrega" class="titulo_1">Costo de Entrega: </label>
+          <p id="costo_entrega" class="texto_1">0,00 </p>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <div class="row">
+			  <button               type="button" class="btn btn-danger sm-col-3" data-dismiss="modal">Cancelar Venta</button>
+			  <button id="vender_3" type="button" class="btn btn-success sm-col-3" data-dismiss="modal">Vender</button>         
+          </div>
+
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+{% endblock %}
