@@ -124,18 +124,6 @@ def detallar(request, idprod):
 					g.save()
 				if i['accion'] == 'eliminar':
 					PersonalM.objects.filter(idprd=idprod).filter(id=i["id"]).delete()		
-
-			# ~ if i['destino'] == "Utilidades":
-				# ~ print(i['destino'], ", Utilidades   ")
-				# ~ if i['accion'] == 'actualizar':
-					# ~ ## ~ El registro existe y se actualiza
-					# ~ CstsAdnlsM.objects.filter(id=i["id"]).update(cant=i["datos"])
-				# ~ if i['accion'] == 'nuevo':
-					# ~ ## ~ El registro no existe, se crea un nuevo registro
-					# ~ g = CstsAdnlsM(idcstanls=i["id"], idprd=idprod, cant=i["datos"])
-					# ~ g.save()
-				# ~ if i['accion'] == 'eliminar':
-					# ~ CstsAdnlsM.objects.filter(id=i["id"]).delete()
 			
 			if i['destino'] == "TOTALIZAR":
 				ProductosM.objects.filter(id=idprod).update(

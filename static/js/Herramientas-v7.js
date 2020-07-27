@@ -675,16 +675,17 @@ $GUARDAR.click(function () {
 		}
 
 		total = { 
-			'costo' :$('#costo_total' ).html().replace(",","."),
-			'insm'  :$('#Insumos_tot' ).html().replace(",","."),
-			'pers'  :$('#Personal_tot' ).html().replace(",","."),
-			'mate'  :$('#Materiales_tot' ).html().replace(",","."),
-			'serv'  :$('#Servicios_tot' ).html().replace(",","."),
-			'utlds' :$('#Utilidades_tot' ).html().replace(",","."),
-			'pinsm' :$('#Insumos_por').html().replace(",","."),
-			'pmate' :$('#Materiales_por').html().replace(",","."),
-			'ppers':$('#Personal_por').html().replace(",","."),
-			'pserv' :$('#Servicios_por').html().replace(",",".")
+			'costo' :$('#costo_total').length  == 0 ? -1 : $('#costo_total' ).html().replace(",","."),
+			'insm'  :$('#Insumos_tot').length  == 0 ? -1 : $('#Insumos_tot' ).html().replace(",","."),
+			'part'  :$('#Partidas_tot').length == 0 ? -1 : $('#Partidas_tot' ).html().replace(",","."),
+			'pers'  :$('#Personal_tot').length == 0 ? -1 : $('#Personal_tot' ).html().replace(",","."),
+			'mate'  :$('#Materiales_tot').length == 0? -1: $('#Materiales_tot' ).html().replace(",","."),
+			'serv'  :$('#Servicios_tot').length == 0? -1: $('#Servicios_tot' ).html().replace(",","."),
+			'utlds' :$('#Utilidades_tot').length == 0? -1: $('#Utilidades_tot' ).html().replace(",","."),
+			'pinsm' :$('#Insumos_por').length == 0? -1:$('#Insumos_por').html().replace(",","."),
+			'pmate' :$('#Materiales_por').length == 0? -1:$('#Materiales_por').html().replace(",","."),
+			'ppers':$('#Personal_por').length == 0? -1: $('#Personal_por').html().replace(",","."),
+			'pserv' :$('#Servicios_por').length == 0? -1: $('#Servicios_por').html().replace(",",".")
 		}
 		ObjDatos.push({ "destino":"TOTALIZAR","accion":"actualizar", "id":-1, "datos":total });
 		
@@ -714,22 +715,3 @@ $GUARDAR.click(function () {
 	}
 		
 });
-
-
-//~ $('.mes').click(function(){
-	//~ var id=null;
-	//~ id = "#" +$(this).attr('id');// + '-visible';
-	
-	//~ $('.' + $(this).attr('id')).each(function(){
-		//~ $(this).find("td").eq(0).css("text-align","right");
-	//~ });
-	//~ if ( $(this).attr("class").indexOf("visible") > -1 ){
-		//~ $(this).removeClass("visible");
-		//~ $('.' + $(this).attr('id')).fadeToggle(false);
-	//~ }else{
-		//~ $(this).addClass("visible");
-		//~ $('.' + $(this).attr('id')).fadeToggle(true);
-	//~ }
-
-		
-//~ });
