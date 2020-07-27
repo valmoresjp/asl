@@ -41,6 +41,7 @@ class ProductosM(models.Model):
 
 	def prserv(self):
 		return ( round((self.pserv*self.serv)/100,2) )
+<<<<<<< HEAD
 
 class MaquiyHerraM(models.Model):
 	idism = models.IntegerField() #id del insumo, vinculada con la tabal InsumosM
@@ -58,6 +59,25 @@ class CstsAdnlsM(models.Model):
 		return (round(self.cant*self.cumedida,2))
 
   # ~ Nuevas tablas para mejorar el funcionamiento del sistema
+=======
+	
+# ~ class MaquiyHerraM(models.Model):
+	# ~ idism = models.IntegerField() #id del insumo, vinculada con la tabal InsumosM
+	# ~ idprd = models.IntegerField() #id del producto al que esta asociado, vinculado con la tabla ProductosDetallesM
+	# ~ unid = models.CharField(max_length=4)   #unidad de medida
+	# ~ cant = models.FloatField(default = 1.0)              #cantidad 
+	
+# ~ class CstsAdnlsM(models.Model):
+	# ~ idcstanls = models.IntegerField()#id del costo adicional ubicado en la tabla CostosDescripcionM
+	# ~ idprd    = models.IntegerField()#id del producto al que esta asociado, vinculado con la tabla ProductosDetallesM
+	# ~ cumedida = models.FloatField(default = 1.0)
+	# ~ cant     = models.FloatField(default = 0.0)
+	
+	# ~ def total(self):
+		# ~ return (round(self.cant*self.cumedida,2))
+	
+  # ~ Nuevas tablas para mejorar el funcionamiento del sistema 
+>>>>>>> 6be65c8e5726b6be39b21e937e8909216ecd90fd
 class PartidasPRDM(models.Model):
 	idprd    = models.IntegerField() #id del producto
 	idpart   = models.IntegerField() #	id de la partida

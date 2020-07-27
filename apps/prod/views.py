@@ -144,6 +144,7 @@ def detallar(request, idprod):
 					g.save()
 				if i['accion'] == 'eliminar':
 #<<<<<<< HEAD
+#<<<<<<< HEAD
 #					CstsAdnlsM.objects.filter(id=i["id"]).delete()
 #
 #			if i['destino'] == "TOTALIZAR":
@@ -164,6 +165,10 @@ def detallar(request, idprod):
 				# ~ if i['accion'] == 'eliminar':
 					# ~ CstsAdnlsM.objects.filter(id=i["id"]).delete()
 
+#=======
+					PersonalM.objects.filter(idprd=idprod).filter(id=i["id"]).delete()
+
+#>>>>>>> 6be65c8e5726b6be39b21e937e8909216ecd90fd
 			if i['destino'] == "TOTALIZAR":
 				ProductosM.objects.filter(id=idprod).update(
 				insm   = float( i["datos"]['insm']),
