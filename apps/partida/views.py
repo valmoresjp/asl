@@ -115,6 +115,6 @@ def detallar(request, idpart):
 			
 	contexto['datos'] = datos 
 	contexto['partida'] = PartidasM.objects.get(id=idpart)
-	contexto['insumos'] = InsumosM.objects.all()
+	contexto['insumos'] = InsumosM.objects.all().filter(tipo="ING")
 	contexto['total'] = round(total,2)
 	return render(request,'detallar_partida.html',contexto)
