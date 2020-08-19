@@ -96,7 +96,6 @@ def nousuario (request):
 	
 	return render(request, "nousuario.html")
 
-
 def privado(request):
 	
 	usuario = request.user

@@ -1,0 +1,80 @@
+{% extends  'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+	
+<div class="container-fluid">
+	<br>
+	<h1 class="display-7">FACTURA N°: {{ factura.numero }}</h1>	
+	<h1 class="display-7">TOTAL: {{ factura.compra_total }}</h1>	
+	<h1 class="display-7">FECHA: {{ factura.fhfactu | date:"d-m-Y"}}</h1>
+</div>
+  
+<!--
+    <br>
+	<input class="form-control" id="patron" type="text" placeholder="Escriba para filtrar...">
+	<br>
+-->
+	<div class="container-fluid">
+		<div class="row">
+			
+			<form   method="post" enctype='multipart/form-data' multiple="multiple">
+				
+				{% csrf_token %}
+				<div class="col-md-7">
+					<input list="items" name="items" class="form-control" id="id_item">
+					<datalist name="item" id="items" >
+						{% for i in items %}
+							<option value= "{{i.id}}_{{i.descrip}}" >
+						{% endfor %}
+					</datalist>
+				</div> 
+				
+				<div class="col-md-5">
+					<button type="submit"  class="btn btn-primary ">Agregar Item</button>			
+				</div>
+				
+				
+			</form>
+		
+		
+		</div>
+	</div>
+	<br>
+	
+	
+	
+	
+	
+    <table id="Listado" class="table table-hover table-bordered small">
+        <thead class="thead-dark" style="font-size: 18px; font-weight: bold; font-style: Arial">
+            <tr>
+<!--
+                <th style=" width: 5%; " ></th>
+-->
+                <th style=" width: 5%; " >ID</th>
+                <th style=" width: 35%; ">DESCRIPCION</th>
+                <th style=" width: 10%; ">U. MEDIDA</th>
+                <th style=" width: 10%; ">CANTIDAD</th> 
+                <th style=" width: 10%; ">COSTO</th>
+
+            </tr>    
+        </thead>
+        <tbody id="Listado-body" style="font-size: 14px; font-style: Arial" >
+                {% for i in datos %}
+                <tr>
+                    <td >{{ i.idinsm }}</td>
+                    <td >{{ i.descripcion }}</td>
+                    <td >{{ i.umedida }}</td>
+                    <td >{{ i.cantidad }}</td>
+                    <td >{{ i.costo }}</td>
+                    
+                </tr>
+                {% endfor %}
+        </tbody>
+                
+    </table>  
+   
+</div>
+
+{% endblock %}

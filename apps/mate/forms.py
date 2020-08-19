@@ -1,6 +1,6 @@
 from django import forms
 from django.conf import settings
-from apps.mate.models import InsumosM
+from apps.mate.models import InsumosM, ComprasM, FacturasM
 
 
 TIPO_ELEMENTO = (
@@ -129,3 +129,89 @@ class InsumosF(forms.ModelForm):
 
 		# 'archivos': forms.FileInput(attrs={'class':'form-control', 'multiple': True}),
 		}
+
+class FacturasF(forms.ModelForm):
+	def __init__(self, *args, **kwargs):
+		super(FacturasF, self).__init__(*args, **kwargs)
+
+		self.fields['fhfactu'].widget.format = '%d-%m-%Y'
+		self.fields['fhfactu'].input_formats = ['%d-%m-%Y']
+		
+	class Meta:
+		model = FacturasM
+		fields  = [
+				'codigo', 
+				'emisor',
+				'numero',
+				'total',
+				'fhfactu',
+				'archivo',
+			]
+		labels  = {
+				'codigo' : 'Codigo',
+				'emisor' : 'Emisor',
+				'numero' : 'Numero',
+				'total'  : 'Total',
+				'fhfactu': 'Fecha',
+				'archivo': 'Archivo',
+			}
+		widgets = {
+				'codigo' : 	forms.TextInput(attrs={'class':'form-control'}),
+				'emisor' :  forms.TextInput(attrs={'class':'form-control'}),
+				'numero' :	forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
+				'total'  :	forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
+				'fhfactu':	forms.DateInput(attrs={'class':'form-control','placeholder':'dd-mm-año'}),
+				'archivo': 	forms.FileInput(attrs={'class':'form-control', 'requeride':False, 'multiple': False}),
+			}
+			
+class ComprasF(forms.ModelForm):
+	def __init__(self, *args, **kwargs):
+		super(ComprasF, self).__init__(*args, **kwargs)
+		c=[(0,'Seleccione una Factura..')]
+		for i in FacturasM.objects.all().order_by('fhfactu'):
+			c.append((i.id,str(i.fhfactu) +"__"+ str(i.numero)))
+		
+		
+		self.fields['nfactu'].widget.choices = tuple(c)
+		
+		d=[(0,'Seleccione un Item..')]
+		for i in InsumosM.objects.all().order_by('descrip'):
+			d.append((i.id,i.descrip))
+		
+		self.fields['idinsm'].widget.choices = tuple(d)
+		
+		self.fields['fhcomp'].widget.format = '%d-%m-%Y'
+		self.fields['fhcomp'].input_formats = ['%d-%m-%Y']
+	
+	class Meta:
+		model = ComprasM
+		fields = [
+				'idinsm', 
+				'umedida',
+				'costo',
+				'cantd',
+				'nfactu',
+				'fhcomp',
+				# ~ 'archivo'
+			]
+		labels = {
+				'idinsm': 'ID del Insumo',
+				'umedida':'Unidad de Medida',
+				'costo':'Costo',
+				'cantd':'Cantidad',
+				'nfactu':'Numero de Factura',
+				'fhcomp':'Fecha de Compra',
+				# ~ 'archivo':'Factura(adjuntar archivo)'
+			}
+		widgets = {
+				'idinsm' : 	forms.Select(attrs={'class':'form-control'}),
+				# ~ 'idinsm' : 	forms.TextInput(attrs={'class':'form-control'}),
+				# ~ 'umedida':	forms.Select(attrs={'class':'form-control'}, choices=UMEDIDA),	
+				'umedida':	forms.TextInput(attrs={'class':'form-control'}),	
+				'costo'  :	forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
+				'cantd'  :	forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
+				'nfactu' :	forms.Select(attrs={'class':'form-control'}),
+				# ~ 'nfactu' :	forms.TextInput(attrs={'class':'form-control'}),
+				'fhcomp' :	forms.DateInput(attrs={'class':'form-control','placeholder':'dd-mm-año'}),#, 'type':'date'}),
+				# ~ 'archivo': 	forms.FileInput(attrs={'class':'form-control', 'requeride':False, 'multiple': False}),
+			}

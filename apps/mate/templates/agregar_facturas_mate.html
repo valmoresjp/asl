@@ -1,0 +1,17 @@
+{% extends  'base.html' %}
+
+
+{% block content %}
+<br>
+	<h2>Agregar Factura de: {{ datos.descrip }}</h2>
+	
+	<br>
+    <form   method="post" enctype='multipart/form-data' multiple="multiple">
+        {% csrf_token %}
+         {{ form.as_table }} 
+        <button type="submit"> Guardar</button>
+        <a href="{% url 'inicio_mate' %}" class="btn btn-info" role="button">Atras</a>
+    </form>
+
+
+{% endblock %}

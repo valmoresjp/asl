@@ -45,3 +45,24 @@ class ProductosF(forms.ModelForm):
 			# ~ 'fhentr': forms.DateInput(format='%d/%m/%Y ', attrs={'class': 'form-control datepicker','autocomplete': 'off'}),
 			# ~ 'fhentr': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'dd-mm-año hora24:minuto'}),
 		}
+
+
+# ~ class ImagenesPRD(forms.ModelForm):
+	# ~ class Meta:
+		# ~ model = ImagenesPRD
+		# ~ fields =[
+			# ~ 'idprd',
+			# ~ 'imagen',
+		# ~ ]
+		# ~ labels = {
+			# ~ 'idprd': 'IDPRD',  
+			# ~ 'imagen': 'Imagen',
+
+		# ~ }
+		# ~ widgets = {
+			# ~ 'nomb'  : forms.TextInput(attrs={'class':'form-control'}),
+			# ~ 'codp'  : forms.TextInput(attrs={'class':'form-control'}),
+			# ~ 'desc'  : forms.Textarea(attrs={'class':'form-control'}),
+			# ~ 'unid'  : forms.TextInput(attrs={'class':'form-control'}),
+
+		# ~ }

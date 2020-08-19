@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import  Count, Sum
+from datetime import datetime,date
 
 # Create your models here.
 class InsumosM(models.Model):
@@ -83,3 +85,29 @@ class InsumosM(models.Model):
 		#retorna el costo por unidad de medida maximo
 		v = [self.costo1/self.cantd, self.costo2/self.cantd, self.costo3/self.cantd, self.costo4/self.cantd, self.costo5/self.cantd]
 		return(round(max(v),2))
+	
+class ComprasM(models.Model):
+	idinsm  = models.IntegerField()
+	costo   = models.FloatField()
+	cantd   = models.FloatField()
+	umedida = models.CharField(max_length=5)
+	nfactu  = models.IntegerField()      ## id de la factura, se debe cambiar el nombre del campo para no crear confusion
+	fhcomp  = models.DateField()# Fecha de compra
+	# ~ archivo = models.FileField(upload_to='Facturas/')
+	
+	def cumedida(self):
+		cumd = self.costo/cantd
+		return (round(cumd,2))
+	
+class FacturasM(models.Model):
+	codigo  = models.CharField(max_length=24,default="0e0")
+	emisor  = models.CharField(max_length=24,default="local") 
+	numero  = models.IntegerField(default=0)
+	total   = models.FloatField(default=0.0)
+	fhfactu = models.DateField()# Fecha de compra
+	archivo = models.FileField(upload_to='Facturas/')
+
+	def compra_total(self):
+		compras = ComprasM.objects.filter(nfactu = self.id).aggregate(total=Sum('costo'))
+		print(compras)
+		return( compras['total'])

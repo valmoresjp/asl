@@ -7,14 +7,19 @@
 	<br>
 	<h1 class="display-5">Lista de Precios de Insumos y Servicios</h1>
 </div>
+
+	<div class="container-fluid">
+		<div class="row">
 <!--
-    <button type="submit" class="btn btn-default">Listar Insumos</button>
+			<a href="{% url 'agregar_mate' idfactu=1%}" class="btn btn-primary col-3 "  role="button">Agregar Insumo o Servicio</a> 
 -->
-    <a href="{% url 'agregar_mate' %}" class="btn btn-primary"  role="button">Agregar Insumo o Servicio</a>
+			<a href="{% url 'listar_factura_mate' %}" class="btn btn-primary col-3 "  role="button">FACTURAS</a> 
+			
+		</div>
+	</div>
+  
     <br>
-<!--
-		 <p>Escriba palabras claves para buscar:</p>  
--->
+
 	<input class="form-control" id="patron" type="text" placeholder="Escriba para filtrar...">
 	<br>
     <table id="Listado" class="table table-hover table-bordered small">
@@ -29,7 +34,9 @@
                 <th style=" width: 10%;" >COSTO</th> 
                 <th style=" width: 10%;" >COSTO/UMED</th> 
                 <th style=" width: 5%;"  >INVENT</th>
+<!--
                 <th style=" width: 15%;" >DISTRIBUIDOR</th> 
+-->
                 <th style=" width: 5%;"  >TIPO</th>
             </tr>    
         </thead>
@@ -40,15 +47,17 @@
 						<a class="edit" href="{% url 'editar_mate' idinsm=valor.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-edit fa-1x" style="color:green"></i></a>
                         <a class="delete" href="{% url 'eliminar_mate' idinsm=valor.id %}" title="Eliminar" data-toggle="tooltip"><i class="fa fa-trash fa-1x" style="color:red"></i></a>
                     </td>
-                    <td >{{ valor.id }}</td>
+                    <td ><a class="edit" href="{% url 'editar_mate' idinsm=valor.id %}" >{{ valor.id }}</a></td>
                     <td >{{ valor.codigo }}</td>
-                    <td >{{ valor.descripcion }}</td>
+                    <td ><a class="edit" href="{% url 'compras_mate' idinsm=valor.id %}" >{{ valor.descripcion }}</a></td>
                     <td >{{ valor.umedida }}</td>
                     <td >{{ valor.cantidad }}</td>
                     <td >{{ valor.costo }}</td>
                     <td >{{ valor.cumedida }}</td>
                     <td >{{ valor.inventario }}</td>
+<!--
                     <td > <a href="#" data-toggle="tooltip" title="{{ valor.distribuidores }}">Listado de Distribuidores</a></td>
+-->
                     <td >{{ valor.tipo }}</td>
                     
                 </tr>

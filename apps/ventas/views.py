@@ -7,8 +7,9 @@ from django.contrib.auth.decorators import login_required
 from apps.ventas.models import VentasM, ResumenM
 from apps.ventas.forms import VentasF
 from apps.clientes.models import ClientesM
-from apps.prod.models import ProductosM
-
+from apps.prod.models import ProductosM, PartidasPRDM, MaterialesM
+from apps.partida.models import PartidaDetallesM
+from apps.mate.models import InsumosM
 
 def inicio(request):
 	datos = []
@@ -90,6 +91,24 @@ def agregar(request, idprod, cantidad):
 							serv=float(datos['serv']) ,
 						)
 				a.save()
+			
+			## Resta los productos vendidos del inventario, Tabla InsumosM
+			
+			## se obtiene el id de la partida
+			for i in PartidasPRDM.objects.filter(idprd = request.POST['idprod']):
+				## se obtiene el id del insumo
+				for  k in PartidaDetallesM.objects.filter(idpart = i.idpart):
+					## se resta el insumo del inventario
+					insm = InsumosM.objects.get(id = k.idism)
+					inventario = insm.inven - float(request.POST['cant'])*i.cant*k.cant
+					# ~ print(insm.inven, "  ",request.POST['cant'],"  ", i.cant, "  ",k.cant, "  ",inventario)
+					InsumosM.objects.filter(id = k.idism).update(inven = inventario)
+					
+			for i in MaterialesM.objects.filter(idprd = idprod):
+				insm = InsumosM.objects.get(id = i.idmate)
+				inventario = insm.inven - float(request.POST['cant'])*i.cant
+				# ~ print(insm.inven, "  ",request.POST['cant'],"  ", i.cant,"   ",inventario)
+				InsumosM.objects.filter(id = i.idmate).update(inven = inventario)
 			
 		else:
 			print("error en el formulario")
