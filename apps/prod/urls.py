@@ -22,10 +22,7 @@ urlpatterns = [
     path('editar/<int:idprod>/',      views.editar,  name="editar_producto"),
     path('eliminar/<int:idprod>/',    views.eliminar,name='eliminar_producto'),
     path('detallar/<int:idprod>/',    views.detallar,name='detallar_producto'),
-    # ~ path('vender/<int:idprod>/<int:cantidad>',     views.vender,  name='vender_producto'),
-    # ~ path('cuantificar/<int:codp>/',                views.cuantificar,name='cuantificar'),
-    # ~ path('cuantificarv2/<int:codp>/',                views.cuantificarv2,name='cuantificarv2'),
-
+    path('detallar/presupuesto/<int:idprod>/',    views.presupuesto,name='presupuesto_producto'),
     ]
 
   

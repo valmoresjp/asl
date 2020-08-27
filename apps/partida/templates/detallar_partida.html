@@ -74,7 +74,7 @@
 					{% for i in datos %}
 						<tr id="ingr-{{i.pdm_id}}" name="regn" >
 							<td >{{ i.ism_id }} </td>
-							<td title="Escriba la descripcion del producto..." data-toggle="tooltip">{{ i.ism_descrip }}</td>
+							<td title="Escriba la descripcion del producto..." data-toggle="tooltip">{{ i.ism_descrip | upper }}</td>
 							<td >{{ i.ism_umedida }}</td>
 							<td >{{ i.ism_costo}}</td>
 							<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.pdm_cant }}</td>
@@ -102,7 +102,7 @@
 							{% for i in insumos %}
 									<tr id="insumo_{{ i.id }}" title="Presione para agregar material" data-toggle="tooltip" onclick="SelTblListar(this)" >
 										<td >{{ i.id }}</td>
-										<td >{{ i.descrip }}</td>
+										<td >{{ i.descrip | upper }}</td>
 										<td>{{ i.umedida }}</td>
 										<td>{{ i.cumedida }}</td>
 									</tr>

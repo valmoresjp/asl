@@ -9,20 +9,21 @@
 	<h1 class="display-7">TOTAL: {{ factura.compra_total }}</h1>	
 	<h1 class="display-7">FECHA: {{ factura.fhfactu | date:"d-m-Y"}}</h1>
 </div>
-  
+  <br>
 <!--
-    <br>
+    
 	<input class="form-control" id="patron" type="text" placeholder="Escriba para filtrar...">
 	<br>
 -->
 	<div class="container-fluid">
-		<div class="row">
+
 			
 			<form   method="post" enctype='multipart/form-data' multiple="multiple">
 				
 				{% csrf_token %}
-				<div class="col-md-7">
-					<input list="items" name="items" class="form-control" id="id_item">
+				<div class="row">
+				<div class="col-xl-6 col-md-6 mb-4">
+					<input list="items" name="items" class="form-control" id="id_item" placeholder="Escriba para seleccionar o agregar item">
 					<datalist name="item" id="items" >
 						{% for i in items %}
 							<option value= "{{i.id}}_{{i.descrip}}" >
@@ -30,21 +31,14 @@
 					</datalist>
 				</div> 
 				
-				<div class="col-md-5">
+				<div class="col-xl-4 col-md-6 mb-4">
 					<button type="submit"  class="btn btn-primary ">Agregar Item</button>			
 				</div>
-				
-				
+			</div>
 			</form>
 		
-		
-		</div>
 	</div>
 	<br>
-	
-	
-	
-	
 	
     <table id="Listado" class="table table-hover table-bordered small">
         <thead class="thead-dark" style="font-size: 18px; font-weight: bold; font-style: Arial">
@@ -64,7 +58,7 @@
                 {% for i in datos %}
                 <tr>
                     <td >{{ i.idinsm }}</td>
-                    <td >{{ i.descripcion }}</td>
+                    <td >{{ i.descripcion | upper }}</td>
                     <td >{{ i.umedida }}</td>
                     <td >{{ i.cantidad }}</td>
                     <td >{{ i.costo }}</td>

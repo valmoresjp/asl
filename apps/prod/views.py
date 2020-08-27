@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 import json
 from apps.mate.models import InsumosM
 from apps.partida.models import PartidasM, PartidaDetallesM
@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 
 def inicio(request):
 
-	obj = ProductosM.objects.all()
+	obj = ProductosM.objects.all().order_by('-fhcrea')
 	contexto = {
 				'obj': obj,
 	            }
@@ -234,3 +234,41 @@ def detallar(request, idprod):
 	
 	return render(request,'detallar_producto-v2.html',contexto)
 	
+def presupuesto(request, idprod):
+# ~ def categoria_print(self, pk=None):  
+	import io 
+	from reportlab.lib.pagesizes import A4, letter
+	from reportlab.pdfgen import canvas 
+	from reportlab.platypus import SimpleDocTemplate, Paragraph, TableStyle  
+	from reportlab.lib.styles import getSampleStyleSheet  
+	from reportlab.lib import colors  
+	from reportlab.platypus import Table
+	from PIL import Image
+	
+	
+	response = HttpResponse(content_type='application/pdf')
+	buff = io.BytesIO()  
+	doc = SimpleDocTemplate(buff,  
+               pagesize=letter,  
+               rightMargin=40,  
+               leftMargin=40,  
+               topMargin=60,  
+               bottomMargin=18,  
+               )  
+
+	w, h = A4
+	pdf = canvas.Canvas(buff, pagesize=A4)
+	
+	### Cabecera
+	pdf.drawImage("/media/svjsp/Respaldos/Personales/Proyectos/v300320/v3.1/v01a/static/antojos_bn_112.svg", 50, h - 200, width=150, height=150)
+	
+	#####
+	
+	pdf.drawString(50, h - 50, "¡Hola, mundo!")
+	pdf.showPage()
+	pdf.save()
+	pdf = buff.getvalue()
+	response.write(pdf)  
+	buff.close()
+	
+	return response  

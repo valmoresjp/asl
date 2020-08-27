@@ -9,7 +9,7 @@ from apps.clientes.forms import ClientesF
 # Create your views here.
 
 def inicio(request):
-	clientes = ClientesM.objects.all()
+	clientes = ClientesM.objects.all().order_by('nombre')
 	
 	contexto = {
 				'clientes': clientes,

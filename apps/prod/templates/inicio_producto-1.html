@@ -26,10 +26,13 @@
                                 <th style=" width: 25%;">DESCRIPCIÓN</th> 
                                 <th style=" width: 10%;">COSTO</th>   
                                 <th style=" width: 10%;">ACTUALIZACION</th>   
+<!--
+                                <th style=" width: 10%;">RECETA</th>   
+-->
                              </tr>
                         </thead>
                         {% for reg in obj %}   
-                            <tbody id="Listado-body" style="font-size: 12px; text-align: left; font-style: Arial">
+                            <tbody id="Listado-body" style="font-size: 14px; text-align: left; font-style: Arial">
                                 <tr>
                                     <td>
                                       <a class="edit" href="{% url 'editar_producto' idprod=reg.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-edit fa-1x" style="color:green"></i></a>
@@ -45,6 +48,9 @@
                                      </td>
                                      <td>{{ reg.costo }}</td>
                                      <td>{{ reg.fhactu|date:"d-m-Y H:i" }}</td>
+<!--
+                                     <td><a href="" download  class="btn btn-dark float-right" style="width:100%">Download</a></td>
+-->
                                 </tr>
                             </tbody>
                         {% endfor %}

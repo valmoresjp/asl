@@ -148,16 +148,16 @@ class FacturasF(forms.ModelForm):
 				'archivo',
 			]
 		labels  = {
-				'codigo' : 'Codigo',
-				'emisor' : 'Emisor',
-				'numero' : 'Numero',
+				'codigo' : 'Codigo de la Factura',
+				'emisor' : 'Emisor de la Factura',
+				'numero' : 'Numero de Factura',
 				'total'  : 'Total',
 				'fhfactu': 'Fecha',
 				'archivo': 'Archivo',
 			}
 		widgets = {
 				'codigo' : 	forms.TextInput(attrs={'class':'form-control'}),
-				'emisor' :  forms.TextInput(attrs={'class':'form-control'}),
+				'emisor' :  forms.TextInput(attrs={'class':'form-control','placeholder':'Local o empresa que emite la factura'}),
 				'numero' :	forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
 				'total'  :	forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
 				'fhfactu':	forms.DateInput(attrs={'class':'form-control','placeholder':'dd-mm-año'}),

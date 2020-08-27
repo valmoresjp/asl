@@ -100,8 +100,8 @@ class ComprasM(models.Model):
 		return (round(cumd,2))
 	
 class FacturasM(models.Model):
-	codigo  = models.CharField(max_length=24,default="0e0")
-	emisor  = models.CharField(max_length=24,default="local") 
+	codigo  = models.CharField(max_length=24,default="")
+	emisor  = models.CharField(max_length=24,default="") 
 	numero  = models.IntegerField(default=0)
 	total   = models.FloatField(default=0.0)
 	fhfactu = models.DateField()# Fecha de compra

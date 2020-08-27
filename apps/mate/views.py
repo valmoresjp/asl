@@ -47,32 +47,32 @@ def agregar(request, idfactu):
 
 	if request.method == 'POST':
 
-		f = [-1,-1,-1,-1,-1]
-		error = False
+		# ~ f = [-1,-1,-1,-1,-1]
+		# ~ error = False
 
-		if len(request.POST['distb2'].strip())>0 and float(request.POST['costo2'])>=0.0 :
-				f[1] = datetime.now()
-		if len(request.POST['distb3'].strip())>0 and float(request.POST['costo3'])>=0.0 :
-				f[2] = datetime.now()
-		if len(request.POST['distb4'].strip())>0 and float(request.POST['costo4'])>=0.0 :
-				f[3] = datetime.now()
-		if len(request.POST['distb5'].strip())>0 and float(request.POST['costo5'])>=0.0 :
-				f[4] = datetime.now()
-		for  i in (1,2,3,4):
-			if f[i] == -1:
-				error = False
+		# ~ if len(request.POST['distb2'].strip())>0 and float(request.POST['costo2'])>=0.0 :
+				# ~ f[1] = datetime.now()
+		# ~ if len(request.POST['distb3'].strip())>0 and float(request.POST['costo3'])>=0.0 :
+				# ~ f[2] = datetime.now()
+		# ~ if len(request.POST['distb4'].strip())>0 and float(request.POST['costo4'])>=0.0 :
+				# ~ f[3] = datetime.now()
+		# ~ if len(request.POST['distb5'].strip())>0 and float(request.POST['costo5'])>=0.0 :
+				# ~ f[4] = datetime.now()
+		# ~ for  i in (1,2,3,4):
+			# ~ if f[i] == -1:
+				# ~ error = False
 
 		form = InsumosF(request.POST)
-		if form.is_valid() and not error:
+		if form.is_valid(): # and not error:
 			instancia = form.save(commit=False)
-			if f[1]!=-1:
-				instancia.factu2 = f[1]
-			if f[2]!=-1:
-				instancia.factu3 = f[2]
-			if f[3]!=-1:
-				instancia.factu4 = f[3]
-			if f[4]!=-1:
-				instancia.factu5 = f[4]
+			# ~ if f[1]!=-1:
+				# ~ instancia.factu2 = f[1]
+			# ~ if f[2]!=-1:
+				# ~ instancia.factu3 = f[2]
+			# ~ if f[3]!=-1:
+				# ~ instancia.factu4 = f[3]
+			# ~ if f[4]!=-1:
+				# ~ instancia.factu5 = f[4]
 			
 			instancia.save()
 			## se obtiene el insumo almacenado para obtener la informacipon y registrar la factura
@@ -184,13 +184,13 @@ def descarga_factura(request,idfactu):#idfactu):
 	factura =FacturasM.objects.get(id=idfactu)
 	
 	ruta = factura.archivo.url
-	print("DESCARGANDO FACTURAS: ", ruta)
+	# ~ print("DESCARGANDO FACTURAS: ", ruta)
 	nombre = ruta.split("/")[-1]
-	print("NOMBRE: ",nombre)
+	# ~ print("NOMBRE: ",nombre)
 	fl = open(ruta, 'rb')
 	# ~ fl = open(ruta, 'rb')
 	mime_type, _= mimetypes.guess_type(ruta)
-	print(mime_type)
+	# ~ print(mime_type)
 	response = HttpResponse(fl, content_type=mime_type)
 	response['Content-Disposition'] = "attachment; filename=%s" % nombre
 	return response
@@ -204,15 +204,15 @@ def listar_factura(request):
 def contenido_factura(request, idfactu):
 	
 	if request.method == 'POST':
-		print("POST.........")
-		print(idfactu)
+		# ~ print("POST.........")
+		# ~ print(idfactu)
 		# se verifica si el item existe
 		idinsm = request.POST['items'].split("_")[0]
-		
-		if idinsm == "":
+		# ~ print(idinsm)
+		if idinsm.isdigit() == False:
 			idinsm=-1
-		else:
-			print(len(idinsm))
+		# ~ else:
+			# ~ print(len(idinsm))
 		
 		if InsumosM.objects.filter(id=idinsm).exists():
 			return redirect('item_factura_mate',idfactu,idinsm)
@@ -221,10 +221,10 @@ def contenido_factura(request, idfactu):
 			return redirect('agregar_mate',idfactu)
 	
 	else:
-		print("POST.........")
+		# ~ print("POST.........")
 		datos = []
 		factura = FacturasM.objects.get(id=idfactu)
-		print(factura.compra_total())
+		# ~ print(factura.compra_total())
 		insumos = InsumosM.objects.all()
 		# ~ print(insumos)
 		for i in ComprasM.objects.filter(nfactu=idfactu):

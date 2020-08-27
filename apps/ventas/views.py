@@ -56,8 +56,11 @@ def agregar(request, idprod, cantidad):
 			'fhentr' : datetime.strptime(request.POST['fhentr'], '%Y-%m-%dT%H:%M'),
 			'estado'  : request.POST['estado'],
 			}
-		form  = VentasF(datos)
-		if form.is_valid():
+		# ~ form  = VentasF(datos)
+		# ~ fhacd =datetime.strptime(t = datetime.now(), '%Y-%m-%dT%H:%M'),
+		# ~ fhacd = f
+		# ~ existe = VentasM.objects.filter(idcle=request.POST['idclie']).filter(request.POST['idprod']).filter(request.POST['fhacd']).exists()
+		if form.is_valid() and existe:
 			form.save()
 			## almacenar datos en la tabla ResumenM
 			t = datetime.now()

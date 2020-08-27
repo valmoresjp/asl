@@ -49,7 +49,7 @@
                     </td>
                     <td ><a class="edit" href="{% url 'editar_mate' idinsm=valor.id %}" >{{ valor.id }}</a></td>
                     <td >{{ valor.codigo }}</td>
-                    <td ><a class="edit" href="{% url 'compras_mate' idinsm=valor.id %}" >{{ valor.descripcion }}</a></td>
+                    <td ><a class="edit" href="{% url 'compras_mate' idinsm=valor.id %}" >{{ valor.descripcion | upper  }}</a></td>
                     <td >{{ valor.umedida }}</td>
                     <td >{{ valor.cantidad }}</td>
                     <td >{{ valor.costo }}</td>

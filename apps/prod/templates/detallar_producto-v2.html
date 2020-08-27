@@ -6,7 +6,9 @@
     <div class="row">
       <div class="col-sm-6">
  	<h1>Producto: {{ producto.nomb|upper }}</h1>
+<!--
  	<h3 >ID: <span id="codp">{{ producto.id }}</span></h3>
+-->
  	<div class="card">
     	<div class="card-body">     
     		<p>{{ producto.desc }}</p>
@@ -19,7 +21,7 @@
        </div>
     </div>
   </div>
-
+<a href="{% url 'presupuesto_producto' idprod=producto.id %}" download  class="btn btn-dark float-right" style="width:100%">Presupuesto</a>
 <div class="container-fluid" name="Detallar_prd">
 		
 		<div id="table_clon">
@@ -151,8 +153,8 @@
 				<tbody>
 					{% for i in mdatos %}
 						<tr id="mate-{{ i.id }}" name="regn" >
-							<td >{{ i.idmate}} </td>
-							<td title="Escriba la descripcion del producto..." data-toggle="tooltip">{{ i.nombre }}</td>
+							<td >{{ i.idmate }} </td>
+							<td title="Escriba la descripcion del producto..." data-toggle="tooltip">{{ i.nombre | upper }}</td>
 							<td >{{ i.umedida }}</td>
 							<td >{{ i.cumedida}}</td>
 							<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>
@@ -228,7 +230,7 @@
 						{% for i in sdatos %}
 							<tr id="otrs-{{ i.id }}" name="regn" >
 								<td >{{ i.id }} </td>
-								<td >{{ i.nombre }}</td>
+								<td >{{ i.nombre | upper }}</td>
 								<td > {{ i.umedida}}</td>
 								<td > {{ i.cumedida}}</td>
 								<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>
@@ -304,7 +306,7 @@
 						{% for i in pedatos %}
 							<tr id="otrs-{{ i.id }}" name="regn" >
 								<td >{{ i.id }} </td>
-								<td >{{ i.nombre }}</td>
+								<td >{{ i.nombre | upper }}</td>
 								<td > {{ i.umedida}}</td>
 								<td > {{ i.cumedida}}</td>
 								<td title="Escriba la cantida requerida del producto..." data-toggle="tooltip" onclick="ModificarCantidad(this)">{{ i.cantidad }}</td>
@@ -346,7 +348,6 @@
 			</div>	   
 		</div>
 
-
 		<div id="Utilidades_div" class="table-editable">		  
 			<div class="row">
 				<div class="col-md-9">
@@ -367,7 +368,9 @@
 				<table id="Utilidades_dat" class="table datos">
 					<thead >
 						<tr>
+<!--
 							<th style=" width: 5%;">ID</th>
+-->
 							<th style=" width: 50%;">ITEM</th>
 							<th style=" width: 20%;">PORCENTAJE</th>
 							<th style=" width: 25%;">UTILIDAD</th>
@@ -375,25 +378,33 @@
 					</thead>
 					<tbody >
 						<tr id="util-{{ i.id }}" name="regn" >
+<!--
 							<td >II </td>
+-->
 							<td id="Insumos_tit" >Insumos </td>
 							<td id="Insumos_por" onclick="ModificarCantidad(this)" >{{ producto.pinsm }}</td>
 							<td id="Insumos_util"> {{ producto.prinsm }}</td>
 						</tr>
 						<tr id="util-{{ i.id }}"  >
+<!--
 							<td >II </td>
+-->
 							<td id="Materiales_tit" >Materiales </td>
 							<td id="Materiales_por" name="Materiales"onclick="ModificarCantidad(this)" >{{ producto.pmate }}</td>
 							<td id="Materiales_util" > {{ producto.prmate }}</td>
 						</tr>
 						<tr >
+<!--
 							<td >II </td>
+-->
 							<td id="Servicios_tit" >Servicios </td>
 							<td id="Servicios_por" onclick="ModificarCantidad(this)" name="Servicios">{{ producto.pserv }}</td>
 							<td id="Servicios_util"> {{ producto.prserv }}</td>
 						</tr>
 						<tr >
+<!--
 							<td >II </td>
+-->
 							<td id="Personal_tit" >Personal </td>
 							<td id="Personal_por" onclick="ModificarCantidad(this)" name="Personal">{{ producto.ppers}}</td>
 							<td id="Personal_util"> {{ producto.prpers }}</td>

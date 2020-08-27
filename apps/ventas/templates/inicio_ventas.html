@@ -25,10 +25,12 @@
                                 <th style=" width: 20%;">PRODUCTO</th>
                                 <th style=" width: 5%;" >CANT</th> 
                                 <th style=" width: 5%;">COSTO</th> 
-                                <th style=" width: 10%;">FECHA DE VENTA</th> 
-                                <th style=" width: 10%;">FECHA DE ENTREGA</th> 
+                                <th style=" width: 10%;">VENTA</th> 
+                                <th style=" width: 10%;">ENTREGA</th> 
                                 <th style=" width: 30%;">DIRECCION DE ENTREGA</th>   
+<!--
                                 <th style=" width: 5%;">COSTO DE ENTREGA</th>   
+-->
                              </tr>
                         </thead>
                         {% for reg in ventas %}   
@@ -42,7 +44,9 @@
                                      <td >{{ reg.fhacd | date:"d-m-Y" }} {{ reg.fhacd |time:"H:i" }}</td> 
                                      <td >{{ reg.fhentr | date:"d-m-Y" }} {{ reg.fhentr|time:"H:i" }}</td> 
                                      <td >{{ reg.direccion }}</td>	 
+<!--
                                      <td >{{ reg.centr }}</td>	 
+-->
                                 </tr>
                             </tbody>
                         {% endfor %}
