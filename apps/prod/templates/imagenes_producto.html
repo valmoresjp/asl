@@ -1,0 +1,46 @@
+{% extends  'base.html' %}
+
+
+{% block content %}
+
+<form   method="post" enctype='multipart/form-data' >
+	{% csrf_token %}
+	{{ form.idprod }}
+	<div class="container-fluid">
+		<div class="row">
+			<br>
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">IMAGEN 1</div>
+				<div style="width:350px height=650px">
+					<img  class="img-fluid" src="{{imagen.imagen1}}"  style="max-width:100%" >
+					{{form.img1}}
+				</div>
+			</div>
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">IMAGEN 2</div>
+				<div class="card" style="width:350px height=650px">
+					<img  class="img-fluid" src="{{imagen.imagen2}}"  style="max-width:100%;width:auto;height:auto;">
+					{{form.img2}}
+				 </div>
+			</div>
+
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">IMAGEN 3</div>
+				<div style="width:350px height=650px">
+					<img  class="img-fluid" src="{{imagen.imagen3}}"  style="max-width:100%;width:auto;height:auto;">
+					{{form.img3}}
+				 </div>
+			</div>
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">IMAGEN 4</div>
+				<div style="width:350px height=650px">
+					<img  class="img-fluid" src="{{imagen.imagen4}}"  style="max-width:100%;width:auto;height:auto;">
+					{{form.img4}}
+				 </div>
+			</div>
+				
+		 </div>
+	</div>    
+	<input type="submit" class="btn btn-info" value="Guardar"/>
+</form>	
+{% endblock %}

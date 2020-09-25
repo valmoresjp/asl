@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.db import models
 from datetime import datetime
 from apps.mate.models import InsumosM
+
 # ~ from apps.partida.models import PartidasM
 
 # Create your models here.
@@ -29,6 +31,9 @@ class ProductosM(models.Model):
 	costo     = models.FloatField(default = 0.0) # costo totaldel producto
 	fhcrea	  = models.DateTimeField(auto_now_add=True)
 	fhactu 	  = models.DateTimeField(auto_now=True)
+	# ~ imagen1   = models.ImageField(null=True, blank=True)
+	# ~ imagen2   = models.ImageField(null=True, blank=True)
+	# ~ imagen3   = models.ImageField(upload_to='facturas/',null=True, blank=True)
 	# ~ fhentr    = models.DateTimeField(null=True, blank=True)
 	def prinsm(self):
 		return ( round((self.pinsm*self.insm)/100,2) )
@@ -41,20 +46,50 @@ class ProductosM(models.Model):
 		
 	def prserv(self):
 		return ( round((self.pserv*self.serv)/100,2) )
-
-  # ~ Nuevas tablas para mejorar el funcionamiento del sistema 
+		
+class ImagenesM(models.Model):
+	idprod =  models.IntegerField() # id del producto
+	img1   =  models.ImageField(upload_to='imagenes/',null=True, blank=True)
+	img2   =  models.ImageField(upload_to='imagenes/',null=True, blank=True)
+	img3   =  models.ImageField(upload_to='imagenes/',null=True, blank=True)
+	img4   =  models.ImageField(upload_to='imagenes/',null=True, blank=True)
+	
+	def imagen1(self):
+		img = settings.MEDIA_URL + 'imagenes/SiS.png'
+		if self.img1:
+			img = self.img1.url
+		return (img)
+		
+	def imagen2(self):
+		img = settings.MEDIA_URL + 'imagenes/SiS.png'
+		if self.img2:
+			img = self.img2.url
+		return (img)
+		
+	def imagen3(self):
+		img = settings.MEDIA_URL + 'imagenes/SiS.png'
+		if self.img3:
+			img = self.img3.url
+		return (img)
+		
+	def imagen4(self):
+		img = settings.MEDIA_URL + 'imagenes/SiS.png'
+		if self.img4:
+			img = self.img4.url
+		return (img)
+		
 class PartidasPRDM(models.Model):
 	idprd    = models.IntegerField() #id del producto
 	idpart   = models.IntegerField() #	id de la partida
 	unid     = models.CharField(max_length=10)	 # unidad de medida
 	cant     = models.FloatField() #cantidad
-	
-class MaterialesM(models.Model):	
+
+class MaterialesM(models.Model):
 	idprd    = models.IntegerField()#id del producto al que esta asociado, vinculado con la tabla ProductosDetallesM
 	idmate   = models.IntegerField()#id del costo adicional ubicado en la tabla CostosDescripcionM
 	cumedida = models.FloatField(default = 1.0)
 	cant     = models.FloatField(default = 0.0)
-	
+
 class ServiciosM(models.Model):
 	idprd    = models.IntegerField()#id del producto al que esta asociado, vinculado con la tabla ProductosDetallesM
 	idserv   = models.IntegerField()#id del costo adicional ubicado en la tabla CostosDescripcionM
@@ -66,3 +101,4 @@ class PersonalM(models.Model):
 	idpers    = models.IntegerField()#id del costo adicional ubicado en la tabla CostosDescripcionM
 	cumedida = models.FloatField(default = 1.0)
 	cant     = models.FloatField(default = 0.0)
+

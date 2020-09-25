@@ -93,7 +93,7 @@ class ComprasM(models.Model):
 	umedida = models.CharField(max_length=5)
 	nfactu  = models.IntegerField()      ## id de la factura, se debe cambiar el nombre del campo para no crear confusion
 	fhcomp  = models.DateField()# Fecha de compra
-	# ~ archivo = models.FileField(upload_to='Facturas/')
+	# ~ archivo = models.FileField(upload_to='facturas')
 	
 	def cumedida(self):
 		cumd = self.costo/cantd
@@ -105,7 +105,7 @@ class FacturasM(models.Model):
 	numero  = models.IntegerField(default=0)
 	total   = models.FloatField(default=0.0)
 	fhfactu = models.DateField()# Fecha de compra
-	archivo = models.FileField(upload_to='Facturas/')
+	archivo = models.FileField(upload_to='facturas/')
 
 	def compra_total(self):
 		compras = ComprasM.objects.filter(nfactu = self.id).aggregate(total=Sum('costo'))

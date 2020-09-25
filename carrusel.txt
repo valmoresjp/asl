@@ -1,0 +1,2 @@
+https://mdbootstrap.com/docs/jquery/javascript/carousel/
+https://www.w3schools.com/bootstrap4/bootstrap_carousel.asp

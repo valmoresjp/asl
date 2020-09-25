@@ -1,12 +1,16 @@
+from django.conf import settings
 from django.shortcuts import render, redirect, HttpResponse
 import json
 from apps.mate.models import InsumosM
 from apps.partida.models import PartidasM, PartidaDetallesM
-from apps.prod.models import ProductosM, PartidasPRDM, MaterialesM, ServiciosM, PersonalM#, MaquiyHerraM, CstsAdnlsM, 
-from apps.prod.forms import ProductosF#, VentasF
+from apps.prod.models import ProductosM, PartidasPRDM, MaterialesM, ServiciosM, PersonalM, ImagenesM#, MaquiyHerraM, CstsAdnlsM, 
+from apps.prod.forms import ProductosF, ImagenesF#, VentasF
 from apps.conf.models import CostosDescripcionM, UtilidadesDetallesM, UtilidadesM
 from apps.clientes.models import ClientesM
 from django.db.models import Q
+
+from PIL import Image
+
 
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
@@ -23,11 +27,13 @@ def inicio(request):
 
 @login_required(login_url='/inicio/ingreso')
 def nuevo(request):
-	print(request.POST)
+	# ~ print(request.POST)
 	if request.method == 'POST':
 		form = ProductosF(request.POST)
 		if form.is_valid():
 			form.save()
+			# ~ print (form)
+			# ~ img_form = ImagenesM.objects.create(idprod=form.id)
 		else:
 			return render(request,'errores.html',{'form': form})
 
@@ -37,9 +43,44 @@ def nuevo(request):
 	return render(request,'nuevo_producto.html', {'form': form})
 
 @login_required(login_url='/inicio/ingreso')
+def imagenes(request, idprod):
+	
+	if request.method == 'POST':
+		imagenes=ImagenesM.objects.get(idprod=idprod)
+		form  = ImagenesF(request.POST, request.FILES, instance=imagenes)
+		if form.is_valid():
+			form.save()
+
+			for clave,valor in request.FILES.items():
+				nombre = '{}{}{}{}'.format( settings.BASE_DIR,settings.MEDIA_URL,'imagenes/',valor)
+				nuevo = '{}{}{}{}{}'.format( 'imagenes/',idprod,'-',clave,'.jpg')
+				img = Image.open(nombre)
+				new_img = img.resize((350,450))
+				if clave == 'img1':
+					ImagenesM.objects.filter(idprod=idprod).update(img1=nuevo)
+				if clave == 'img2':
+					ImagenesM.objects.filter(idprod=idprod).update(img2=nuevo)
+				if clave == 'img3':
+					ImagenesM.objects.filter(idprod=idprod).update(img3=nuevo)
+				if clave == 'img4':
+					ImagenesM.objects.filter(idprod=idprod).update(img4=nuevo)
+				new_img.save('{}{}{}'.format(settings.BASE_DIR,settings.MEDIA_URL,nuevo))
+		else:
+			return render(request,'errores.html',{'form': form})
+
+		return redirect ('detallar_producto',idprod)
+	else:
+		a = ImagenesM.objects.filter(idprod=idprod)
+		if not a.exists():
+			a = ImagenesM.objects.create(idprod=idprod)
+		a = ImagenesM.objects.get(idprod=idprod)
+		form = ImagenesF(instance=ImagenesM.objects.get(idprod=idprod))
+
+	return render(request,'imagenes_producto.html', {'form': form, 'imagen':a})
+
+@login_required(login_url='/inicio/ingreso')
 def editar(request, idprod ):
 	producto = ProductosM.objects.get(id=idprod)
-	print(request.POST)
 	if request.method == 'GET':
 		form = ProductosF(instance=producto)
 	else:
@@ -78,7 +119,11 @@ def detallar(request, idprod):
 	total = 0.0
 
 	producto   = ProductosM.objects.get(id=idprod)
-
+	a = ImagenesM.objects.filter(idprod=idprod)
+	if not a.exists():
+		a = ImagenesM.objects.create(idprod=idprod)
+	# ~ a = ImagenesM.objects.get(idprod=idprod)
+		
 	if request.method =='POST':
 		url = "/productos/detallar/" + str(idprod) + "/"
 		for i in json.loads(request.POST["ObjDatos"]):
@@ -220,7 +265,8 @@ def detallar(request, idprod):
 						 'valor': i.valor,
 					})	
 
-	contexto['producto']   = producto 
+	contexto['producto']   = producto
+	contexto['imagenes']   = ImagenesM.objects.get(idprod=idprod)
 	contexto['pdatos']     = pdatos
 	contexto['partidas']   = PartidasM.objects.all()
 	contexto['mdatos']     = mdatos

@@ -1,6 +1,7 @@
 from django.shortcuts import render , redirect
 from django.http import HttpResponse
 import mimetypes
+from django.conf import settings
 from django.db.models import Avg, Min, Max
 
 from datetime import datetime, date
@@ -182,17 +183,15 @@ def agregar_factura(request):
 def descarga_factura(request,idfactu):#idfactu):
 	# fill these variables with real values
 	factura =FacturasM.objects.get(id=idfactu)
-	
-	ruta = factura.archivo.url
-	# ~ print("DESCARGANDO FACTURAS: ", ruta)
-	nombre = ruta.split("/")[-1]
-	# ~ print("NOMBRE: ",nombre)
+	ruta = settings.MEDIA_ROOT + factura.archivo.url
+	nombre =  ruta.split("/")[-1]
 	fl = open(ruta, 'rb')
 	# ~ fl = open(ruta, 'rb')
 	mime_type, _= mimetypes.guess_type(ruta)
 	# ~ print(mime_type)
 	response = HttpResponse(fl, content_type=mime_type)
 	response['Content-Disposition'] = "attachment; filename=%s" % nombre
+
 	return response
 	
 def listar_factura(request):

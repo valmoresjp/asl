@@ -56,11 +56,11 @@ def agregar(request, idprod, cantidad):
 			'fhentr' : datetime.strptime(request.POST['fhentr'], '%Y-%m-%dT%H:%M'),
 			'estado'  : request.POST['estado'],
 			}
-		# ~ form  = VentasF(datos)
+		form  = VentasF(datos)
 		# ~ fhacd =datetime.strptime(t = datetime.now(), '%Y-%m-%dT%H:%M'),
 		# ~ fhacd = f
 		# ~ existe = VentasM.objects.filter(idcle=request.POST['idclie']).filter(request.POST['idprod']).filter(request.POST['fhacd']).exists()
-		if form.is_valid() and existe:
+		if form.is_valid():# and existe:
 			form.save()
 			## almacenar datos en la tabla ResumenM
 			t = datetime.now()
@@ -71,7 +71,7 @@ def agregar(request, idprod, cantidad):
 				ResumenM.objects.filter(ayo = ayo).filter(mes = mes).update(
 							ayo	= ayo,
 							mes = mes,
-							ncli=0,
+							ncli=ClientesM.objects.filter(fhreg__year=ayo, fhreg__month=mes).count(),
 							nped =  int(datos['cant']) + r[0].nped,
 							tota = float(datos['costo'])+ r[0].tota,
 							util = float(datos['utlds'])+ r[0].util,
@@ -84,7 +84,7 @@ def agregar(request, idprod, cantidad):
 				a = ResumenM(
 							ayo=ayo,
 							mes=mes,
-							ncli=0,
+							ncli=ClientesM.objects.filter(fhreg__year=ayo, fhreg__month=mes).count(),
 							nped=int(datos['cant'])  ,
 							tota=float(datos['costo']) ,
 							util=float(datos['utlds']) ,
@@ -184,7 +184,7 @@ def resumen(request, ayo ):
 						 'tota': ResumenM.objects.filter(mes=i['mes']).aggregate(Sum('tota'))['tota__sum'],
 						 'util': ResumenM.objects.filter(mes=i['mes']).aggregate(Sum('util'))['util__sum'],
 						 'insm': ResumenM.objects.filter(mes=i['mes']).aggregate(Sum('insm'))['insm__sum'],
-						 'mate':  ResumenM.objects.filter(mes=i['mes']).aggregate(Sum('mate'))['mate__sum'],
+						 'mate': ResumenM.objects.filter(mes=i['mes']).aggregate(Sum('mate'))['mate__sum'],
 						 'pers': ResumenM.objects.filter(mes=i['mes']).aggregate(Sum('pers'))['pers__sum'],
 						 'serv': ResumenM.objects.filter(mes=i['mes']).aggregate(Sum('serv'))['serv__sum'],
 						})
@@ -222,3 +222,8 @@ def resumen(request, ayo ):
 		'mensual' : mensual,
 	}
 	return render(request,'resumen_ventas.html', contexto)	
+
+
+def estado( request, idprod ):
+	print("actualizar")
+	return redirect('inicio_principal')

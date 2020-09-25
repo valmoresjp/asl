@@ -112,11 +112,12 @@
                             <tr>
                                 <th style=" width: 5%; display:none;" >ID</th>
                                 <th style=" width: 15%;">CLIENTE</th>
-                                <th style=" width: 20%;">PRODUCTO</th>
+                                <th style=" width: 15%;">PRODUCTO</th>
                                 <th style=" width: 5%;" >CANT</th> 
                                 <th style=" width: 5%;" >DÍAS</th> 
-                                <th style=" width: 20%;">FECHA DE ENTREGA</th> 
-                                <th style=" width: 30%;">DIRECCION DE ENTREGA</th>   
+                                <th style=" width: 15%;">FECHA DE ENTREGA</th> 
+                                <th style=" width: 25%;">DIRECCION DE ENTREGA</th>   
+                                <th style=" width: 15%;">ESTADO</th>   
                              </tr>
                         </thead>
                         {% for reg in ventas_por_entregar %}   
@@ -129,6 +130,7 @@
                                      <td >{{ reg.dias }}</td> 
                                      <td >{{ reg.fhentr | date:"d-m-Y" }} {{ reg.fhentr|time:"H:i" }}</td> 
                                      <td >{{ reg.direccion }}</td>	 
+                                     <td ><a class="edit" href="{% url 'estado_ventas' idprod=reg.idprod%}" title="ESTADO DEL PRODUCTO" data-toggle="tooltip" >{{ reg.estado }}</a></td>	 
                                 </tr>
                             </tbody>
                         {% endfor %}

@@ -24,6 +24,9 @@ from apps.prod import views
 from apps.principal import views
 from apps.clientes import views
 from apps.ventas import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 
 urlpatterns = [
@@ -35,4 +38,7 @@ urlpatterns = [
     path('partidas/', include("apps.partida.urls")),
     path('productos/', include("apps.prod.urls")),
     path('configuracion/', include("apps.conf.urls")),
+    # ~ path('Archivos/imagenes/', include("apps.prod.urls")),
 ]
+
+urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

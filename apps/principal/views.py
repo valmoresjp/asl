@@ -23,6 +23,14 @@ def inicio(request):
 	for i in VentasM.objects.filter(estado="EN_PRO"):
 		producto = ProductosM.objects.get(id=i.idprod)
 		cliente  = ClientesM.objects.get(id=i.idclie)
+		estado="Sin ESTADO"
+		if i.estado == 'EN_PRO':
+			estado = "EN PROCESO"
+		if i.estado == 'EN_RUT':
+			estado = "EN RUTA"
+		if i.estado == 'ENTREG':
+			estado = "ENTREGADO"
+		print(i.estado)
 		datos.append( {
 					'idclie'   : cliente.id,
 					'idprod'   : producto.id,
@@ -33,6 +41,7 @@ def inicio(request):
 					'direccion': i.direc,
 					'fhentr'   : i.fhentr,
 					'dias'    : i.dias(),
+					'estado'    : estado,
 					})
 	contexto = {
 		'num_clientes'        : ClientesM.objects.count(),

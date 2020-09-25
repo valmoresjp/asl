@@ -1,4 +1,6 @@
 from django.urls import include, path
+from django.conf.urls.static import static
+from django.conf import settings
 from apps.mate import views
 
 
@@ -14,4 +16,4 @@ urlpatterns = [
          path('factura/compras/<int:idinsm>/',views.compras_mate,name="compras_mate"),
          path('factura/descarga/<int:idfactu>/',views.descarga_factura,name="descarga_factura"),
          # ~ path('factura/listar/<int:idfactu>Facturas/<str:ru	ta>/',views.descarga_factura,name="descarga_factura"),
-         ]
+         ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

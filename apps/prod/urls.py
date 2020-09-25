@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.urls import include, path
 from apps.prod import views
+# ~ from django.conf import settings
+# ~ from django.conf.urls.static import static
 
 urlpatterns = [
     path('',                          views.inicio,  name="inicio_producto"),
@@ -23,8 +25,11 @@ urlpatterns = [
     path('eliminar/<int:idprod>/',    views.eliminar,name='eliminar_producto'),
     path('detallar/<int:idprod>/',    views.detallar,name='detallar_producto'),
     path('detallar/presupuesto/<int:idprod>/',    views.presupuesto,name='presupuesto_producto'),
+    path('detallar/imagenes/<int:idprod>/',       views.imagenes,   name="imagenes_producto"),
+    # ~ path('*.jpg/',       views.imagenes,   name="imagenes_producto"),
     ]
 
-  
+	# ~ if settings.DEBUG:
+# ~ urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -23,14 +23,17 @@ def agregar(request):
 		form = ClientesF(request.POST)
 		if form.is_valid():
 			form.save()
-			print("Creando nuevo cliente")
+			# ~ print("Creando nuevo cliente")
 			## almacenar datos en la tabla ResumenM
 			t = datetime.now()
 			ayo  = t.year
 			mes  =  t.month
 			r = ResumenM.objects.filter(ayo = ayo).filter(mes = mes)
 			if r:
-				ResumenM.objects.filter(ayo = ayo).filter(mes = mes).update(ncli=int(r[0].ncli)+1)
+				# ~ ResumenM.objects.filter(ayo = ayo).filter(mes = mes).update(ncli=int(r[0].ncli)+1)
+				num_clientes = ClientesM.objects.filter(fhreg__year=ayo, fhreg__month=mes).count()
+				print(num_clientes)
+				ResumenM.objects.filter(ayo = ayo).filter(mes = mes).update(ncli=num_clientes)
 			else:
 				a = ResumenM(ayo=ayo, mes=mes, ncli=1)
 				a.save()
