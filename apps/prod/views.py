@@ -162,7 +162,9 @@ def detallar(request, idprod):
 			if i['destino'] == "Personal":
 				if i['accion'] == 'actualizar':
 					# ~ El registro existe y se actualiza
-					PersonalM.objects.filter(idprd=idprod).filter(idpers=i["id"]).update(cant=i["datos"])
+					print("Actualizando")
+					print(i)
+					PersonalM.objects.filter(idprd=idprod).filter(id=i["id"]).update(cant=i["datos"])
 				if i['accion'] == 'nuevo':
 					# ~ El registro no existe, se crea un nuevo registro
 					g = PersonalM(idpers=i["id"], idprd=idprod, cant=i["datos"])
