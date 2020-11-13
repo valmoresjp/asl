@@ -6,196 +6,485 @@
 <br>
  <div class="container-fluid">
 	<h1 class="display-5">ESTADISTICAS: {{ periodo }}</h1>
+	<h1 class="display-5">MES:          {{ mes }}</h1>
 </div>
 
 <div class="container-fluid">
 	<div class="btn-group" id="an_os" >
+<!--
 	<a href="{% url 'resumen_ventas' ayo=0  %}" class="btn btn-primary" role="button">Hasta la Fecha</a>
+-->
 	  {% for i in ayos %}
 		<a href="{% url 'resumen_ventas' ayo=i  %}" class="btn btn-primary" role="button">{{ i }}</a>
 	  {% endfor %}
 	</div>
 	<br>
-	<br>
-    <div class="row">
-    
-		<div class="col-xl-3 col-md-6 mb-4">
-			<div class="card border-left-primary shadow h-100 py-2">
-				<div class="card-body">
-					<div class="row no-gutters align-items-center">
-						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">CLIENTES</div>
-							<div class="h5 mb-0 font-weight-bold text-gray-800">{{ anual.clientes }}</div>
-						</div>
-						<div class="col-auto">
-						  <i class="fa fa-users  fa-2x text-gray-300"></i>
+
+	<div class="row">
+	<br>	
+<!--
+		------------      CLIENTES    -------------------
+-->
+		<div class="col-xl-12 col-md-12 mb-4">
+			<a href="" data-target="#clientes" data-toggle="collapse">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="row col mr-2 ">
+								<div class="col-xl-2 col-md-2 h5 font-weight-bold text-primary text-uppercase mb-1">CLIENTES</div>
+								<div class="col-xl-3 col-md-3 h6 font-weight-bold text-primary text-uppercase mb-1">
+									{{ mes }}: {{ datos_mes_actual.clientes_mes.valor }}  
+									<i class="{{ datos_mes_actual.clientes_mes.estilo.icono }}" style="{{ datos_mes_actual.clientes_mes.estilo.estilo }}" >
+										{{ datos_mes_actual.clientes_mes.var | floatformat:1 }}%
+									</i>
+								</div>
+								<div class="col-xl-3 col-md-3 h6 font-weight-bold text-primary text-uppercase mb-1">
+									{{ periodo }}: {{datos_mes_actual.clientes_anual.valor }}  
+									<i class="{{ datos_mes_actual.clientes_anual.estilo.icono }}" style="{{ datos_mes_actual.clientes_anual.estilo.estilo }}" >   
+										{{ datos_mes_actual.clientes_anual.var| floatformat:1 }}%
+									</i>
+								</div>
+						
+								<div class="col-xl-3 col-md-3 h6 font-weight-bold text-primary text-uppercase mb-1">Total: {{datos_mes_actual.clientes_totales}}</div>
+							</div>
+							<div class="col-auto">
+							  <i class="fa fa-users  fa-2x text-gray-300"></i>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</a>
 		</div>
-		
-            
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">PEDIDOS</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ anual.pedidos }}</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOTAL VENDIDO</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ anual.total |floatformat:2}}</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fa fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">UTILIDADES</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ anual.utilidades |floatformat:2}}</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          
-            
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Personal</div>
-                      <div class="h6 mb-0 font-weight-bold text-gray-800">{{ anual.personal |floatformat:2}}</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">MATERIALES</div>
-                      <div class="h6 mb-0 font-weight-bold text-gray-800">{{ anual.materiales |floatformat:2}}</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">SERVICIOS</div>
-                      <div class="h6 mb-0 font-weight-bold text-gray-800">{{ anual.servicios |floatformat:2}}</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">INSUMOS</div>
-                      <div class="h6 mb-0 font-weight-bold text-gray-800">{{ anual.insumos |floatformat:2}}</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-     </div>
-   
-		<div class="row">
+		<div id="clientes" class="col-sm-12 collapse" >
 			<div class="col-sm-12">
 					<label for="resumen-an_os" style="font-size: 32px; font-style: Arial">Resumen Mensual</label>
-                    <table class="table table-hover" id="resumen-an_os">
+                    <table class="table table-hover" id="resumen-an_os" style="width:100%; text-align: right">
                         <thead class="thead-light" style="font-size: 16px; font-style: Arial">
                             <tr>
                                 <th style=" width: 10%;" >MES</th>
-                                <th style=" width: 10%;" >CLIENTES</th>
-                                <th style=" width: 10%;" >PEDIDOS</th>
                                 <th style=" width: 10%;" >TOTAL</th>
-                                <th style=" width: 10%;" >INSUMOS</th>
-                                <th style=" width: 10%;" >MATERIALES</th>
-                                <th style=" width: 10%;" >PERSONAL</th> 
-                                <th style=" width: 15%;" >SERVICIOS</th> 
-                                <th style=" width: 15%;" >UTILIDADES</th> 
+                                <th style=" width: 15%;" >NUEVOS</th>
+                                <th style=" width: 15%;" >N° VENTAS</th>
+                                <th style=" width: 20%;" >VAR CLIENTES(%)</th>
+                                <th style=" width: 15%;" >GASTO TOTAL</th>
                              </tr>
                         </thead>
                         <tbody style="font-size: 14px; font-style: Arial">
 							{% for i in mensual %}
 							  <tr id="m1" class="mes visible"  >
                                 <td >{{ i.mes }} </td>
-                                <td >{{ i.ncli }}</td>
-                                <td >{{ i.nped }}</td>
-                                <td >{{ i.tota |floatformat:2}}</td>
-                                <td >{{ i.insm |floatformat:2}}</td>
-                                <td >{{ i.mate |floatformat:2}}</td>
-                                <td >{{ i.pers |floatformat:2}}</td> 
-                                <td >{{ i.serv |floatformat:2}}</td> 
-                                <td >{{ i.util |floatformat:2}}</td> 
+                                <td >{{ i.clientes_totales }}</td>
+                                <td >{{ i.clientes_mes.valor }}</td>
+                                <td >{{ i.adquirieron }}</td>
+                                <td title="Numero de clientes que adquirieron prodctos" data-toggle="tooltip">{{ i.clientes_mes.var|floatformat:1 }}</td> 
+                                <td >{{ i.gasto_mes.valor|floatformat:1 }} <i class="{{ i.gasto_mes.estilo.icono }}" style="{{ i.gasto_mes.estilo.estilo }}" >  {{ i.gasto_mes.var| floatformat:1 }}%</i></td>	
                              </tr>
 							{% endfor %}
-							
-							
-							
                         </tbody>
                     </table>	
-			
 			</div>
-		
 		</div>
 		
+<!--
+		------------      PEDIDOS    -------------------
+-->
+		
+		<div class="col-xl-12 col-md-12 mb-4">
+			<a href="" data-target="#pedidos" data-toggle="collapse">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="row col mr-2 ">
+								<div class="col-xl-2 col-md-2 h5 font-weight-bold text-primary text-uppercase mb-1">PEDIDOS</div>
+								
+									<div class="col-xl-4 col-md-4 h6 font-weight-bold text-primary text-uppercase mb-1" data-toggle="tooltip" data-placement="top" title="Variación con respecto al mes anterior">
+										PRESUPUESTADOS: {{ datos_mes_actual.ped_soli_mes.valor }} 
+										<i class="{{ datos_mes_actual.ped_soli_mes.estilo.icono }}" style="{{ datos_mes_actual.ped_soli_mes.estilo.estilo }}" >  
+											{{ datos_mes_actual.ped_soli_mes.var| floatformat:1 }}%
+										</i>
+									</div>
+
+									<div class="col-xl-4 col-md-4 h6 font-weight-bold text-primary text-uppercase mb-1" data-toggle="tooltip" data-placement="top" title="Variación con respecto al mes anterior">
+										ACEPTADOS: {{ datos_mes_actual.ped_vend_mes.valor }} 
+										<i class="{{ datos_mes_actual.ped_vend_mes.estilo.icono }}" style="{{ datos_mes_actual.ped_vend_mes.estilo.estilo }}" >  
+											{{ datos_mes_actual.ped_vend_mes.var| floatformat:1 }}%
+										</i>
+									</div>
+							
+									<div class="col-xl-2 col-md-2 h6 font-weight-bold text-primary text-uppercase mb-1" data-toggle="tooltip" data-placement="top" title="Variación de productos vendidos con respecto al año anterior">
+										{{ periodo }}: {{ datos_mes_actual.ped_vend_anual.valor }} 
+										<i class="{{ datos_mes_actual.ped_vend_anual.estilo.icono }}" style="{{ datos_mes_actual.ped_vend_anual.estilo.estilo }}" > 
+											 {{ datos_mes_actual.ped_vend_anual.var| floatformat:1 }}%
+										</i>
+									</div>
+
+								
+							</div>
+							<div class="col-auto">
+							  <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+		<div id="pedidos" class="col-sm-12 collapse" >
+			<div class="col-sm-12">
+					<label for="resumen-an_os" style="font-size: 32px; font-style: Arial">Resumen Mensual</label>
+                    <table class="table table-hover" id="resumen-an_os" style="width:100%; text-align: right">
+                        <thead class="thead-light" style="font-size: 16px; font-style: Arial">
+                            <tr>
+                                <th style=" width: 10%;" >MES</th>
+                                <th style=" width: 20%;" >SOLICITADOS</th>
+                                <th style=" width: 20%;" >VENDIDOS</th>
+                                <th style=" width: 20%;" >PROCESO</th>
+                                <th style=" width: 20%;" >CANCELADOS</th>
+                             </tr>
+                        </thead>
+                        <tbody style="font-size: 14px; font-style: Arial">
+							{% for i in mensual %}
+							  <tr id="m1" class="mes visible" >
+                                <td >{{ i.mes }} </td> 
+                                <td >{{ i.ped_soli_mes.valor }} <i class="{{ i.ped_soli_mes.estilo.icono }}" style="{{ i.ped_soli_mes.estilo.estilo }}" >  {{ i.ped_soli_mes.var| floatformat:1 }}%	</i></td>
+                                <td >{{ i.ped_vend_mes.valor}}  <i class="{{ i.ped_vend_mes.estilo.icono }}" style="{{ i.ped_vend_mes.estilo.estilo }}" >  {{ i.ped_vend_mes.var| floatformat:1 }}%	</i></td>
+                                <td >{{ i.ped_proc_mes.valor }} <i class="{{ i.ped_proc_mes.estilo.icono }}" style="{{ i.ped_proc_mes.estilo.estilo }}" >  {{ i.ped_proc_mes.var| floatformat:1 }}%	</i></td>
+                                <td >{{ i.ped_canc_mes.valor }} <i class="{{ i.ped_canc_mes.estilo.icono }}" style="{{ i.ped_canc_mes.estilo.estilo }}" >  {{ i.ped_canc_mes.var| floatformat:1 }}%	</i></td>
+                             </tr>
+							{% endfor %}
+                        </tbody>
+                    </table>	
+			</div>
+		</div>
+  
+<!--
+		------------      VENTAS    -------------------
+-->
+		
+		<div class="col-xl-12 col-md-12 mb-4">
+			<a href="" data-target="#ventas" data-toggle="collapse">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="row col mr-2 " >
+								<div class="col-xl-2 col-md-2 h5 font-weight-bold text-primary text-uppercase mb-1">VENTAS</div>
+								
+									<div class="col-xl-4 col-md-2 h6 font-weight-bold text-primary text-uppercase mb-1" data-toggle="tooltip" data-placement="top" title="Variación con respecto al mes anterior">
+<!--
+											Proyectada: <p style="color: green;font-style: italic;">{{ datos_mes_actual.venta_proyectada | floatformat:1}} $  </p>
+-->
+											Proyectada: <strong style="color: green;font-style: italic;">	{{ datos_mes_actual.venta_proyectada | floatformat:1}} $  </strong>
+									</div>
+<!--
+									<div class="col-xl-2 col-md-2 h6 font-weight-bold text-primary text-uppercase mb-1" data-toggle="tooltip" data-placement="top" title="Variación con respecto al mes anterior">
+											Por Aprobar: 
+											<p style="color: green;font-style: italic;">{{ datos_mes_actual.venta_por_aprobar.valor | floatformat:1}} $  </p>
+											<p style="color: green;font-style: italic;">{{ datos_mes_actual.venta_por_aprobar.porcentaje | floatformat:1}} % </p>
+									</div>
+
+									<div class="col-xl-2 col-md-2 h6 font-weight-bold text-primary text-uppercase mb-1" data-toggle="tooltip" data-placement="top" title="Variación con respecto al mes anterior">
+											Cancelada: 
+											<p style="color: green;font-style: italic;">{{ datos_mes_actual.venta_cancelada.valor | floatformat:1}} $  </p>
+											<p style="color: green;font-style: italic;">{{ datos_mes_actual.venta_cancelada.porcentaje | floatformat:1}} % </p>
+									</div>
+-->
+									<div class="col-xl-4 col-md-3 h6 font-weight-bold text-primary text-uppercase mb-1" data-toggle="tooltip" data-placement="top" title="Variación con respecto al mes anterior">
+											Efectiva: 
+<!--
+											<p style="color: green;font-style: italic;">{{ datos_mes_actual.venta_efectiva.valor | floatformat:1}} $  </p>
+											<p style="color: green;font-style: italic;">{{ datos_mes_actual.venta_efectiva.porcentaje | floatformat:1}} % </p>
+-->
+											<strong style="color: green;font-style: italic;">{{ datos_mes_actual.venta_efectiva.valor | floatformat:1}} $   </strong>
+											<strong style="color: darkmagenta;font-style: italic;">   [ {{ datos_mes_actual.venta_efectiva.porcentaje | floatformat:1}} % ]</strong>
+									</div>
+						
+							</div>
+							<div class="col-auto">
+							  <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+		<div id="ventas" class="col-sm-12 collapse" >
+			<div class="col-sm-12">
+					<label for="resumen-an_os" style="font-size: 32px; font-style: Arial">Resumen Mensual</label>
+                    <table class="table table-hover" id="resumen-an_os" style="width:100%; text-align: right">
+                        <thead class="thead-light" style="font-size: 16px; font-style: Arial">
+                            <tr>
+                                <th style=" width: 10%;" >MES</th>
+                                <th style=" width: 20%;" >PROYECTADA</th>
+                                <th style=" width: 20%;" >CANCELDA</th>
+                                <th style=" width: 20%;" >POR APROBAR</th>
+                                <th style=" width: 20%;" >EFECTIVA</th>
+                             </tr>
+                        </thead>
+                        <tbody style="font-size: 14px; font-style: Arial">
+							{% for i in mensual %}
+							  <tr id="m1" class="mes visible" >
+                                <td >{{ i.mes }} </td> 
+                                <td >{{ i.venta_proyectada | floatformat:1}} </td>
+                                <td >{{ i.venta_cancelada.valor| floatformat:1}}  <strong style="color: darkmagenta;font-style: italic;">[ {{ i.venta_cancelada.porcentaje| floatformat:1 }}% ]</strong></td>
+                                <td >{{ i.venta_por_aprobar.valor| floatformat:1}}  <strong style="color: darkmagenta;font-style: italic;">[ {{ i.venta_por_aprobar.porcentaje| floatformat:1 }}% ]</strong></td>
+                                <td >{{ i.venta_efectiva.valor| floatformat:1}}  <strong style="color: darkmagenta;font-style: italic;">[ {{ i.venta_efectiva.porcentaje| floatformat:1 }}% ]</strong></td>
+                             </tr>
+							{% endfor %}
+                        </tbody>
+                    </table>	
+			</div>
+		</div>
+  
+<!--
+		------------      PERSONAL    -------------------
+-->
+
+		<div class="col-xl-12 col-md-12 mb-4">
+			<a href="" data-target="#personal" data-toggle="collapse">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="row col mr-2 ">
+								<div class="col-xl-2 col-md-2 h5 font-weight-bold text-primary text-uppercase mb-1">PERSONAL</div>
+								
+								<div class="col-xl-2 col-md-2 h6 font-weight-bold text-primary text-uppercase mb-1">Cantidad: {{ datos_mes_actual.num_personal }}</div>
+								<div class="col-xl-3 col-md-3 h6 font-weight-bold text-primary text-uppercase mb-1">
+									{{ mes }}: {{ datos_mes_actual.produccion_per_mes_act_ayo_act.valor }} 
+									<i class="{{ datos_mes_actual.produccion_per_mes_act_ayo_act.estilo.icono }}" style="{{ datos_mes_actual.produccion_per_mes_act_ayo_act.estilo.estilo }}" > 
+										{{ datos_mes_actual.produccion_per_mes_act_ayo_act.var| floatformat:1 }}%
+									</i>
+								</div>
+								<div class="col-xl-3 col-md-3 h6 font-weight-bold text-primary text-uppercase mb-1">
+									{{ periodo }}: {{ datos_mes_actual.produccion_per_ayo_act.valor }} 
+									<i class="{{ datos_mes_actual.produccion_per_ayo_act.estilo.icono }}" style="{{ datos_mes_actual.produccion_per_ayo_act.estilo.estilo }}" > 
+										{{ datos_mes_actual.produccion_per_ayo_act.var| floatformat:1 }}%
+									</i>
+								</div>
+							</div>
+							<div class="col-auto">
+							  <i class="fa fa-user-cog fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+		
+		<div id="personal" class="col-sm-12 collapse" >
+			<div class="col-sm-12">
+					<label for="resumen-an_os" style="font-size: 32px; font-style: Arial">Resumen Mensual</label>
+                    <table class="table table-hover" id="resumen-an_os" style="width:100%; text-align: right">
+                        <thead class="thead-light" style="font-size: 16px; font-style: Arial">
+                            <tr>
+                                <th style=" width: 10%;" >MES</th>
+                                <th style=" width: 10%;" >CANTIDAD</th>
+                                <th style=" width: 15%;" >PRODUCCION</th>
+                                <th style=" width: 15%;" >ACUMULADO ANUAL</th>
+                             </tr>
+                        </thead>
+                        <tbody style="font-size: 14px; font-style: Arial">
+							{% for i in mensual %}
+							  <tr id="m1" class="mes visible"  >
+                                <td >{{ i.mes }} </td>
+                                <td >{{ i.num_personal }}</td>
+                                <td >{{ i.produccion_per_mes_act_ayo_act.valor |floatformat:1 }}
+									<i class="{{ i.produccion_per_mes_act_ayo_act.estilo.icono }}" style="{{ i.produccion_per_mes_act_ayo_act.estilo.estilo }}" >
+										{{ i.produccion_per_mes_act_ayo_act.var| floatformat:1 }}%
+									</i>
+								</td>
+                                <td >{{ i.produccion_per_ayo_act.valor |floatformat:1 }}
+									<i class="{{ i.produccion_per_ayo_act.estilo.icono }}" style="{{ i.produccion_per_ayo_act.estilo.estilo }}" >
+										{{ i.produccion_per_ayo_act.var| floatformat:1 }}%
+									</i>
+								</td>
+                             </tr>
+							{% endfor %}
+                        </tbody>
+                    </table>	
+			</div>
+		</div>
+  
+<!--
+		------------      UTILIDADES    -------------------
+-->
+
+		<div class="col-xl-12 col-md-12 mb-4">
+			<a href="" data-target="#utilidades" data-toggle="collapse">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="row col mr-2 ">
+								<div class="col-xl-2 col-md-2 h5 font-weight-bold text-primary text-uppercase mb-1">UTILIDADES</div>
+								
+									<div class="col-xl-3 col-md-3 h6 font-weight-bold text-primary text-uppercase mb-1">
+										{{ mes }}: {{ datos_mes_actual.mes_act_ayo_act_uti.valor| floatformat:1 }} 
+										<i class="{{ datos_mes_actual.mes_act_ayo_act_uti.estilo.icono }}" style="{{ datos_mes_actual.mes_act_ayo_act_uti.estilo.estilo }}" > 
+											{{ datos_mes_actual.mes_act_ayo_act_uti.var| floatformat:1 }}%
+										</i>
+									</div>
+									
+									<div class="col-xl-3 col-md-3 h6 font-weight-bold text-primary text-uppercase mb-1">
+										{{ periodo }}: {{ datos_mes_actual.ayo_act_uti.valor| floatformat:1 }} 
+										<i class="{{ datos_mes_actual.ayo_act_uti.estilo.icono }}" style="{{ datos_mes_actual.ayo_act_uti.estilo.estilo }}" >  
+											{{ datos_mes_actual.ayo_act_uti.var| floatformat:1 }}%
+										</i>
+									</div>
+								
+							</div>
+							<div class="col-auto">
+							  <i class="fa fa-hand-holding-usd fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+		
+		<div id="utilidades" class="col-sm-12 collapse" >
+			<div class="col-sm-12">
+					<label for="resumen-an_os" style="font-size: 32px; font-style: Arial">Resumen Mensual</label>
+                    <table class="table table-hover" id="resumen-an_os" style="width:100%; text-align: right">
+                        <thead class="thead-light" style="font-size: 16px; font-style: Arial">
+                            <tr>
+                                <th style=" width: 10%;" >MES</th>
+                                <th style=" width: 20%;" >UTILIDAD</th>
+                                <th style=" width: 20%;" >ACUMULADO ANUAL</th>
+                             </tr>
+                        </thead>
+                        <tbody style="font-size: 14px; font-style: Arial">
+							{% for i in mensual %}
+							  <tr id="m1" class="mes visible"  >
+                                <td >{{ i.mes }} </td>
+                                <td >{{ i.mes_act_ayo_act_uti.valor|floatformat:1 }} <i class="{{ i.mes_act_ayo_act_uti.estilo.icono }}" style="{{ i.mes_act_ayo_act_uti.estilo.estilo }}" >  {{ i.mes_act_ayo_act_uti.var| floatformat:1 }}%</i></td>
+                                <td >{{ i.ayo_act_uti.valor|floatformat:1 }} <i class="{{ i.ayo_act_uti.estilo.icono }}" style="{{ i.ayo_act_uti.estilo.estilo }}" >  {{ i.ayo_act_uti.var| floatformat:1 }}%</i></td>
+                             </tr>
+							{% endfor %}
+                        </tbody>
+                    </table>	
+			</div>
+		</div>
+  
+
+<!--
+		------------      SERVICIOS    -------------------
+-->
+
+		<div class="col-xl-12 col-md-12 mb-4">
+			<a href="" data-target="#servicios" data-toggle="collapse">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="row col mr-2 ">
+								<div class="col-xl-2 col-md-2 h5 font-weight-bold text-primary text-uppercase mb-1">SERVICIOS</div>
+								<div class="col-xl-3 col-md-3 h6 font-weight-bold text-primary text-uppercase mb-1">
+									{{ mes }}: {{ datos_mes_actual.mes_act_ayo_act_serv.valor| floatformat:1 }} 
+									<i class="{{ datos_mes_actual.mes_act_ayo_act_serv.estilo.icono }}" style="{{ datos_mes_actual.mes_act_ayo_act_serv.estilo.estilo }}"> 
+										{{ datos_mes_actual.mes_act_ayo_act_serv.var| floatformat:1 }}%
+									</i>
+								</div>
+								<div class="col-xl-3 col-md-3 h6 font-weight-bold text-primary text-uppercase mb-1">
+									{{ periodo }}: {{ datos_mes_actual.ayo_act_serv.valor| floatformat:1 }} 
+									<i class="{{ datos_mes_actual.ayo_act_serv.estilo.icono }}" style="{{ datos_mes_actual.ayo_act_serv.estilo.estilo }}" >  
+										{{ datos_mes_actual.ayo_act_serv.var| floatformat:1 }}%
+									</i>
+								</div>
+						
+							</div>
+							<div class="col-auto">
+							  <i class="fa fa-hand-holding-usd fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+		
+		<div id="servicios" class="col-sm-12 collapse" >
+			<div class="col-sm-12">
+					<label for="resumen-an_os" style="font-size: 32px; font-style: Arial">Resumen Mensual</label>
+                    <table class="table table-hover" id="resumen-an_os" style="width:100%; text-align: right">
+                        <thead class="thead-light" style="font-size: 16px; font-style: Arial">
+                            <tr>
+                                <th style=" width: 10%;" >MES</th>
+                                <th style=" width: 20%;" >SERVICIO</th>
+                                <th style=" width: 20%;" >ACUMULADO ANUAL</th>
+                             </tr>
+                        </thead>
+                        <tbody style="font-size: 14px; font-style: Arial">
+							{% for i in mensual %}
+							  <tr id="m1" class="mes visible"  >
+                                <td >{{ i.mes }} </td>
+                                <td >{{ i.mes_act_ayo_act_serv.valor|floatformat:1 }} <i class="{{ i.mes_act_ayo_act_serv.estilo.icono }}" style="{{ i.mes_act_ayo_act_serv.estilo.estilo }}" >  {{ i.mes_act_ayo_act_uti.var| floatformat:1 }}%</i></td>
+                                <td >{{ i.ayo_act_serv.valor|floatformat:1 }} <i class="{{ i.ayo_act_serv.estilo.icono }}" style="{{ i.ayo_act_serv.estilo.estilo }}" >  {{ i.mes_act_ayo_act_uti.var| floatformat:1 }}%</i></td>
+                             </tr>
+							{% endfor %}
+                        </tbody>
+                    </table>	
+			</div>
+		</div>
+   
+            
+<!--
+		------------      GASTOS    -------------------
+-->
+
+		<div class="col-xl-12 col-md-12 mb-4">
+			<a href="" data-target="#gastos" data-toggle="collapse">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="row col mr-2 ">
+								<div class="col-xl-2 col-md-2 h5 font-weight-bold text-primary text-uppercase mb-1">GASTOS</div>
+									<div class="row col mr-2 ">
+										<div class="col-xl-4 col-md-4 h6 font-weight-bold text-primary text-uppercase mb-1">{{ mes }}: {{ datos_mes_actual.mes_act_ayo_act_gastos.valor }} <i class="{{ datos_mes_actual.mes_act_ayo_act_gastos.estilo.icono }}" style="{{ datos_mes_actual.mes_act_ayo_act_gastos.estilo.estilo }}" >  {{ datos_mes_actual.mes_act_ayo_act_gastos.var| floatformat:1 }}%</i></div>
+										<div class="col-xl-4 col-md-4 h6 font-weight-bold text-primary text-uppercase mb-1">TRANSPORTE: {{ datos_mes_actual.mes_act_ayo_act_transp.valor }} <i class="{{ datos_mes_actual.mes_act_ayo_act_transp.estilo.icono }}" style="{{ datos_mes_actual.mes_act_ayo_act_transp.estilo.estilo }}" >  {{ datos_mes_actual.mes_act_ayo_act_transp.var| floatformat:1 }}%</i></div>
+<!--
+										<div class="col-xl-2 col-md-2 h6 font-weight-bold text-primary text-uppercase mb-1">TOTAL: {{ datos_mes_actual.mes_act_ayo_act_transp.valor }} <i class="{{ datos_mes_actual.mes_act_ayo_act_transp.estilo.icono }}" style="{{ datos_mes_actual.mes_act_ayo_act_transp.estilo.estilo }}" >  {{ datos_mes_actual.mes_act_ayo_act_transp.var| floatformat:1 }}%</i></div>
+-->
+<!--
+										<div class="col-xl-2 col-md-2 h6 font-weight-bold text-primary text-uppercase mb-1">{{ periodo }}: {{ datos_mes_actual.mes_act_ayo_act_transp.valor }} <i class="{{ datos_mes_actual.mes_act_ayo_act_transp.estilo.icono }}" style="{{ datos_mes_actual.mes_act_ayo_act_transp.estilo.estilo }}" >  {{ datos_mes_actual.mes_act_ayo_act_transp.var| floatformat:1 }}%</i></div>
+-->
+									</div>	
+								</div>
+							<div class="col-auto">
+							  <i class="fa fa-hand-holding-usd fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+		
+		<div id="gastos" class="col-sm-12 collapse" >
+			<div class="col-sm-12">
+					<label for="resumen-an_os" style="font-size: 32px; font-style: Arial">Resumen Mensual</label>
+                    <table class="table table-hover" id="resumen-an_os" style="width:100%; text-align: right">
+                        <thead class="thead-light" style="font-size: 16px; font-style: Arial">
+                            <tr>
+                                <th style=" width: 10%;" >MES</th>
+                                <th style=" width: 10%;" >GASTO</th>
+                                <th style=" width: 15%;" >TRASNPORTE</th>
+                                <th style=" width: 15%;" >INVERTIDO</th>
+                             </tr>
+                        </thead>
+                        <tbody style="font-size: 14px; font-style: Arial">
+							{% for i in mensual %}
+							  <tr id="m1" class="mes visible"  >
+                                <td >{{ i.mes }} </td>
+                                <td >{{ i.mes_act_ayo_act_gastos.valor|floatformat:1 }} <i class="{{ i.mes_act_ayo_act_gastos.estilo.icono }}" style="{{ i.mes_act_ayo_act_gastos.estilo.estilo }}" >  {{ i.mes_act_ayo_act_gastos.var | floatformat:1 }}%</i></td>
+                                <td >{{ i.mes_act_ayo_act_transp.valor|floatformat:1 }} <i class="{{ i.mes_act_ayo_act_transp.estilo.icono }}" style="{{ i.mes_act_ayo_act_transp.estilo.estilo }}" >  {{ i.mes_act_ayo_act_transp.var| floatformat:1 }}%</i></td>
+                                <td >{{ i.invertido|floatformat:1 }}</td>
+                             </tr>
+							{% endfor %}
+                        </tbody>
+                    </table>	
+			</div>
+		</div>
+   
+            
+          
+
+     </div>
+  
+  
     </div>
 {%endblock %}

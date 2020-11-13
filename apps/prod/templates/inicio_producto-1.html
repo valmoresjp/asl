@@ -4,7 +4,7 @@
 
 {% block content %}
 <br>
-<h1>Listado de Productos en Proceso</h1>
+<h1>Listado de Productos</h1>
 <br><br>
     <div class="container-fluid">
 
@@ -25,7 +25,7 @@
                                 <th style=" width: 30%;">PRODUCTO</th>
                                 <th style=" width: 25%;">DESCRIPCIÓN</th> 
                                 <th style=" width: 10%;">COSTO</th>   
-                                <th style=" width: 10%;">ACTUALIZACION</th>   
+                                <th style=" width: 10%;">CREACION</th>   
 <!--
                                 <th style=" width: 10%;">RECETA</th>   
 -->
@@ -41,13 +41,13 @@
 									 <td>{{ reg.id }}</td>
 									 <td><a class="edit" href="{% url 'detallar_producto' idprod=reg.id %}" title="Detallar Partida" data-toggle="tooltip" >{{ reg.nomb | upper }}</a></td> 
                                      <td>
-										<a data-toggle="collapse" href="#collapseReg_{{reg.id}}" >{{ reg.nomb | truncatewords_html:5 }}</a>
+										<a data-toggle="collapse" href="#collapseReg_{{reg.id}}" >{{ reg.desc | truncatewords_html:5 }}</a>
 										<div class="collapse" id="collapseReg_{{reg.id}}"  >
-											{{ reg.nomb }}
+											{{ reg.desc }}
 										</div>
                                      </td>
                                      <td>{{ reg.costo }}</td>
-                                     <td>{{ reg.fhactu|date:"d-m-Y H:i" }}</td>
+                                     <td>{{ reg.fhcrea|date:"d-m-Y H:i" }}</td>
 <!--
                                      <td><a href="" download  class="btn btn-dark float-right" style="width:100%">Download</a></td>
 -->

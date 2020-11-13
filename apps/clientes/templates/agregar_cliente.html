@@ -2,11 +2,24 @@
 
 
 {% block content %}
+<h3>Agregar Nuevo Cliente</h3>
+<br>
     <form   method="post" enctype='multipart/form-data' multiple="multiple">
         {% csrf_token %}
-	    	{{ form.as_p }} 
-    
-    	<input type="submit" class="btn btn-info" value="Guardar"/>
+			{{ form.as_p }}
+				<datalist name="nombre" id="nombre" >
+					{% for i in nombres %}
+						<option value= "{{i.nombre| upper}}" >
+					{% endfor %}
+				</datalist>
+		<div class="row">
+			<div class="col-xl-6 col-md-6 mb-4">
+				<input type="submit" class="btn btn-info" value="Guardar"/>
+			</div> 
+			<div class="col-xl-6 col-md-6 mb-4">
+				<a href="javascript:history.back()" title="Ir a listado de Clientes" data-toggle="tooltip" ><button type="button" class="btn btn-primary "> REGRESAR</button></a> 
+			</div> 
+		</div> 
     </form>	
 
 {% endblock %}

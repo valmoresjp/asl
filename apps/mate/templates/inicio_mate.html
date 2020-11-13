@@ -10,16 +10,37 @@
 
 	<div class="container-fluid">
 		<div class="row">
-<!--
-			<a href="{% url 'agregar_mate' idfactu=1%}" class="btn btn-primary col-3 "  role="button">Agregar Insumo o Servicio</a> 
--->
 			<a href="{% url 'listar_factura_mate' %}" class="btn btn-primary col-3 "  role="button">FACTURAS</a> 
 			
 		</div>
+	</div> 
+	<br><br>
+	<div class="container-fluid">
+		<div class="row">
+					
+			<form method="post">
+				{% csrf_token %}
+				  <label for="cars">Choose a car:</label>
+				  
+				  <select name="tipo" id="tipo">
+					<option value="SEL">Seleccionar tipo de lista....</option>
+					<option value="ING">INGREDIENTES</option>
+					<option value="MAT">MATERIALES</option>
+					<option value="MYH">MAQUINAS Y HERRAMIENTAS</option>
+					<option value="SER">SERVICIOS</option>
+				  </select>
+				  <button type="submit"> LISTAR</button>
+				 
+				   
+			</form>
+		</div>
 	</div>
-  
     <br>
-
+    <div class="container-fluid">
+		<div class="row">
+			<h1 class="display-5">Listado de  {{ listado }}</h1>
+			</div>
+			
 	<input class="form-control" id="patron" type="text" placeholder="Escriba para filtrar...">
 	<br>
     <table id="Listado" class="table table-hover table-bordered small">
@@ -30,13 +51,8 @@
                 <th style=" width: 5%; " >CODIGO</th>
                 <th style=" width: 22%;" >DESCRIPCIÓN</th>
                 <th style=" width: 5%;"  >UNIDAD</th>
-                <th style=" width: 5%;"  >CANT/UND</th>
-                <th style=" width: 10%;" >COSTO</th> 
                 <th style=" width: 10%;" >COSTO/UMED</th> 
                 <th style=" width: 5%;"  >INVENT</th>
-<!--
-                <th style=" width: 15%;" >DISTRIBUIDOR</th> 
--->
                 <th style=" width: 5%;"  >TIPO</th>
             </tr>    
         </thead>
@@ -49,15 +65,10 @@
                     </td>
                     <td ><a class="edit" href="{% url 'editar_mate' idinsm=valor.id %}" >{{ valor.id }}</a></td>
                     <td >{{ valor.codigo }}</td>
-                    <td ><a class="edit" href="{% url 'compras_mate' idinsm=valor.id %}" >{{ valor.descripcion | upper  }}</a></td>
+                    <td ><a class="edit" href="{% url 'compras_mate' idinsm=valor.id %}" >{{ valor.descrip | upper  }}</a></td>
                     <td >{{ valor.umedida }}</td>
-                    <td >{{ valor.cantidad }}</td>
-                    <td >{{ valor.costo }}</td>
-                    <td >{{ valor.cumedida }}</td>
-                    <td >{{ valor.inventario }}</td>
-<!--
-                    <td > <a href="#" data-toggle="tooltip" title="{{ valor.distribuidores }}">Listado de Distribuidores</a></td>
--->
+                    <td >{{ valor.cumedida|floatformat:2 }}</td>
+                    <td >{{ valor.inven }}</td>
                     <td >{{ valor.tipo }}</td>
                     
                 </tr>

@@ -3,93 +3,77 @@
 {% block content %}
 <br>
 
- 	<h3>Cliente: {{ cliente.nombre |upper }}</h3>
- 	<h3>Telefono: {{ cliente.telefono |upper }}</h3>
- 	<h3 >ID: <span id="codp">{{ cliente.id }}</span></h3>
- 	<h3 >FECHA DE ANIVERSARIO: <span id="aniversario">{{ cliente.fhaniver| date:"d-m-Y"  }}</span></h3>
- 	<h3 >TOTAL PEDIDOS: <span id="pedidos">{{ cliente.total_pedidos }}</span></h3>
- 	<h3 >TOTAL ADQUIRIDO: <span id="total">{{ cliente.total_adq |floatformat:2 }}</span></h3>
+ 	<h5><strong>Cliente:</strong> {{ cliente.nombre |upper }}</h5>
+ 	<h5><strong>Telefono:</strong> {{ cliente.telefono |upper }}</h5>
+ 	<h5><strong>Correo:</strong> {{ cliente.correo |lower }}</h5>
+ 	<h5 ><strong>Fecha de Aniversario:</strong> <span id="aniversario">{{ cliente.fhaniver| date:"d-m-Y"  }}</span></h5>
+ 	<h5 ><strong>Total de Pedidos: </strong><span id="pedidos">{{ cliente.total_pedidos }}</span></h5>
+ 	<h5 ><strong>Total Adquirido:</strong> <span id="total">{{ cliente.total_adq |floatformat:2 }}</span></h5>
  
 <div class="container-fluid">
 		
-  	
-   	  	<div id="cliente_div">		  
-<!--
-			<div class="row">
-				<div class="col-md-9">
-		   	  		<div class="card bg-light text-dark">
-		    			<div class="card-body">
-		    				<button id="Insumos_sel" name="Cliente_prd" onclick="SeleccionarTabla(this)" type="button" class="btn btn-link"  data-target="#__Cliente_prd" data-toggle="collapse" style="font-size: 18px; font-weight: bold; font-style: Arial">Cliente(partidas)</button>
-		    			</div>
-		  			</div>
-				</div>	   		
-		   		<div class="col-md-3">
-		   	  		<div class="card bg-light text-dark">
-		    			<div class="card-body"><p id="Cliente_tot" style="font-size: 18px; text-align: right;font-weight: bold; font-style: Arial">{{ totales.prddetlls }}</p></div>
-		  			</div>	
-				</div>
-		   </div>
--->
+  	<div id="Cliente_prd" >
+		<table id="Cliente_dat" class="table datos">
+			<thead style="font-size: 16px; font-style: Arial">
+				<tr>
+					<th style=" width: 5%;display:none;" >ID</th>
+					<th style=" width: 25%;">PRODUCTO</th>
+					<th style=" width: 5%;">CANT</th>
+					<th style=" width: 10%;">COSTO</th>
+					<th style=" width: 12%;">CONTRATO</th>
+					<th style=" width: 12%;">ENTREGA</th>
+					<th style=" width: 30%;">DIRECCION</th>
+					<th style=" width: 5%;">ESTADO</th>	  
+				</tr>
+			</thead>
 
-			<div id="Cliente_prd" >
-				<table id="Cliente_dat" class="table datos">
-					<thead style="font-size: 16px; font-style: Arial">
-		    		<tr>
-		    		    <th style=" width: 5%;">ID</th>
-					    <th style=" width: 30%;">PRODUCTO</th>
-					    <th style=" width: 5%;">CANTIDAD</th>
-					    <th style=" width: 10%;">COSTO</th>
-					    <th style=" width: 12%;">CONTRATO</th>
-					   	<th style=" width: 12%;">ENTREGA</th>
-					   	<th style=" width: 35%;">DIRECCION</th>
-					  
-		      		</tr>
-		    	</thead>
-
-					<tbody style="font-size: 14px; font-style: Arial">
-					{% for i in vdatos %}
-						<tr id="vnd-{{i.id}}" name="regn" >
-							<td >{{ i.idprod }} </td>
-							<td><a class="edit" href="" title="Detallar Producto" data-toggle="tooltip" >{{ i.nprod  | upper }}</a></td> 
-							<td >{{ i.cant}}</td>
-							<td >{{ i.costo}}</td>
-							<td >{{ i.fhacd | date:"d-m-Y" }} {{ i.fhacd |time:"H:i" }}</td>
-							<td >{{ i.fhentr| date:"d-m-Y" }} {{ i.fhentr |time:"H:i" }}
-							<td >{{ i.direc }}</td>
-						</tr>
-					{% endfor %}
-		    	</tbody>
-				</table>
-		   </div>	   
+			<tbody style="font-size: 12px; font-style: Arial">
+				{% for i in vdatos %}
+					<tr id="vnd-{{i.id}}" name="regn" >
+						<td style="display:none;">{{ i.idprod }} </td>
+						<td><a class="edit" href="" title="Detallar Producto" data-toggle="tooltip" >{{ i.nprod  | upper }}</a></td> 
+						<td >{{ i.cant}}</td>
+						<td >{{ i.costo}}</td>
+						<td >{{ i.fhacd | date:"d-m-Y" }} {{ i.fhacd |time:"H:i" }}</td>
+						<td >{{ i.fhentr| date:"d-m-Y" }} {{ i.fhentr |time:"H:i" }}
+						<td >{{ i.direc }}</td>
+						<td style="align:center">
+							{% if i.estado_n == 0 %}
+								<a title="Esperando Aporbacion del Cliente" data-toggle="tooltip" href="{% url 'estado_ventas' idventa=i.id estado=i.estado_n  %}" > 
+									<i class="fa fa-handshake fa-2x" aria-hidden="true" style="color:yellow"></i> 
+								</a>
+							{% endif %}
+							{% if i.estado_n == 1 %}
+								<a title="Pedido en Proceso" data-toggle="tooltip" href="{% url 'estado_ventas' idventa=i.id estado=i.estado_n  %}" > 
+									<i class="fa fa-cogs fa-2x" aria-hidden="true" style="color:#0099ff"></i>
+								</a>
+							{% endif %}
+							{% if i.estado_n == 2 %}
+								<a title="Pedido Enviado a Destino" data-toggle="tooltip" href="{% url 'estado_ventas' idventa=i.id estado=i.estado_n  %}" > 
+									<i class="fa fa-truck fa-2x" aria-hidden="true" style="color:#cc33ff"></i> 
+								</a>
+							{% endif %}
+							{% if i.estado_n == 3%}
+								<a title="Pedido entregado en Destino" data-toggle="tooltip" href="{% url 'estado_ventas' idventa=i.id estado=i.estado_n  %}" > 
+									<i class="fa fa-thumbs-up fa-2x" aria-hidden="true" style="color:#66ff66"></i>
+								</a>
+							{% endif %}
+							{% if i.estado_n == 99%}
+								<a title="Pedido Cancelado" data-toggle="tooltip" href="{% url 'estado_ventas' idventa=i.id estado=i.estado_n  %}" >
+									<i class="fa fa-thumbs-down fa-2x" aria-hidden="true" style="color:#ff3300"></i>
+								</a>
+							{% endif %}
+						</td>		
+					</tr>
+				{% endfor %}
+		    </tbody>
+			
+		</table>
+		  
+	</div>	   
+	<a href="javascript:history.back()" title="Ir a listado de Clientes" data-toggle="tooltip" ><button type="button" class="btn btn-primary "> REGRESAR</button></a> 
 
 </div>
-	  	
-<!-- Modal -->
-<div class="modal fade " id="myModal3" role="dialog">
-	<div class="modal-dialog modal-dialog-centered" role="document" id="dialogo">
-		<!-- Modal content-->
-		<div class="modal-content" id="dialogo">      
-		    <div class="modal-header">
-		          <h4 class="modal-title">Continuar o Guardar</h4>
-		          <button type="button" class="close" data-dismiss="modal"> &times;</button>
-		    </div>
-
-		    <div class="modal-body">
-		        <p>Desea guardar los cambios realizados?.</p>	
-		    </div>
-
-		    <div class="modal-footer">
-		        <button type="button" class="btn btn-danger" data-dismiss="modal">No Guardar</button>
-		    	<form method="post">
-					{% csrf_token %}
-						<input id="ObjDatos" type="text" name="ObjDatos" style="display:none">	
-					<button id="benviar" type="submit" class="btn btn-primary" >Guardar y Continuar</button>  
-    			</form>
-		    </div>
-		</div>
-    </div>
-</div>
-
 
 
 {% endblock %}

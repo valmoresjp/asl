@@ -117,13 +117,23 @@ $("#vender_1").click(function(evento){
 		estado = false;
 	}else{
 		var actual = new Date();
-		var entrega = new Date(fhentr);
+		//~ 01-11-2020 10:00
+		var ayo = parseInt(fhentr.substr(6,9));
+		var mes = parseInt(fhentr.substr(3,4))-1;
+		var dia = parseInt(fhentr.substr(0,2));
+		var hora= parseInt(fhentr.substr(11,12));
+		var min = parseInt(fhentr.substr(14,15));
+		var entrega = new Date(ayo,mes,dia,hora,min);
+		console.log(actual, "    ", entrega)
+		console.log(Date.parse(actual), "    ", Date.parse(entrega))
 		if ( Date.parse(actual) >= Date.parse(entrega) ){
 			mensaje = mensaje + "La fecha y hora de entrega debe ser mayor a la fecha actual... \n";
 			$("#id_fhentr").addClass("borde_error");
 			estado = false;
 		}else{
+			console.log(fhentr)
 			var a  =  fhentr.replace("T","-").split("-");
+			console.log(a)
 			$("#id_fhentr").removeClass("borde_error");
 			fhentr  = a[2]+"-"+ a[1]+"-"+a[0] +" "+a[3]; 
 		}
@@ -569,7 +579,7 @@ function Utilidad(){
 		$("#"+$(this).attr("name") +"_util").html(utilidad.toFixed(2).toString().replace(".",","));
 		total = total + utilidad;
 	});
-		$("#Utilidades_tot").html(total.toFixed(2	).toString().replace(".",","));
+		$("#Utilidades_tot").html(total.toFixed(2).toString().replace(".",","));
 	
 }
 
@@ -685,7 +695,9 @@ $GUARDAR.click(function () {
 			'pinsm' :$('#Insumos_por').length == 0? -1:$('#Insumos_por').html().replace(",","."),
 			'pmate' :$('#Materiales_por').length == 0? -1:$('#Materiales_por').html().replace(",","."),
 			'ppers':$('#Personal_por').length == 0? -1: $('#Personal_por').html().replace(",","."),
-			'pserv' :$('#Servicios_por').length == 0? -1: $('#Servicios_por').html().replace(",",".")
+			'pserv' :$('#Servicios_por').length == 0? -1: $('#Servicios_por').html().replace(",","."),
+			//~ 'ptran' :$('#Servicios_por').length == 0? -1: $('#Transporte_por').html().replace(",","."),
+			//~ 'pimpr' :$('#Servicios_por').length == 0? -1: $('#IMprevisto_por').html().replace(",",".")
 		}
 		ObjDatos.push({ "destino":"TOTALIZAR","accion":"actualizar", "id":-1, "datos":total });
 		

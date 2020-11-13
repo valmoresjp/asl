@@ -13,30 +13,15 @@
                 <tbody style="font-size: 20px; font-weight: bold; font-style: Arial" >
                     <tr><td  >CODIGO:</td><td  >{{ form.codigo }}</td></tr>
                     <tr><td  >DESCRIPCIÓN:</td><td  >{{ form.descrip }}</td></tr>
+                    <tr><td  >TIPO: </td>  <td  >{{ form.tipo }}   </td></tr> 
                     <tr><td  >UNIDAD DE MEDIDA: </td>  <td  >{{ form.umedida }}</td></tr> 
                     <tr><td  >CANTIDAD: </td>  <td  >{{ form.cantd }}</td></tr> 
+                    <tr><td  >COSTO DEL PRODUCTO: </td>  <td  >{{ form.costop }}   </td></tr> 
+                    <tr><td  >COSTO DEL TRANSPORTE: </td>  <td  >{{ form.costot }}   </td></tr> 
                     <tr><td  >INVENTARIO: </td>  <td  >{{ form.inven }}</td></tr> 
-                    <tr><td  >TIPO: </td>  <td  >{{ form.tipo }}   </td></tr> 
                 </tbody>
             </table> 
-            <table id="Listado" class="table table-hover table-bordered small">
-                <thead style="font-size: 20px; font-weight: bold; font-style: Arial">
-                    <tr>
-                        <th>#</th>
-                        <th>NOMBRE DEL DISTRIBUIDOR</th>
-                        <th>COSTO</th>
-                    </tr>
-                </thead>
-                <tbody >
-                    <tr><td>1</td><td>{{ form.distb1 }}</td><td>{{ form.costo1 }}</td></tr>
-<!--
-                    <tr><td>2</td><td>{{ form.distb2 }}</td><td>{{ form.costo2 }}</td></tr>
-                    <tr><td>3</td><td>{{ form.distb3 }}</td><td>{{ form.costo3 }}</td></tr>
-                    <tr><td>4</td><td>{{ form.distb4 }}</td><td>{{ form.costo4 }}</td></tr>
-                    <tr><td>5</td><td>{{ form.distb5 }}</td><td>{{ form.costo5 }}</td></tr> 
--->
-                </tbody>
-            </table> 
+
         <button type="submit"> Guardar</button>
         <a href="{% url 'inicio_mate' %}" class="btn btn-info" role="button">Atras</a>
     </form>

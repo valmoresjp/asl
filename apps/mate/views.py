@@ -2,7 +2,8 @@ from django.shortcuts import render , redirect
 from django.http import HttpResponse
 import mimetypes
 from django.conf import settings
-from django.db.models import Avg, Min, Max
+from django.db.models import Avg, Min, Max, Sum
+from django.db.models import Q
 
 from datetime import datetime, date
 from apps.mate.forms import InsumosF, ComprasF, FacturasF
@@ -11,85 +12,52 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def inicio(request):
-	regs = InsumosM.objects.all().order_by('inven')
-	idatos=[]
-	for i in regs:
-		# ~ print("Distribuidor	Costo	Costo/Umedida")
-		a=""
-		if i.cmedi1() > 0:
-			a = i.distb1 + " , " + str(i.costo1).strip()+" , " + str(i.cmedi1()).strip() + "\n"
-		if i.cmedi2() > 0:
-			a = a + " , " +i.distb2 + " , " + str(i.costo2).strip()+" , " + str(i.cmedi2()).strip() + "\n"
-		if i.cmedi3() > 0:
-			a = a + " , " +i.distb3 + " , " + str(i.costo3).strip()+" , " + str(i.cmedi3()).strip() + "\n"
-		if i.cmedi4() > 0:
-			a = a + " , " +i.distb4 + " , " + str(i.costo4).strip()+" , " + str(i.cmedi4()).strip() + "\n"
-		if i.cmedi5() > 0:
-			a = a + " , " + i.distb5 + " , " + str(i.costo5).strip()+" , " + str(i.cmedi5()).strip() + "\n"
+	listado = {
+				'MAT':'MATERIAL',
+				'PER':'PERSONAL',
+				'MYH':'MAQUINAS Y HERRAMIENTAS',
+				'SER':'SERVICIO',
+				'ING':'INGREDIENTE',
+				}
+	if request.method == 'POST':
+		clave = request.POST['tipo']
+		regs = InsumosM.objects.filter(tipo=request.POST['tipo']).order_by('inven')
+	
+	if request.method == 'GET':
+		clave = 'ING'
+		regs = InsumosM.objects.filter(tipo=clave).order_by('inven')
 			
-		idatos.append(	
-					{'id'            : i.id,
-					 'codigo'        : i.codigo,  
-					 'descripcion'   : i.descrip,
-					 'cantidad'      : i.cantd,
-					 'umedida'       : i.umedida,
-					 'costo'         : i.max(),
-					 'cumedida'      : i.cumedida,
-					 'inventario'    : i.inven,
-					 'distribuidores': a,
-					 'tipo'          : i.tipo
-					})
 					
-					
-	return render (request,'inicio_mate.html',{'regs': idatos})
+	return render (request,'inicio_mate.html',{'regs': regs,'listado':listado[clave]})
 
 @login_required(login_url='/inicio/ingreso')	
 def agregar(request, idfactu):
 
 	if request.method == 'POST':
 
-		# ~ f = [-1,-1,-1,-1,-1]
-		# ~ error = False
-
-		# ~ if len(request.POST['distb2'].strip())>0 and float(request.POST['costo2'])>=0.0 :
-				# ~ f[1] = datetime.now()
-		# ~ if len(request.POST['distb3'].strip())>0 and float(request.POST['costo3'])>=0.0 :
-				# ~ f[2] = datetime.now()
-		# ~ if len(request.POST['distb4'].strip())>0 and float(request.POST['costo4'])>=0.0 :
-				# ~ f[3] = datetime.now()
-		# ~ if len(request.POST['distb5'].strip())>0 and float(request.POST['costo5'])>=0.0 :
-				# ~ f[4] = datetime.now()
-		# ~ for  i in (1,2,3,4):
-			# ~ if f[i] == -1:
-				# ~ error = False
-
 		form = InsumosF(request.POST)
 		if form.is_valid(): # and not error:
 			instancia = form.save(commit=False)
-			# ~ if f[1]!=-1:
-				# ~ instancia.factu2 = f[1]
-			# ~ if f[2]!=-1:
-				# ~ instancia.factu3 = f[2]
-			# ~ if f[3]!=-1:
-				# ~ instancia.factu4 = f[3]
-			# ~ if f[4]!=-1:
-				# ~ instancia.factu5 = f[4]
-			
-			instancia.save()
-			## se obtiene el insumo almacenado para obtener la informacipon y registrar la factura
+			instancia.cumedcal = (instancia.costop + instancia.costot)/instancia.cantd
+			form.save()
+
+			# se obtiene el insumo almacenado para obtener la informacipon y registrar la factura
 			insm = InsumosM.objects.filter(codigo=request.POST['codigo']).filter(descrip=request.POST['descrip'])
 			
 			compras = {
 				'idinsm'  :insm[0].id, 
 				'umedida' :insm[0].umedida,
-				'costo'   :insm[0].costo1,
+				'costop'   :insm[0].costop,
+				'costot'   :insm[0].costot,
 				'cantd'   :insm[0].cantd,
-				'nfactu'  :idfactu,
+				'idfactu'  :idfactu,
 				'fhcomp'  :date.today().strftime("%d-%m-%Y")	,
 			}
 			comprasf = ComprasF(compras)
 			if comprasf.is_valid():	
 				comprasf.save()
+				# ~ se actualiza los costos de transporte porque se agregootro item
+				ComprasM.objects.filter(idfactu = idfactu).update(costot=compras['costot'])
 			else:
 				print("Error al almacenar factura")
 				InsumosM.objects.get(id=insm.id).delete()
@@ -101,7 +69,11 @@ def agregar(request, idfactu):
 			return render(request,'errores_020819.html',{'form': form})
 		return redirect (url)
 	else:
-		form = InsumosF()
+		total_transporte = FacturasM.objects.filter(id=idfactu)[0].transp
+		nprod = ComprasM.objects.filter(idfactu = idfactu).count()
+			
+		costo_transporte = total_transporte/(nprod + 1)
+		form = InsumosF(initial={'costot': costo_transporte}) 
 	return render( request, 'agregar_mate.html', {'form':form})
 	
 	
@@ -135,13 +107,13 @@ def compras_mate(request,idinsm):
 	datos = []
 	insm = InsumosM.objects.get(id=idinsm)
 	compras = ComprasM.objects.filter(idinsm=idinsm)
-	
 	for i in compras:
-		factura = FacturasM.objects.get(id=i.nfactu)
+		factura = FacturasM.objects.get(id=i.idfactu)
 		datos.append({
 						'id'             : i.id,
 						'idinsm'         : i.idinsm,
-						'costo'          : i.costo,
+						'costop'          : i.costop,
+						'costot'          : i.costot,
 						'cantidad'       : i.cantd,
 						'idfactura'      : factura.id,
 						'numero_factura' : factura.numero,
@@ -149,7 +121,7 @@ def compras_mate(request,idinsm):
 						'factura'        : factura.archivo.name,
 						})
 	
-	res = ComprasM.objects.filter(idinsm=idinsm).aggregate(precio_avg=Avg('costo'), precio_min=Min('costo'), precio_max=Max('costo'))
+	res = ComprasM.objects.filter(idinsm=idinsm).aggregate(precio_avg=Avg('costop'), precio_min=Min('costop'), precio_max=Max('costop'))
 	contexto = {
 				'insm':insm,
 				'compras':datos,
@@ -196,22 +168,17 @@ def descarga_factura(request,idfactu):#idfactu):
 	
 def listar_factura(request):
 	contexto = {
-		'facturas' : FacturasM.objects.all()
+		'facturas' : FacturasM.objects.order_by('-fhfactu')
 		}
 	return render(request, 'listar_factura_mate.html', contexto)#, 'datos':datos})
 
 def contenido_factura(request, idfactu):
 	
 	if request.method == 'POST':
-		# ~ print("POST.........")
-		# ~ print(idfactu)
 		# se verifica si el item existe
 		idinsm = request.POST['items'].split("_")[0]
-		# ~ print(idinsm)
 		if idinsm.isdigit() == False:
 			idinsm=-1
-		# ~ else:
-			# ~ print(len(idinsm))
 		
 		if InsumosM.objects.filter(id=idinsm).exists():
 			return redirect('item_factura_mate',idfactu,idinsm)
@@ -220,25 +187,24 @@ def contenido_factura(request, idfactu):
 			return redirect('agregar_mate',idfactu)
 	
 	else:
-		# ~ print("POST.........")
 		datos = []
 		factura = FacturasM.objects.get(id=idfactu)
-		# ~ print(factura.compra_total())
 		insumos = InsumosM.objects.all()
-		# ~ print(insumos)
-		for i in ComprasM.objects.filter(nfactu=idfactu):
+		for i in ComprasM.objects.filter(idfactu=idfactu):
 			insm = InsumosM.objects.get(id=i.idinsm)
 			datos.append( {
 							'idinsm'      : i.idinsm,
 							'descripcion' : insm.descrip,
 							'umedida'     : insm.umedida,
-							'costo'       : i.costo,
+							'costop'       : i.costop,
+							'costot'       : i.costot,
+							'costo'       : i.ctotal(),
 							'cantidad'    : i.cantd,
 							})
 		
 		contexto = {
 			'factura': factura,
-			 'datos' : datos,
+			 'datos' : datos,	 
 			 'items' : insumos,
 		}
 	return render(request,'contenido_factura_mate.html',contexto)
@@ -251,24 +217,42 @@ def agregar_item_factura(request, idfactu):
 def item_factura(request, idfactu,idinsm):
 	
 	if request.method == 'POST':
-		# ~ f = request.POST['fhcomp'].split("-")
-		# ~ fecha=f[2]+"-"+f[1]+"-"+f[0]
-		# ~ print(request.POST['fhcomp'])
-		# ~ print(fecha)
 		
 		form = ComprasF(request.POST)
 		if form.is_valid():
 			form.save()
 			a = InsumosM.objects.get(id=request.POST['idinsm'])
+			
+			cumedida_anterior = a.cumedcal
+			cumedida_actual = (float(request.POST['costop']) + float(request.POST['costot']))/float(request.POST['cantd']) 
+			
+			if cumedida_anterior > cumedida_actual:
+				cumedida_actual = (cumedida_anterior + cumedida_actual)/2
+			
+			# Para un cálculo más preciso se debe dividir la diferencia "cumedida_actual - cumedcal" entre el inventario existente
+			# asi de esta forma esa diferencia se compensa con la cantidad de producto adquirido a un nuevo precio
+						
 			inventario = float(a.inven)+ float(request.POST['cantd'])
 			c = InsumosM.objects.filter(id=request.POST['idinsm']).update(inven=inventario)
 			
-			print("Guardando el costo")
-			res = ComprasM.objects.filter(idinsm=idinsm).aggregate(precio_avg=Avg('costo'), precio_min=Min('costo'), precio_max=Max('costo'))
-			c = InsumosM.objects.filter(id=request.POST['idinsm']).update(costo1=res['precio_max'])
+
+			## NOTA: cada vez que se realice una compra se debe tener en cuenta que los precios pueden variar
+			##       por lo que el precio de compra anterior puede diferir y puede ser para perdida, ya que,
+			##       si se compro más barato que la vez anterior y aún existen productos en el inventario
+			##       el costo actual del producto será sustituido por el ultimo calculado.
+			##       Por lo tanto hay que buscar una forma de mantener el precio hasta que se agote la
+			##       existencia de la compra mas costosa, o buscar un precio que corrija esta diferencia.
 			
-			# ~ url = 'factura/compras/' + str(idinsm) + '/' 
-			# ~ return redirect('compras_mate', idinsm=idinsm )
+			##       Una posible solución es de fijar una referencia, por ejemplo, el costo del producto 
+			##       al detal y a partir de alli verificar la diferencia o determiar el precio a partir del 
+			##       resultado del promedio de:
+			##
+			##        PRECIO_DE_REFERENCIA
+			##        PRECIO_DE_COMPRA_ANTERIOR
+			##        PRECIO_DE COMPRA_ACTUAL 
+			c = InsumosM.objects.filter(id=idinsm).update(cumedcal=cumedida_actual,cantd=request.POST['cantd'],costop=request.POST['costop'], costot=request.POST['costot'])
+			ComprasM.objects.filter(idfactu = idfactu).update(costot=request.POST['costot'])
+
 			return redirect('contenido_factura_mate', idfactu=idfactu )
 		else:
 			print("Error al guardar en la base de datos")
@@ -276,7 +260,12 @@ def item_factura(request, idfactu,idinsm):
 	else:
 		
 		form = ComprasF()
-		
+
+		total_transporte = FacturasM.objects.filter(id=idfactu)[0].transp
+		nprod = ComprasM.objects.filter(idfactu = idfactu).count()
+		costo_transporte = total_transporte/(nprod + 1)
+
+		# ~ form = InsumosF(initial={'costot': costo_transporte})
 		insumo = InsumosM.objects.get(id=idinsm)
 		f = date.today()
 		fecha = f.strftime("%d-%m-%Y")
@@ -284,17 +273,18 @@ def item_factura(request, idfactu,idinsm):
 				'idinsm': insumo.id,
 				'umedida': insumo.umedida,
 				# ~ 'costo': insumo.max(),
-				'costo': 0,
+				'costop': 0,
+				'costot': costo_transporte,
 				# ~ 'cantd':insumo.cantd,
 				'cantd':0,
 				'descrip':insumo.descrip,
-				'nfactu':idfactu,#FacturasM.objects.get(id=idfactu).numero,
+				'idfactu':idfactu,#FacturasM.objects.get(id=idfactu).numero,
 				'fhcomp':fecha,
 			}
 		form = ComprasF(datos)
 		form.fields['umedida'].widget.attrs['readonly'] = True
 		form.fields['idinsm'].widget.attrs['readonly'] = True
-		form.fields['nfactu'].widget.attrs['readonly'] = True
+		form.fields['idfactu'].widget.attrs['readonly'] = True
 		# ~ form.fields['nfactu'].widget.attrs['visible'] = False
 		# ~ form.fields['archivo'].required = False
 		# ~ form.fields['fhcomp'].required = False

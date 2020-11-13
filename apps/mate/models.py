@@ -14,90 +14,45 @@ class InsumosM(models.Model):
 	# cmedi(n): Costo por unidad de medida
 	# FACTU(n): Fecha de actualización del producto para el producto n(donde n va de 1 a 5).
 
-	codigo  = models.CharField(max_length=26)
-	# ~ fingso  = models.DateTimeField(null=True, blank=True)
-	descrip = models.CharField(max_length=60)
-	umedida = models.CharField(max_length=5)
+	codigo   = models.CharField(max_length=26)
+	descrip  = models.CharField(max_length=60)
+	umedida  = models.CharField(max_length=5) # valor real del costo por unidad de medida segun la compra realizada
+	#Costo Por Unidad de Medida Calculado(cumedcal): promedio del valor anterior y el actual, este valor trata de compensar la diferencia que pueda haber con respecto
+	#al ultimo valor del costo por unidad de medida. Es decir, si hay producto en el inventario adquiido a un costo distinto 
+	# (de mayor valor que la compra actual) se calculara el promedio delcalulo actual con respecto al anterior y ese sera el valor calculado.
+	cumedcal = models.FloatField(default = 1.00) 
 	cantd   = models.FloatField(default = 1.00)
 	inven   = models.FloatField(default = 0.0)
-	# ~ tipo    = models.CharField(max_length=4, choices=TIPO_ELEMENTO, default='ING')
 	tipo    = models.CharField(max_length=4)
-	
-	distb1  = models.CharField(max_length=30) 
-	costo1	= models.FloatField(default=0.00)
-	# ~ cmedi1  = models.FloatField(default=1.00)
-	factu1	= models.DateTimeField(null=True, blank=True)
-	
-	distb2  = models.CharField(max_length=30, null=True, blank=True)
-	costo2  = models.FloatField(default=0.00, null=True, blank=True)
-	# ~ cmedi2  = models.FloatField(default=1.00, null=True, blank=True)
-	factu2	= models.DateTimeField( null=True, blank=True)
-
-	distb3  = models.CharField(max_length=30, null=True, blank=True)
-	costo3  = models.FloatField(default=0.00, null=True, blank=True)
-	# ~ cmedi3  = models.FloatField(default=1.00, null=True, blank=True)
-	factu3	= models.DateTimeField( null=True, blank=True)
-
-	distb4  = models.CharField(max_length=30, null=True, blank=True)
-	costo4  = models.FloatField(default=0.00, null=True, blank=True)
-	# ~ cmedi4  = models.FloatField(default=1.00, null=True, blank=True)
-	factu4	= models.DateTimeField( null=True, blank=True)
-
-	distb5  = models.CharField(max_length=30, null=True, blank=True)
-	costo5  = models.FloatField(default=0.00, null=True, blank=True)
-	# ~ cmedi5  = models.FloatField(default=1.00, null=True, blank=True)
-	factu5	= models.DateTimeField( null=True, blank=True)
-	
-	# ~ ctprom  = models.FloatField(default=0.00, null=True, blank=True)
-	# ~ ctmax   = models.FloatField(default=0.00, null=True, blank=True)
-	# ~ ctmin   = models.FloatField(default=0.00, null=True, blank=True)
-	def cmedi1(self):
-		return ( round(self.costo1 / self.cantd,2) )
-		
-	def cmedi2(self):
-		return ( round(self.costo2 / self.cantd,2) )
-		
-	def cmedi3(self):
-		return ( round(self.costo3 / self.cantd,2) )
-		
-	def cmedi4(self):
-		return ( round(self.costo4 / self.cantd,2) )
-		
-	def cmedi5(self):
-		return ( round(self.costo5 / self.cantd,2) )
-		
-	def max(self):
-		v = [self.costo1, self.costo2, self.costo3, self.costo4, self.costo5]
-		valores = list(filter(lambda x:x>0, v))
-		return( max(valores) )
-	
-	def min(self):
-		v = [self.costo1, self.costo2, self.costo3, self.costo4, self.costo5]
-		valores = list(filter(lambda x:x>0, v))
-		return( min(valores) )
-	
-	def prom(self):
-		v = [self.costo1, self.costo2, self.costo3, self.costo4, self.costo5]
-		valores = list(filter(lambda x:x>0, v))
-		return( round(sum(valores)/len(valores)) )
+	costop	= models.FloatField(default=0.00)
+	costot	= models.FloatField(default=0.00)
 	
 	def cumedida(self):
-		#retorna el costo por unidad de medida maximo
-		v = [self.costo1/self.cantd, self.costo2/self.cantd, self.costo3/self.cantd, self.costo4/self.cantd, self.costo5/self.cantd]
-		return(round(max(v),2))
-	
+		cumd = (self.costop + self.costot)/self.cantd
+		return (round(cumd,2))
+		
+	def ctotal(self):
+		return ( round(self.costop + self.costot,2) )
+		
+
 class ComprasM(models.Model):
 	idinsm  = models.IntegerField()
-	costo   = models.FloatField()
-	cantd   = models.FloatField()
+	costop  = models.FloatField(default = 0.0) #costo del producto
+	costot  = models.FloatField(default = 0.0) #costo del transporte segun la cantida de productos de la factura, es decir, se divide el costo del transporte entre el numero de productos de la factura
+	cantd   = models.FloatField(default = 0.0)
 	umedida = models.CharField(max_length=5)
-	nfactu  = models.IntegerField()      ## id de la factura, se debe cambiar el nombre del campo para no crear confusion
+	idfactu = models.IntegerField()      ## id de la factura
 	fhcomp  = models.DateField()# Fecha de compra
 	# ~ archivo = models.FileField(upload_to='facturas')
 	
 	def cumedida(self):
-		cumd = self.costo/cantd
+		cumd = (self.costop + self.costot)/cantd
 		return (round(cumd,2))
+	
+	def ctotal(self):
+		ctotal = self.costop + self.costot
+		return (round(ctotal,2))
+		
 	
 class FacturasM(models.Model):
 	codigo  = models.CharField(max_length=24,default="")
@@ -105,9 +60,16 @@ class FacturasM(models.Model):
 	numero  = models.IntegerField(default=0)
 	total   = models.FloatField(default=0.0)
 	fhfactu = models.DateField()# Fecha de compra
+	transp  = models.FloatField(default=0.0)
 	archivo = models.FileField(upload_to='facturas/')
+	observ  = models.CharField(max_length=500,default="") 
+	
 
 	def compra_total(self):
-		compras = ComprasM.objects.filter(nfactu = self.id).aggregate(total=Sum('costo'))
-		print(compras)
-		return( compras['total'])
+		compras = ComprasM.objects.filter(idfactu=self.id).aggregate(cp=Sum('costop'),ct=Sum('costot'))
+		if  not compras['cp']:
+			 compras['cp'] = 0.0
+		if  not compras['ct']:
+			 compras['ct'] = 0.0
+		# ~ return( compras['cp'] + compras['cp'])
+		return( self.total + self.transp)

@@ -1,0 +1,141 @@
+{% extends  'base.html' %}
+
+{% block content %}
+<br>
+
+<div class="container-fluid">
+		
+<!--
+	<p> Accios realizar?</p>
+-->
+		<form   method="post" enctype='multipart/form-data' multiple="multiple">
+		{% csrf_token %}
+		{% if estado == 0 %}
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-4">
+									<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+										<form   method="post" enctype='multipart/form-data' multiple="multiple">
+											{% csrf_token %}
+											<button class="btn btn-link" type="submit">CANCELAR PEDIDO</button>
+											<input name="idventa" class="btn btn-info" value={{ idventa }} style="display:none"/>
+											<input name="estado" class="btn btn-info" value=99 style="display:none"/>
+										</form>
+									</div>
+								</a>
+							</div>
+							<div class="col-auto">
+							  <i class="fa fa-thumbs-down fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-4">
+								<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+									<form   method="post" enctype='multipart/form-data' multiple="multiple">
+										{% csrf_token %}
+										<button class="btn btn-link" type="submit">COLOCAR EN PROCESO</button>
+										<input name="idventa" class="btn btn-info" value={{ idventa }} style="display:none"/>
+										<input name="estado" class="btn btn-info" value={{ estado  }} style="display:none"/>
+									</form>
+								</div>
+							</div>
+							<div class="col-auto">
+							  <i class="fa fa-cogs  fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+		{% if estado == 1 %}
+			<div class="col-xl-3 col-md-6 mb-4">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-4">
+								<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+									<form   method="post" enctype='multipart/form-data' multiple="multiple">
+										{% csrf_token %}
+										<button class="btn btn-link" type="submit">ENVIAR PEDIDO</button>
+										<input name="idventa" class="btn btn-info" value={{ idventa }} style="display:none"/>
+										<input name="estado" class="btn btn-info" value={{ estado }} style="display:none"/>
+									</form>
+								</div>
+							</div>
+							<div class="col-auto">
+							  <i class="fa fa-truck fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+		{% if estado == 2 %}
+			<div class="col-xl-3 col-md-6 mb-5">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-4">
+								<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+									<form   method="post" enctype='multipart/form-data' multiple="multiple">
+										{% csrf_token %}
+										<button class="btn btn-link" type="submit">PEDIDO ENTREGADO</button>
+										<input name="idventa" class="btn btn-info" value={{ idventa }} style="display:none"/>
+										<input name="estado" class="btn btn-info" value={{ estado }} style="display:none"/>
+									</form>
+								</div>
+							</div>
+							<div class="col-auto">
+							  <i class="fa fa-check-square fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+		{% if estado == 3 %}
+			<div class="col-xl-3 col-md-6 mb-5">
+				<div class="card border-left-primary shadow h-100 py-2">
+					<div class="card-body">
+						<div class="row no-gutters align-items-center">
+							<div class="col mr-4">
+								<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+									<form   method="post" enctype='multipart/form-data' multiple="multiple">
+										{% csrf_token %}
+										<button class="btn btn-link" type="submit">ENTREGADO </button>
+										<input name="idventa" class="btn btn-info" value={{ idventa }} style="display:none"/>
+										<input name="estado" class="btn btn-info" value={{ estado }} style="display:none"/>
+									</form>
+								</div>
+							</div>
+							<div class="col-auto">
+							  <i class="fa fa-thumbs-up fa-2x text-gray-300"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+			 
+			 
+		<div class="d-flex justify-content-end">
+			
+			<a class="btn btn-default" href="">
+				<button class="btn btn-link" >Salir sin realizar cambios...</button>
+			</a>
+<!--
+		<i class="fa fa-thumbs-up" aria-hidden="true"></i>	v
+-->
+		</div>
+</div>
+
+{% endblock %}

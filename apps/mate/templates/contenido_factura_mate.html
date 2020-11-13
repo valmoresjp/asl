@@ -1,23 +1,31 @@
 {% extends  'base.html' %}
 
 {% block content %}
+<br>
+<h1>Detalles de Factura</h1>
 <div class="container-fluid">
 	
+<!--
 <div class="container-fluid">
+-->
 	<br>
-	<h1 class="display-7">FACTURA N°: {{ factura.numero }}</h1>	
-	<h1 class="display-7">TOTAL: {{ factura.compra_total }}</h1>	
-	<h1 class="display-7">FECHA: {{ factura.fhfactu | date:"d-m-Y"}}</h1>
-</div>
+	<h5 class="display-7"><strong>Factura N°:</strong> {{ factura.numero }}</h5>	
+	<h5 class="display-7"><strong>Monto Total:</strong> {{ factura.compra_total }}</h5>	
+	<h5 class="display-7"><strong>Costo por Transporte:</strong> {{ factura.compra_total }}</h5>	
+	<h5 class="display-7"><strong>Fecha de Compra:</strong> {{ factura.fhfactu | date:"d-m-Y"}}</h5>
+<!--
+<	/div>
+-->
   <br>
 <!--
     
 	<input class="form-control" id="patron" type="text" placeholder="Escriba para filtrar...">
 	<br>
 -->
+<!--
 	<div class="container-fluid">
+-->
 
-			
 			<form   method="post" enctype='multipart/form-data' multiple="multiple">
 				
 				{% csrf_token %}
@@ -31,13 +39,14 @@
 					</datalist>
 				</div> 
 				
-				<div class="col-xl-4 col-md-6 mb-4">
-					<button type="submit"  class="btn btn-primary ">Agregar Item</button>			
+				<div class="col-xl-6 col-md-6 mb-4">
+					<button type="submit"  class="btn btn-primary " style="width:100%">Agregar Item</button>			
 				</div>
 			</div>
 			</form>
-		
+<!--
 	</div>
+-->
 	<br>
 	
     <table id="Listado" class="table table-hover table-bordered small">
@@ -50,7 +59,9 @@
                 <th style=" width: 35%; ">DESCRIPCION</th>
                 <th style=" width: 10%; ">U. MEDIDA</th>
                 <th style=" width: 10%; ">CANTIDAD</th> 
-                <th style=" width: 10%; ">COSTO</th>
+                <th style=" width: 10%; ">PRODUCTO</th>
+                <th style=" width: 10%; ">TRANSPORTE</th>
+                <th style=" width: 10%; ">TOTAL</th>
 
             </tr>    
         </thead>
@@ -61,7 +72,9 @@
                     <td >{{ i.descripcion | upper }}</td>
                     <td >{{ i.umedida }}</td>
                     <td >{{ i.cantidad }}</td>
-                    <td >{{ i.costo }}</td>
+                    <td >{{ i.costop |floatformat:2}}</td>
+                    <td >{{ i.costot |floatformat:2}}</td>
+                    <td >{{ i.costo |floatformat:2}}</td>
                     
                 </tr>
                 {% endfor %}

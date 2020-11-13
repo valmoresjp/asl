@@ -13,6 +13,7 @@ from apps.clientes.models import ClientesM
 from apps.partida.models import PartidasM
 from apps.prod.models import ProductosM
 from apps.ventas.models import VentasM
+from apps.ventas.forms import VentasF
 from apps.mate.models import InsumosM
 
 # Create your views here.
@@ -20,18 +21,12 @@ from apps.mate.models import InsumosM
 @login_required(login_url='/inicio/ingreso')
 def inicio(request):
 	datos=[]
-	for i in VentasM.objects.filter(estado="EN_PRO"):
+	for i in VentasM.objects.filter(estado__lt = 3): 
 		producto = ProductosM.objects.get(id=i.idprod)
 		cliente  = ClientesM.objects.get(id=i.idclie)
-		estado="Sin ESTADO"
-		if i.estado == 'EN_PRO':
-			estado = "EN PROCESO"
-		if i.estado == 'EN_RUT':
-			estado = "EN RUTA"
-		if i.estado == 'ENTREG':
-			estado = "ENTREGADO"
-		print(i.estado)
+		# ~ print(i.estado)
 		datos.append( {
+					'idventa'  : i.id,
 					'idclie'   : cliente.id,
 					'idprod'   : producto.id,
 					'cliente'  : cliente.nombre,
@@ -40,11 +35,13 @@ def inicio(request):
 					'cantidad' : i.cant, 
 					'direccion': i.direc,
 					'fhentr'   : i.fhentr,
-					'dias'    : i.dias(),
-					'estado'    : estado,
+					'dias'     : i.dias(),
+					'estado'   : i.estado_producto(),
+					'estado_n' : i.estado,
 					})
 	contexto = {
-		'num_clientes'        : ClientesM.objects.count(),
+		'cliente_nuevos'      : ClientesM.objects.count(),
+		'cliente_total'       : ClientesM.objects.count(),
 		'num_partidas'        : PartidasM.objects.count(),
 		'num_productos'       : ProductosM.objects.count(),
 		'num_ventas'          : VentasM.objects.count(),

@@ -24,6 +24,8 @@
                 <th style=" width: 5%; " >ID</th>
                 <th style=" width: 5%; " >CODIGO</th>
                 <th style=" width: 10%; ">NUMERO</th>
+                <th style=" width: 10%; ">PRODUCTO</th>
+                <th style=" width: 10%; ">TRNASPORTE</th>
                 <th style=" width: 10%; ">TOTAL</th>
                 <th style=" width: 20%;" >FECHA</th>
                 <th style=" width: 30%;" >FACTURA</th>
@@ -38,11 +40,10 @@
 						<td >{{ i.id }}</td>
 						<td >{{ i.codigo }}</td>
 						<td >{{ i.numero }}</td>
-						<td >{{ i.total }}</td>
+						<td >{{ i.total |floatformat:2}}</td>
+						<td >{{ i.transp |floatformat:2}}</td>
+						<td >{{ i.compra_total }}</td>
 						<td >{{ i.fhfactu | date:"d-m-Y"}} </td>
-<!--
-						<td ><a  href="{{ i.archivo.name.url  }}" ><i class="fa fa-download fa-1x" style="color:green"></i></a>{{ i.archivo.name }}</td>
--->
 						<td > <a href="{% url 'descarga_factura' idfactu=i.id %}" download  class="btn btn-dark float-right" style="width:100%">Download</a></td>
 						
 					</tr>

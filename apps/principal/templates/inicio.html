@@ -11,6 +11,7 @@
 
 <div class="container-fluid" name="Inicio">
 	<br>
+<!--
 	 <div class="row">	
 		
 		<div class="col-xl-3 col-md-6 mb-4">
@@ -19,8 +20,9 @@
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
-								<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">CLIENTES</div>
-								<div class="h5 mb-0 font-weight-bold text-gray-800">{{ num_clientes }}</div>
+								<div class="h3 text-xs font-weight-bold text-primary text-uppercase mb-1">CLIENTES</div>
+								<div class="h5 mb-0 font-weight text-gray-800">NUEVOS : {{ num_clientes }}</div>
+								<div class="h5 mb-0 font-weight text-gray-800">TOTALES: {{ num_clientes }}</div>
 							</div>
 							<div class="col-auto"> 
 								<i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -93,7 +95,7 @@
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">INSUMOS</div>
 								<div class="h7 mb-0  text-gray-800" style="color: black">Ingredientes: {{ num_insumos }}</div>
-								<div class="h7 mb-0  text-gray-800" style="color: black">Matereles: {{ num_materiales }}</div>
+								<div class="h7 mb-0  text-gray-800" style="color: black">Materiales: {{ num_materiales }}</div>
 							</div>
 							<div class="col-auto"> 
 								<i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -104,6 +106,9 @@
 			</div>
 		</div>
 	</div>
+-->
+	<h3 class="display-6">Estado De Solicitudes</h1>
+
 	<br>
 	
 				<div class="col-md-12">
@@ -115,7 +120,7 @@
                                 <th style=" width: 15%;">PRODUCTO</th>
                                 <th style=" width: 5%;" >CANT</th> 
                                 <th style=" width: 5%;" >DÍAS</th> 
-                                <th style=" width: 15%;">FECHA DE ENTREGA</th> 
+                                <th style=" width: 15%;">ENTREGA</th> 
                                 <th style=" width: 25%;">DIRECCION DE ENTREGA</th>   
                                 <th style=" width: 15%;">ESTADO</th>   
                              </tr>
@@ -130,7 +135,34 @@
                                      <td >{{ reg.dias }}</td> 
                                      <td >{{ reg.fhentr | date:"d-m-Y" }} {{ reg.fhentr|time:"H:i" }}</td> 
                                      <td >{{ reg.direccion }}</td>	 
-                                     <td ><a class="edit" href="{% url 'estado_ventas' idprod=reg.idprod%}" title="ESTADO DEL PRODUCTO" data-toggle="tooltip" >{{ reg.estado }}</a></td>	 
+                                     <td >
+                                     	{% if reg.estado_n == 0 %}
+											<a title="Esperando Aporbacion del Cliente" data-toggle="tooltip" href="{% url 'estado_ventas' idventa=reg.idventa estado=reg.estado_n  %}"   %}" > 
+												<i class="fa fa-handshake fa-2x" aria-hidden="true" style="color:yellow"></i> 
+											</a>
+										{% endif %}
+										{% if reg.estado_n == 1 %}
+											<a title="Pedido en Proceso" data-toggle="tooltip" href="{% url 'estado_ventas' idventa=reg.idventa estado=reg.estado_n  %}"   %}" > 
+												<i class="fa fa-cogs fa-2x" aria-hidden="true" style="color:#0099ff"></i>
+											</a>
+										{% endif %}
+										{% if reg.estado_n == 2 %}
+											<a title="Pedido Enviado a Destino" data-toggle="tooltip" href="{% url 'estado_ventas' idventa=reg.idventa estado=reg.estado_n  %}"   %}" > 
+												<i class="fa fa-truck fa-2x" aria-hidden="true" style="color:#cc33ff"></i> 
+											</a>
+										{% endif %}
+										{% if reg.estado_n == 3%}
+											<a title="Pedido entregado en Destino" data-toggle="tooltip" href="{% url 'estado_ventas' idventa=reg.idventa estado=reg.estado_n  %}"   %}" > 
+												<i class="fa fa-thumbs-up fa-2x" aria-hidden="true" style="color:#66ff66"></i>
+											</a>
+										{% endif %}
+										{% if reg.estado_n == 99%}
+											<a title="Pedido Cancelado" data-toggle="tooltip" href="{% url 'estado_ventas' idventa=reg.idventa estado=reg.estado_n  %}"   %}" >
+												<i class="fa fa-thumbs-down fa-2x" aria-hidden="true" style="color:#ff3300"></i>
+											</a>
+										{% endif %}
+				
+                                     </td>	 
                                 </tr>
                             </tbody>
                         {% endfor %}

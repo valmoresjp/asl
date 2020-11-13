@@ -27,6 +27,8 @@ class ProductosM(models.Model):
 	pmate     = models.FloatField(default=30.0) # porcentaje de utilidad con respecto a los   materiales
 	ppers     = models.FloatField(default=30.0) #porcentaje de utilidad con respecto al personal
 	pserv     = models.FloatField(default=30.0) #porcentaje de utilidad con respecto a los  servicios
+	# ~ ptran     = models.FloatField(default=5.0) #porcentaje de trnasporte con respecto a los  materiales
+	# ~ pimpr     = models.FloatField(default=5.0) #porcentaje de utilidad con respecto a los  servicios
 	utlds     = models.FloatField(default=0.0) #utilidades totales
 	costo     = models.FloatField(default = 0.0) # costo totaldel producto
 	fhcrea	  = models.DateTimeField(auto_now_add=True)

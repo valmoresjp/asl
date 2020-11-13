@@ -13,18 +13,24 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class="col-sm-6">    	
+<!--
 		<div id="demo" class="carousel slide" data-ride="carousel">
+-->
 
 		  <!-- Indicators -->
+<!--
 		  <ul class="carousel-indicators">
 			<li data-target="#demo" data-slide-to="0" class="active"></li>
 			<li data-target="#demo" data-slide-to="1"></li>
 			<li data-target="#demo" data-slide-to="2"></li>
 			<li data-target="#demo" data-slide-to="3"></li>
 		  </ul>
+-->
 
 		  <!-- The slideshow -->
+<!--
 		  <div class="carousel-inner" width="304" height="236">
 				<div class="carousel-item active">
 					<img src="{{imagenes.imagen1}}" class="img-fluid" alt="Responsive image" width="304" height="236">
@@ -39,8 +45,10 @@
 					 <img src="{{imagenes.imagen4}}" class="img-fluid" alt="Responsive image" width="304" height="236">
 				</div>
 		  </div>
+-->
 
 		  <!-- Left and right controls -->
+<!--
 		  <a class="carousel-control-prev" href="#demo" data-slide="prev">
 			<span class="carousel-control-prev-icon"></span>
 		  </a>
@@ -48,13 +56,21 @@
 			<span class="carousel-control-next-icon"></span>
 		  </a>
 
+
 		</div>
-		<a href="{% url 'imagenes_producto' idprod=producto.id %}"><button type="button" class="btn btn-primary">Agregar imagenes</button></a>
-    </div>
-   </div>
-  </div>
+-->
+<br>
+		<a href="{% url 'imagenes_producto' idprod=producto.id %}" style="width:100%" class="btn btn-dark float-right">Agregar imagenes</a>
 <br>
 <a href="{% url 'presupuesto_producto' idprod=producto.id %}" download  class="btn btn-dark float-right" style="width:100%">Presupuesto</a>
+
+    </div>
+
+   </div>
+
+  </div>
+
+
 <div class="container-fluid" name="Detallar_prd">
 		
 		<div id="table_clon">
@@ -442,6 +458,18 @@
 							<td id="Personal_por" onclick="ModificarCantidad(this)" name="Personal">{{ producto.ppers}}</td>
 							<td id="Personal_util"> {{ producto.prpers }}</td>
 						</tr>
+<!--
+						<tr >
+							<td id="Transporte_tit" >Transporte </td>
+							<td id="Transporte_por" onclick="ModificarCantidad(this)" name="Transporte">{{ producto.ppers}}</td>
+							<td id="Transporte_util"> {{ producto.prpers }}</td>
+						</tr>
+						<tr >
+							<td id="Imprevistos_tit" >Imprevistos</td>
+							<td id="Imprevistos_por" onclick="ModificarCantidad(this)" name="Imprevistos">{{ producto.ppers}}</td>
+							<td id="Imprevistos_util"> {{ producto.prpers }}</td>
+						</tr>
+-->
 					</tbody>
 				</table>
 		   </div>
@@ -451,8 +479,9 @@
 		<div class="container-fluid row" >  
 			<button id="export-btn" class="btn btn-primary col-md-3">Guardar Registros</button>
 			<p class="col-md-1">         </p>
-			<a id="ref_prd" class="col-md-3" href="{% url 'agregar_ventas' idprod=producto.id cantidad=1 %}" type="button" ><button id="vender_prd" class="btn btn-primary ">Vender Producto</button></a>
-
+			<a id="ref_prd" class="col-md-3" href="{% url 'agregar_ventas' idprod=producto.id cantidad=1 %}" type="button" ><button id="vender_prd" class="btn btn-primary ">Enviar Presupuesto</button></a>
+			<p class="col-md-1">         </p>
+			<a href="javascript:history.back()" title="Ir a listado de Productos" data-toggle="tooltip" ><button type="button" class="btn btn-primary "> REGRESAR</button></a> 
 		</div>
 </div>
 	  	

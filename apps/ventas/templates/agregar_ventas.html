@@ -11,11 +11,13 @@
     <form   class="form" method="post" enctype='multipart/form-data' multiple="multiple">
 		{% csrf_token %}
 		{{ form.as_p }} 
-		<input id="vender_2"type="submit" class="btn btn-info" value="vender" style="display:none"/>
+		<input id="vender_2" type="submit" class="btn btn-info" value="vender"/>
     </form>	
   
     <!-- Button to Open the Modal -->
-  <button id="vender_1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Vender </button>
+<!--
+  <button id="vender_1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Enviar </button>
+-->
   <!-- The Modal -->
   <div class="modal fade" id="myModal">
     <div class="modal-dialog modal-lg">
@@ -51,8 +53,8 @@
         <!-- Modal footer -->
         <div class="modal-footer">
           <div class="row">
-			  <button               type="button" class="btn btn-danger sm-col-3" data-dismiss="modal">Cancelar Venta</button>
-			  <button id="vender_3" type="button" class="btn btn-success sm-col-3" data-dismiss="modal">Vender</button>         
+			  <button type="button" class="btn btn-danger sm-col-3" data-dismiss="modal">Cancelar Envio de Presupuesto</button>
+			  <button id="vender_3" type="button" class="btn btn-success sm-col-3" data-dismiss="modal">Confirmar Envio</button>         
           </div>
 
         </div>

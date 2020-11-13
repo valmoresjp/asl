@@ -10,11 +10,12 @@ class ClientesM(models.Model):
 	idrefe   = models.IntegerField(default=1)
 	nombre   = models.CharField(max_length=40)
 	telefono = models.CharField(max_length=15)
+	correo	 = models.EmailField(max_length=128, unique=True, null=True, blank=True)
 	fhaniver = models.DateTimeField(null=True, blank=True)# Fecha de cumpleaños
 	fhreg    = models.DateTimeField(auto_now_add=True, blank=True) # Fecha del momento que se suscribio el acuerdo
 	
 	def total_adq(self):
-		adq = VentasM.objects.filter(idclie=self.id).aggregate(total=Sum('costo'))
+		adq = VentasM.objects.filter(idclie=self.id).filter(estado__gte=1, estado__lte=3).aggregate(total=Sum('costo'))
 		if adq['total']==None:
 			adq['total'] = 0.0
 		return ( adq['total'] )
