@@ -14,7 +14,14 @@ class InsumosM(models.Model):
 	# cmedi(n): Costo por unidad de medida
 	# FACTU(n): Fecha de actualización del producto para el producto n(donde n va de 1 a 5).
 
-	codigo   = models.CharField(max_length=26)
+	codigo   = models.CharField(max_length=26) 
+	# El codigo se debe crear de la siguiente forma 3 dgitos para el tipo de insumo
+	# es decir INGREDIENTE, PERSONAL, MATERIALES, etc. Luego 3 digitos para el 
+	# INGREDIENTE:
+	#   tipo        = 100
+	#   correlativo = 0000 (creado automaticamente)
+	#   futuro      = 0000
+	
 	descrip  = models.CharField(max_length=60)
 	umedida  = models.CharField(max_length=5) # valor real del costo por unidad de medida segun la compra realizada
 	#Costo Por Unidad de Medida Calculado(cumedcal): promedio del valor anterior y el actual, este valor trata de compensar la diferencia que pueda haber con respecto
@@ -46,8 +53,10 @@ class ComprasM(models.Model):
 	# ~ archivo = models.FileField(upload_to='facturas')
 	
 	def cumedida(self):
-		cumd = (self.costop + self.costot)/cantd
-		return (round(cumd,2))
+		cumd = (self.costop + self.costot)/self.cantd
+		
+		# ~ return (round(cumd,2))
+		return (cumd)
 	
 	def ctotal(self):
 		ctotal = self.costop + self.costot
@@ -56,6 +65,12 @@ class ComprasM(models.Model):
 	
 class FacturasM(models.Model):
 	codigo  = models.CharField(max_length=24,default="")
+	# El codigo esta formado por 3 caracteres mas 4 digitos(correlativo, agregado automaticamente)
+	# ING = ingrediente
+	# MAT = material
+	# SER = servicio
+	# MYH = Maquinas y Herramientas
+	# PER = Personal
 	emisor  = models.CharField(max_length=24,default="") 
 	numero  = models.IntegerField(default=0)
 	total   = models.FloatField(default=0.0)

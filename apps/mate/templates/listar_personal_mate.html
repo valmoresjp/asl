@@ -5,16 +5,17 @@
 	
 <div class="container-fluid">
 	<br>
-	<h1 class="display-5">Listado de Facturas Ingresadas</h1>
+	<h1 class="display-5">Lista de Personal</h1>
 </div>
-	{% if tipo != "TOD" %}
 	<div class="container-fluid">
 		<div class="row">
-			<a href="{% url 'agregar_factura_mate' tipo=tipo%}" class="btn btn-primary col-3 "  role="button">Agregar Factura</a> 
+			<a href="{% url 'agregar_personal_mate' %}" class="btn btn-primary col-3 "  role="button">Agregar Personal</a> 
+<!--
+			<a href="{% url 'agregar_personal_mate' %}" class="btn btn-primary col-3 "  role="button">Agregar Personal</a> 
+-->
 			
 		</div>
 	</div>
-	{% endif %}
   
     <br>
 	<input class="form-control" id="patron" type="text" placeholder="Escriba para filtrar...">
@@ -37,11 +38,7 @@
                 {% for i in facturas %}
 					<tr>
 						<td > 
-							{% if tipo != "TOD" %}
-								<a class="edit" href="{% url 'contenido_factura_mate' idfactu=i.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-list fa-1x" style="color:green"></i></a>
-							{% else %}
-								<a class="edit" href="{% url 'detalle_factura_mate' idfactu=i.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-list fa-1x" style="color:green"></i></a>
-							{% endif %}
+							<a class="edit" href="{% url 'contenido_factura_mate' idfactu=i.id %}" title="Editar" data-toggle="tooltip" ><i class="fa fa-list fa-1x" style="color:green"></i></a>
 						</td>
 						<td >{{ i.id }}</td>
 						<td >{{ i.codigo }}</td>

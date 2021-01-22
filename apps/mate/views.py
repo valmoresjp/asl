@@ -6,10 +6,19 @@ from django.db.models import Avg, Min, Max, Sum
 from django.db.models import Q
 
 from datetime import datetime, date
-from apps.mate.forms import InsumosF, ComprasF, FacturasF
+from apps.mate.forms import InsumosF, ComprasF, FacturasF,PersonalF
 from apps.mate.models import InsumosM, ComprasM, FacturasM
 from django.contrib.auth.decorators import login_required
 # Create your views here.
+from django import template
+
+register = template.Library()
+
+@register.filter
+def cambio_sig(value, arg):
+    return value * (-1)
+
+
 
 def inicio(request):
 	listado = {
@@ -21,14 +30,21 @@ def inicio(request):
 				}
 	if request.method == 'POST':
 		clave = request.POST['tipo']
-		regs = InsumosM.objects.filter(tipo=request.POST['tipo']).order_by('inven')
+		if clave == "NNN":
+			clave = "ING"
+		regs = InsumosM.objects.filter(tipo=clave).order_by('inven')
 	
 	if request.method == 'GET':
 		clave = 'ING'
 		regs = InsumosM.objects.filter(tipo=clave).order_by('inven')
 			
-					
-	return render (request,'inicio_mate.html',{'regs': regs,'listado':listado[clave]})
+	# ~ print(	listado[clave])
+	contexto = {
+		'regs': regs,
+		'listado':listado[clave],
+		'tipo'   : clave,
+		}
+	return render (request,'inicio_mate.html',contexto )
 
 @login_required(login_url='/inicio/ingreso')	
 def agregar(request, idfactu):
@@ -56,7 +72,7 @@ def agregar(request, idfactu):
 			comprasf = ComprasF(compras)
 			if comprasf.is_valid():	
 				comprasf.save()
-				# ~ se actualiza los costos de transporte porque se agregootro item
+				# ~ se actualiza los costos de transporte porque se agrego otro item
 				ComprasM.objects.filter(idfactu = idfactu).update(costot=compras['costot'])
 			else:
 				print("Error al almacenar factura")
@@ -69,12 +85,26 @@ def agregar(request, idfactu):
 			return render(request,'errores_020819.html',{'form': form})
 		return redirect (url)
 	else:
-		total_transporte = FacturasM.objects.filter(id=idfactu)[0].transp
-		nprod = ComprasM.objects.filter(idfactu = idfactu).count()
+		
+		registro = FacturasM.objects.filter(id=idfactu).values()[0]
+		if registro['codigo'].startswith("PER-"):
+			i = {
+					'codigo' : registro['codigo'],
+					'umedida': 'HH',			
+					'cantd'  : 1,
+					'inven'  : 1,
+					'tipo'   : 'PER',		
+					'costop' : registro['total'],
+					'costot' : 0.0
+				}
+			form = InsumosF(initial=i) 
+		else:
+			total_transporte = FacturasM.objects.filter(id=idfactu)[0].transp
+			nprod = ComprasM.objects.filter(idfactu = idfactu).count()
 			
-		costo_transporte = total_transporte/(nprod + 1)
-		form = InsumosF(initial={'costot': costo_transporte}) 
-	return render( request, 'agregar_mate.html', {'form':form})
+			costo_transporte = total_transporte/(nprod + 1)
+			form = InsumosF(initial={'costot': costo_transporte}) 
+	return render( request, 'agregar_mate.html', {'codigo': registro['codigo'],'form':form})
 	
 	
 @login_required(login_url='/inicio/ingreso')	
@@ -109,14 +139,15 @@ def compras_mate(request,idinsm):
 	compras = ComprasM.objects.filter(idinsm=idinsm)
 	for i in compras:
 		factura = FacturasM.objects.get(id=i.idfactu)
+		print(i.costop, "  ", i.costot,"  ",i.cantd,"    ",i.cumedida())
 		datos.append({
 						'id'             : i.id,
-						'idinsm'         : i.idinsm,
-						'costop'          : i.costop,
-						'costot'          : i.costot,
+						'cumedida'       : i.cumedida(),
+						'costop'         : i.costop,
+						'costot'         : i.costot,
 						'cantidad'       : i.cantd,
 						'idfactura'      : factura.id,
-						'numero_factura' : factura.numero,
+						'numero_factura' : factura.codigo,
 						'fecha_compra'   : i.fhcomp,
 						'factura'        : factura.archivo.name,
 						})
@@ -131,7 +162,7 @@ def compras_mate(request,idinsm):
 				}
 	return render(request, 'compras_mate.html', contexto)
 	
-def agregar_factura(request):
+def agregar_factura(request,tipo):
 	
 	if request.method == 'POST':
 		form = FacturasF(request.POST,request.FILES)
@@ -140,39 +171,81 @@ def agregar_factura(request):
 			instancia = form.save(commit=False)
 			## verificar que el archivo haya sido ingresado
 			instancia.archivo.name = str(instancia.numero) + instancia.fhfactu.strftime("_%d%m%Y")
+			instancia.codigo = tipo + "-" + str(instancia.codigo)
 			form.save()
-			# ~ else:
-				
-			return redirect('listar_factura_mate')
+
+			return redirect('listar_factura_mate', tipo)
 		else:
 			print("Error al guardar en la base de datos")
 			return render(request,'errores_020819.html',{'form': form})
 	else:
-		
+		print('DATOS: ',request.GET)
 		form = FacturasF()
 	return render(request, 'agregar_facturas_mate.html', {'form': form})#, 'datos':datos})
 
 def descarga_factura(request,idfactu):#idfactu):
-	# fill these variables with real values
+
 	factura =FacturasM.objects.get(id=idfactu)
 	ruta = settings.MEDIA_ROOT + factura.archivo.url
 	nombre =  ruta.split("/")[-1]
 	fl = open(ruta, 'rb')
-	# ~ fl = open(ruta, 'rb')
 	mime_type, _= mimetypes.guess_type(ruta)
-	# ~ print(mime_type)
 	response = HttpResponse(fl, content_type=mime_type)
 	response['Content-Disposition'] = "attachment; filename=%s" % nombre
 
 	return response
 	
-def listar_factura(request):
+def listar_factura(request, tipo):
+	
+	if tipo == "TOD":
+		facturas = FacturasM.objects.order_by('-fhfactu')
+	else: 
+		facturas = FacturasM.objects.filter(codigo__startswith=tipo).order_by('-fhfactu')
+		
 	contexto = {
-		'facturas' : FacturasM.objects.order_by('-fhfactu')
+		'facturas' : facturas,
+		'tipo'     : tipo,
 		}
+	print(tipo,"  --- ",)
 	return render(request, 'listar_factura_mate.html', contexto)#, 'datos':datos})
 
+def listar_personal(request):
+	contexto = {
+		'facturas' : FacturasM.objects.order_by('-fhfactu'),
+		}
+	return render(request, 'listar_personal_mate.html', contexto)#, 'datos':datos})
+
+def agregar_personal(request):
+	print('Agregar personal')
+
+	if request.method == 'POST':
+		# ~ print('Ingreso a guardar personal')
+		form = FacturasF(request.POST,request.FILES)
+		if form.is_valid():
+			instancia = form.save(commit=False)
+			## verificar que el archivo haya sido ingresado
+			instancia.archivo.name = str(instancia.numero) + instancia.fhfactu.strftime("_%d%m%Y")
+			# ~ print(instancia.codigo, "   ", instancia.id)
+			form.save()
+			registro = FacturasM.objects.filter(codigo=instancia.codigo).values('codigo','id')[0]
+			# ~ print(registro)
+				
+			return redirect('agregar_mate',registro['id'])
+		else:
+			print("Error al guardar en la base de datos")
+			return render(request,'errores_020819.html',{'form': form})
+	else:
+		print('DATOS: ',request.GET)
+		personal = int( FacturasM.objects.filter(codigo__startswith='PER').order_by('-codigo').values('codigo')[0]['codigo'][4:])
+		codigo   = 'PER-' + str(personal + 1).zfill(4)
+		emisor   = 'ASL'
+		numero   = 191 
+		print(codigo)
+		form = PersonalF(initial={'codigo':codigo, 'emisor':emisor, 'numero':numero})
+	return render(request, 'agregar_personal_mate.html', {'form': form})#, 'datos':datos})
+
 def contenido_factura(request, idfactu):
+	
 	
 	if request.method == 'POST':
 		# se verifica si el item existe
@@ -190,6 +263,7 @@ def contenido_factura(request, idfactu):
 		datos = []
 		factura = FacturasM.objects.get(id=idfactu)
 		insumos = InsumosM.objects.all()
+		total_agregado = 0
 		for i in ComprasM.objects.filter(idfactu=idfactu):
 			insm = InsumosM.objects.get(id=i.idinsm)
 			datos.append( {
@@ -201,13 +275,55 @@ def contenido_factura(request, idfactu):
 							'costo'       : i.ctotal(),
 							'cantidad'    : i.cantd,
 							})
+			total_agregado = total_agregado + i.ctotal()
 		
 		contexto = {
 			'factura': factura,
 			 'datos' : datos,	 
 			 'items' : insumos,
+			 'total_agregado': total_agregado,
 		}
 	return render(request,'contenido_factura_mate.html',contexto)
+	
+def detalle_factura(request, idfactu):
+	
+	if request.method == 'POST':
+		# se verifica si el item existe
+		idinsm = request.POST['items'].split("_")[0]
+		if idinsm.isdigit() == False:
+			idinsm=-1
+		
+		if InsumosM.objects.filter(id=idinsm).exists():
+			return redirect('item_factura_mate',idfactu,idinsm)
+		else:
+			print("No existe insumo")
+			return redirect('agregar_mate',idfactu)
+	
+	else:
+		datos = []
+		factura = FacturasM.objects.get(id=idfactu)
+		insumos = InsumosM.objects.all()
+		total_agregado = 0
+		for i in ComprasM.objects.filter(idfactu=idfactu):
+			insm = InsumosM.objects.get(id=i.idinsm)
+			datos.append( {
+							'idinsm'      : i.idinsm,
+							'descripcion' : insm.descrip,
+							'umedida'     : insm.umedida,
+							'costop'       : i.costop,
+							'costot'       : i.costot,
+							'costo'       : i.ctotal(),
+							'cantidad'    : i.cantd,
+							})
+			total_agregado = total_agregado + i.ctotal()
+		
+		contexto = {
+			'factura': factura,
+			 'datos' : datos,	 
+			 'items' : insumos,
+			 'total_agregado': total_agregado,
+		}
+	return render(request,'detalle_factura_mate.html',contexto)
 	
 def agregar_item_factura(request, idfactu):
 	pass

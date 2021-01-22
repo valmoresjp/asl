@@ -242,8 +242,19 @@ def resumen(request, ayo ):
 	mensual=[]
 	datos_mensuales = []
 	if request.method == 'GET':
+		print("INGRESO A RESUMEN DE VENTAS")
+		
+		# se verifica si existe registro alguno cuando cambia de año, en caso contrario crea un registro 
+		# para comparar con el ayo anterio y mes anterior. Este registro tendra sus valores minimos, es decir 0.0
+		
+		if ResumenM.objects.filter(ayo=ayo).order_by('mes').values('mes').distinct().count() <= 0:
+			#se crea el registro
+			tmp = ResumenM(ayo=ayo, mes=1)
+			tmp.save()
+
+		
 		for i in ResumenM.objects.filter(ayo=ayo).order_by('mes').values('mes').distinct():
-			# ~ print(i)
+			print("reg: ", i) 
 			mes_ayo_act={'ayo':ayo,'mes':i['mes']} #año actual y mes actual
 			
 			#se determina el mes anterior.
@@ -253,9 +264,11 @@ def resumen(request, ayo ):
 				mes_ant = {'ayo':mes_ayo_act['ayo'],'mes':mes_ayo_act['mes']-1}
 			 
 			mes_ayo_ant={'ayo':mes_ayo_act['ayo']-1,'mes':mes_ayo_act['mes']} #Mismo mes pero del año anterior
-			# ~ print(mes_ayo_ant)
-			# ~ print(mes_ant)
-			# ~ print(mes_ayo_act)
+			
+			
+			print(mes_ayo_ant)
+			print(mes_ant)
+			print(mes_ayo_act)
 			
 			 #se verifica si el año y el mes existen en los registro,
 			 # en caso de no existir se crea el registro con valores 

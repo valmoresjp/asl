@@ -60,36 +60,36 @@ class Archivos(models.Model):
 	descrip1 = models.CharField(max_length=60,blank=True, null=True)
 	archivo1 = models.FileField(upload_to='Descargas/',blank=True, null=True)
 
-class Partida(models.Model):
+# ~ class Partida(models.Model):
 
-	idproy = models.IntegerField()
-	item   = models.CharField(max_length=6)
-	part   = models.CharField(max_length=100,blank=None, null=None)
-	desc   = models.CharField(max_length=1000)
-	unid   = models.CharField(max_length=4)
-	cant   = models.IntegerField()
+	# ~ idproy = models.IntegerField()
+	# ~ item   = models.CharField(max_length=6)
+	# ~ part   = models.CharField(max_length=100,blank=None, null=None)
+	# ~ desc   = models.CharField(max_length=1000)
+	# ~ unid   = models.CharField(max_length=4)
+	# ~ cant   = models.IntegerField()
 
-class DetallePartida(models.Model):
-	# TIPO_ELEMENTO = (
-	# 	('1','MATERIALES'),
-	# 	 ('2','PERSONAL'),
-	# 	 ('3','MAQyHERR'),
-	# 	 ('4','SERVICIOS'),
-	# 	 )
+# ~ class DetallePartida(models.Model):
+	# ~ # TIPO_ELEMENTO = (
+	# ~ # 	('1','MATERIALES'),
+	# ~ # 	 ('2','PERSONAL'),
+	# ~ # 	 ('3','MAQyHERR'),
+	# ~ # 	 ('4','SERVICIOS'),
+	# ~ # 	 )
 
-	idpart = models.IntegerField()#identificador de la partida a la cual pertenece este elemento
-	idtipo = models.IntegerField()#identificador del tipo de elemento(MATERIALES:1, PERSONAL:2...)
-	codi   = models.CharField(max_length=16)# identifica los materiales (materiales, maquinarias, servicio,etc)
-	cant   = models.FloatField() #cantidad 
-	costo  = models.FloatField()#costo unitario
+	# ~ idpart = models.IntegerField()#identificador de la partida a la cual pertenece este elemento
+	# ~ idtipo = models.IntegerField()#identificador del tipo de elemento(MATERIALES:1, PERSONAL:2...)
+	# ~ codi   = models.CharField(max_length=16)# identifica los materiales (materiales, maquinarias, servicio,etc)
+	# ~ cant   = models.FloatField() #cantidad 
+	# ~ costo  = models.FloatField()#costo unitario
 
 
 
-class Materiales(models.Model):
-	codi = models.CharField(max_length=16)
-	desc = models.CharField(max_length=60)
-	unid = models.CharField(max_length=4)
-	cost = models.FloatField()
+# ~ class Materiales(models.Model):
+	# ~ codi = models.CharField(max_length=16)
+	# ~ desc = models.CharField(max_length=60)
+	# ~ unid = models.CharField(max_length=4)
+	# ~ cost = models.FloatField()
 
 
 

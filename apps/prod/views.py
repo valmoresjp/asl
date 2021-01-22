@@ -10,6 +10,7 @@ from apps.clientes.models import ClientesM
 from django.db.models import Q
 
 from PIL import Image
+from os import remove
 
 
 from datetime import datetime
@@ -27,13 +28,10 @@ def inicio(request):
 
 @login_required(login_url='/inicio/ingreso')
 def nuevo(request):
-	# ~ print(request.POST)
 	if request.method == 'POST':
 		form = ProductosF(request.POST)
 		if form.is_valid():
 			form.save()
-			# ~ print (form)
-			# ~ img_form = ImagenesM.objects.create(idprod=form.id)
 		else:
 			return render(request,'errores.html',{'form': form})
 
@@ -52,7 +50,7 @@ def imagenes(request, idprod):
 			form.save()
 
 			for clave,valor in request.FILES.items():
-				nombre = '{}{}{}{}'.format( settings.BASE_DIR,settings.MEDIA_URL,'imagenes/',valor)
+				nombre = '{}{}{}{}{}'.format( settings.BASE_DIR,settings.MEDIA_URL,'Archivos/','imagenes/',valor)
 				nuevo = '{}{}{}{}{}'.format( 'imagenes/',idprod,'-',clave,'.jpg')
 				img = Image.open(nombre)
 				new_img = img.resize((350,450))
@@ -64,7 +62,8 @@ def imagenes(request, idprod):
 					ImagenesM.objects.filter(idprod=idprod).update(img3=nuevo)
 				if clave == 'img4':
 					ImagenesM.objects.filter(idprod=idprod).update(img4=nuevo)
-				new_img.save('{}{}{}'.format(settings.BASE_DIR,settings.MEDIA_URL,nuevo))
+				new_img.save('{}{}{}{}'.format(settings.BASE_DIR,settings.MEDIA_URL,'Archivos/',nuevo))
+				remove(nombre)
 		else:
 			return render(request,'errores.html',{'form': form})
 
@@ -75,7 +74,6 @@ def imagenes(request, idprod):
 			a = ImagenesM.objects.create(idprod=idprod)
 		a = ImagenesM.objects.get(idprod=idprod)
 		form = ImagenesF(instance=ImagenesM.objects.get(idprod=idprod))
-
 	return render(request,'imagenes_producto.html', {'form': form, 'imagen':a})
 
 @login_required(login_url='/inicio/ingreso')
@@ -162,8 +160,6 @@ def detallar(request, idprod):
 			if i['destino'] == "Personal":
 				if i['accion'] == 'actualizar':
 					# ~ El registro existe y se actualiza
-					print("Actualizando")
-					print(i)
 					PersonalM.objects.filter(idprd=idprod).filter(id=i["id"]).update(cant=i["datos"])
 				if i['accion'] == 'nuevo':
 					# ~ El registro no existe, se crea un nuevo registro

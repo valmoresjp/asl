@@ -3,72 +3,32 @@
 
 {% block content %}
 
- <div class="container-fluid">     
-    <div class="row">
-      <div class="col-sm-6">
-		<h1>Producto: {{ producto.nomb|upper }}</h1>
-		<div class="card">
-			<div class="card-body">     
-				<p>{{ producto.desc }}</p>
+<div class="container-fluid">     
+	<div class="row">
+		<h1><strong>Producto:</strong> {{ producto.nomb|title }}</h1>
+	</div>
+</div>
+
+<br>
+<div class="container-fluid">     
+	<div class="row" style="border-color: blue;">
+		<div class="col-xl-8 col-sm-3" style="border-color: blue;">
+			<p><strong >Observaciones:</strong> {{ producto.desc }}</p>
+		</div>
+	
+		<div class="col-xl-4 col-sm-3">    	
+			<div>
+				<a href="{% url 'imagenes_producto' idprod=producto.id %}" style="width:100%; " class="btn btn-dark float-right">Agregar imagenes</a>
+			</div>
+			<br>
+			<div>
+				<a href="{% url 'presupuesto_producto' idprod=producto.id %}" style="width:100%;" download   class="btn btn-dark float-right">Presupuesto</a>
 			</div>
 		</div>
+
 	</div>
-	
-	<div class="col-sm-6">    	
-<!--
-		<div id="demo" class="carousel slide" data-ride="carousel">
--->
 
-		  <!-- Indicators -->
-<!--
-		  <ul class="carousel-indicators">
-			<li data-target="#demo" data-slide-to="0" class="active"></li>
-			<li data-target="#demo" data-slide-to="1"></li>
-			<li data-target="#demo" data-slide-to="2"></li>
-			<li data-target="#demo" data-slide-to="3"></li>
-		  </ul>
--->
-
-		  <!-- The slideshow -->
-<!--
-		  <div class="carousel-inner" width="304" height="236">
-				<div class="carousel-item active">
-					<img src="{{imagenes.imagen1}}" class="img-fluid" alt="Responsive image" width="304" height="236">
-				</div>
-				<div class="carousel-item">
-					 <img src="{{imagenes.imagen2}}" class="img-fluid" alt="Responsive image" width="304" height="236">
-				</div>
-				<div class="carousel-item">
-					 <img src="{{imagenes.imagen3}}" class="img-fluid" alt="Responsive image" width="304" height="236">
-				</div>
-				<div class="carousel-item">
-					 <img src="{{imagenes.imagen4}}" class="img-fluid" alt="Responsive image" width="304" height="236">
-				</div>
-		  </div>
--->
-
-		  <!-- Left and right controls -->
-<!--
-		  <a class="carousel-control-prev" href="#demo" data-slide="prev">
-			<span class="carousel-control-prev-icon"></span>
-		  </a>
-		  <a class="carousel-control-next" href="#demo" data-slide="next">
-			<span class="carousel-control-next-icon"></span>
-		  </a>
-
-
-		</div>
--->
-<br>
-		<a href="{% url 'imagenes_producto' idprod=producto.id %}" style="width:100%" class="btn btn-dark float-right">Agregar imagenes</a>
-<br>
-<a href="{% url 'presupuesto_producto' idprod=producto.id %}" download  class="btn btn-dark float-right" style="width:100%">Presupuesto</a>
-
-    </div>
-
-   </div>
-
-  </div>
+</div>
 
 
 <div class="container-fluid" name="Detallar_prd">

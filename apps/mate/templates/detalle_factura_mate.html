@@ -2,9 +2,24 @@
 
 {% block content %}
 <br>
+<!--
 <h1>Detalles de Factura</h1>
+-->
 <div class="container-fluid">
 	
+	<div class="row">
+		<div class="col-xl-6 col-md-6 ">
+			<div class="text-left">
+				<h1>Detalles de Factura</h1>
+			</div>	
+		</div>
+		
+		<div class="col-xl-6 col-md-6 .justify-content-end">
+			<div class="text-right">
+				<a href="javascript:history.back()" title="Ir a listado de Clientes" data-toggle="tooltip" ><button type="button" class="btn btn-primary "> REGRESAR</button></a> 
+			</div>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-xl-6 col-md-6 ">
 			<h5 class="display-7"><strong>Factura N°:</strong> {{ factura.numero }}</h5>	
@@ -30,10 +45,9 @@
 	<input class="form-control" id="patron" type="text" placeholder="Escriba para filtrar...">
 	<br>
 -->
-<!--
-	<div class="container-fluid">
--->
 
+
+<!--
 			<form   method="post" enctype='multipart/form-data' multiple="multiple">
 				
 				{% csrf_token %}
@@ -52,9 +66,8 @@
 				</div>
 			</div>
 			</form>
-<!--
-	</div>
 -->
+
 		
     <table id="Listado" class="table table-hover table-bordered small">
         <thead class="thead-dark" style="font-size: 18px; font-weight: bold; font-style: Arial">
@@ -88,7 +101,17 @@
         </tbody>
                 
     </table>  
-   
+	<div class="row">
+		<div class="col-xl-6 col-md-6 ">
+
+		</div>
+		
+		<div class="col-xl-6 col-md-6 .justify-content-end">
+			<div class="text-right">
+				<a href="javascript:history.back()" title="Ir a listado de Clientes" data-toggle="tooltip" ><button type="button" class="btn btn-primary "> REGRESAR</button></a> 
+			</div>
+		</div>
+	</div>
 
 </div>
 

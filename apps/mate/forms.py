@@ -34,6 +34,15 @@ UMEDIDA =(
 	)	
 
 class InsumosF(forms.ModelForm):
+	# ~ def _hide_url_source_type(self):
+    # ~ self.fields['copy_from'].widget = HiddenInput()
+    # ~ source_type = self.fields['source_type']
+    # ~ source_type.choices = [choice for choice in source_type.choices
+                           # ~ if choice[0] != 'url']
+    # ~ if len(source_type.choices) == 1:
+        # ~ source_type.widget = HiddenInput()
+        
+        
 	class Meta:
 		model = InsumosM
 		fields = [
@@ -105,6 +114,47 @@ class FacturasF(forms.ModelForm):
 				'numero' :	forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
 				'total'  :	forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
 				'transp'  :	forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
+				'fhfactu':	forms.DateInput(attrs={'class':'form-control','placeholder':'dd-mm-año'}),
+				'archivo': 	forms.FileInput(attrs={'class':'form-control', 'requeride':False, 'multiple': False}),
+				'observ': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Ingrese las observaciones necesarias..'}),
+			}
+
+class PersonalF(forms.ModelForm):
+	def __init__(self, *args, **kwargs):
+		super(PersonalF, self).__init__(*args, **kwargs)
+
+		self.fields['fhfactu'].widget.format = '%d-%m-%Y'
+		self.fields['fhfactu'].input_formats = ['%d-%m-%Y']
+		
+	class Meta:
+		model = FacturasM
+		fields  = [
+				'codigo', 
+				'emisor',
+				'numero',
+				'total',
+				'transp',
+				'fhfactu',
+				'archivo',
+				'observ',
+			]
+		labels  = {
+				'codigo' : 'Codigo del Contrato',
+				'emisor' : 'emisor',
+				'numero' : 'numero',
+				'total'  : 'Salario Liquido Acordado',
+				'transp' : '',#'Salario Bruto',
+				'fhfactu': 'Fecha de Contrato',
+				'observ' : 'Observaciones',
+				'archivo': 'Adjuntar Contrato',
+				
+			}
+		widgets = {
+				'codigo' : 	forms.TextInput(attrs={'class':'form-control', 'readonly':'readonly'}),
+				'emisor' :  forms.TextInput(attrs={'class':'form-control'}),#, 'style':"display:none;"}),
+				'numero' :	forms.TextInput(attrs={'class':'form-control', 'type':'number',}),# 'style':"display:none;"}),
+				'total'  :	forms.TextInput(attrs={'class':'form-control', 'type':'number'}),
+				'transp'  :	forms.TextInput(attrs={'class':'form-control', 'type':'number'}),#, 'style':"display:none;"}),
 				'fhfactu':	forms.DateInput(attrs={'class':'form-control','placeholder':'dd-mm-año'}),
 				'archivo': 	forms.FileInput(attrs={'class':'form-control', 'requeride':False, 'multiple': False}),
 				'observ': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Ingrese las observaciones necesarias..'}),
