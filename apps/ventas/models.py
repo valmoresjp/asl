@@ -11,7 +11,7 @@ class VentasM(models.Model):
 	insm   = models.FloatField(default=0.0) #insumos
 	mate   = models.FloatField(default=0.0) #materiales
 	pers   = models.FloatField(default=0.0) #personal
-	serv   = models.FloatField(default=0.0) #servicios
+	serv   = models.FloatField(default=0.0) #servicios 
 	utlds  = models.FloatField(default=0.0) #utilidades
 	obsrv  = models.CharField(max_length=500,default="") # Observaciones que se desean realizar
 	direc  = models.CharField(max_length=100,default="Retiro en tienda") # direccion de entrega
