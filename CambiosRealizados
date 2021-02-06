@@ -1,0 +1,52 @@
+Cambios realizados 
+
+Mejoras por realizar
+ -- Cuando se elimine un insumo, se debe indicar que registros(productos o Partidas) se encuentran afectados. 
+    Se deben listar y permitir su edición. EN pocas palabras no se debe permitir eliminar un registro
+    sin que se verifique que PRODUCTOS o PARTIDAS se ven afectados.  Ejemplo:
+    
+    Si elimino un insumo, y este se encuentra asignado como parte de una partida o Producto, se debe 
+    indicar en cual o que partida o producto para que el usuario tome las 
+    medidas respectivas en cuanto a su sustitución o eliminación definitiva.
+    
+ -- Identico que el caso anterior sucede para la eliminación de PARTIDAS, se
+    deben verificar los productos que contiene la partida a eliminar y notificar 
+    de esta situación.
+
+01/072020
+
+--Se separa la mano de Obra en un item separado (modulo prod)
+
+22/06/2020
+
+-- Se agrega modulo para la inclusión de clientes
+-- Se agrega Modulo para registro de ventas.
+
+
+
+12-06-2020
+
+--- Se Modifico el archivo Herramientas.js (se creo v7). para manejar mejor los datos 
+    de las paginas web, Se mejoro la recoleccion de los datos de la web, es decir, se preparo
+    el sistema para crecer sin afectar el resto de los datos( se Crearon las
+    variables CONF y CONF_DATOS,las cuales mantiene información relacionada a 
+    las tabalas existentes en la web activa.
+    Se separo el calculo de las utilidades, es decir, eta se encuentra en un
+    item separado.
+    
+
+04-06-2020
+
+-- Se modifico mudulode Insumos(app mate). Se agregaron funcionalidades de editar y eliminar 
+   insumo. Se elimino el campo fingso
+   Modulos archivos afectados: views(mate), urls(mate), form(mate), model(mate)
+
+01-06-2020
+
+-- Se modifico el metodo con el que se calcula los valores de cada registros,
+   se agrego un objeto ( registros )que realiza estos calculo, asi como, asignar los valores a 
+   las celdas correspondientes (subtotal). 
+   Se elimino la funcion CALCULOTOTALREGISTRO, Cambios
+   Funciones afectadas: EliminarRegistro, Guardar,SelTblListar,ModificarCantidad
+
+

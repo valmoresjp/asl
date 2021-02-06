@@ -104,3 +104,9 @@ class PersonalM(models.Model):
 	cumedida = models.FloatField(default = 1.0)
 	cant     = models.FloatField(default = 0.0)
 
+
+
+class BaseDeDatos_Prueba(models.Model):
+	idpart = models.IntegerField() #	id de la partida
+	unid = models.CharField(max_length=10)	 # unidad de medida
+	cant = models.FloatField() #cantidad
